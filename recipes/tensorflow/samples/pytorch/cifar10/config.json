@@ -1,0 +1,60 @@
+ [
+        {
+            "name": "train",
+            "parameters": [
+                {
+                    "key": "numFeatures",
+                    "value": "1000"
+                },
+                {
+                    "key": "maxIter",
+                    "value": "100"
+                },
+                {
+                    "key": "regParam",
+                    "value": "0.15"
+                },
+                {
+                    "key": "trainingDataLocation",
+                    "value": "[[DATASET URL]]/samples/sentiment_analysis/text_emotion_training.csv"
+                },
+                {
+                    "key": "CONF_blobStoreAccount_KEY",
+                    "value": "[[BLOB KEY]]"
+                },
+                {
+                    "key": "CONF_blobStoreAccount_VALUE",
+                    "value": "[[BLOB PASS]]"
+                },
+                {
+                    "key": "data",
+                    "value": "https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/csv/datasets/cars.csv"
+                }
+            ]
+        },
+        {
+            "name": "score",
+            "parameters": [
+                {
+                    "key": "scoringDataLocation",
+                    "value": "[[DATASET URL]]/samples/sentiment_analysis/scoringdataemotions.csv"
+                },
+                {
+                    "key": "scoringResultsLocation",
+                    "value": "[[DATASET URL]]/samples/sentiment_analysis/outputemotions"
+                },
+                {
+                    "key": "CONF_blobStoreAccount_KEY",
+                    "value": "[[BLOB KEY]]"
+                },
+                {
+                    "key": "CONF_blobStoreAccount_VALUE",
+                    "value": "[[BLOB PASS]]"
+                },
+                {
+                    "key": "data",
+                    "value": "https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/csv/datasets/cars.csv"
+                }
+            ]
+        }
+    ]
