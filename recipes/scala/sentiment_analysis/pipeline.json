@@ -1,0 +1,10 @@
+{
+  "maxIter": "1000",
+  "regParam": "0.01",
+  "numFeatures": "100000",
+  "trainingDataLocation": "[[Datasets HOST URL]]/samples/sentiment_analysis/text_emotion_training.csv",
+  "scoringDataLocation": "[[Datasets HOST URL]]/samples/sentiment_analysis/scoringdataemotions.csv",
+  "scoringResultsLocation": "[[Datasets HOST URL]]/samples/sentiment_analysis/outputemotions",
+  "CONF_blobStoreAccount_KEY":"[[BLOB STORE KEY]]",
+  "CONF_blobStoreAccount_VALUE":"[[BLOB STORE VALUE]]"
+}

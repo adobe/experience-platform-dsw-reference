@@ -1,0 +1,11 @@
+{
+  "maxIter": "2",
+  "regParam": "0.0001",
+  "numFeatures": "1",
+  "trainingDataLocation": "[[Datasets HOST URL]]/samples/sentiment_analysis/nr-training.csv",
+  "scoringDataLocation": "[[Datasets HOST URL]]/samples/sentiment_analysis/nr-scoring.csv",
+  "scoringResultsLocation": "[[Datasets HOST URL]]/samples/sentiment_analysis/nr-output",
+  "CONF_blobStoreAccount_KEY": "[[BLOB STORE KEY]]",
+  "executorCores": 1,
+  "CONF_blobStoreAccount_VALUE": "*****"
+}
