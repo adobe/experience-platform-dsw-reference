@@ -16,19 +16,19 @@
 
 from setuptools import setup,find_packages
 
-setup(name='sampleappPython',
+setup(name='sentimentAnalysis',
       version='0.0.1',
-      packages=['sampleappPython'],
-      package_data={'sampleappPython': ['resources/*']},
+      packages=['sentimentAnalysis'],
+      package_data={'sentimentAnalysis': ['resources/*']},
       entry_points={
         'Training': [
-            'training_dataloader=sampleappPython.trainingdataloader',
-            'training_pipeline=sampleappPython.pipeline'
+            'training_dataloader=sentimentAnalysis.trainingdataloader',
+            'training_pipeline=sentimentAnalysis.pipeline'
         ],
         'Scoring': [
-            'scoring_dataloader=sampleappPython.scoringdataloader',
-            'scoring_pipeline=sampleappPython.pipeline',
-            'scoring_datasaver=sampleappPython.datasaver'
+            'scoring_dataloader=sentimentAnalysis.scoringdataloader',
+            'scoring_pipeline=sentimentAnalysis.pipeline',
+            'scoring_datasaver=sentimentAnalysis.datasaver'
         ]
         }
       )

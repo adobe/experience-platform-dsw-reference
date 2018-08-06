@@ -1,0 +1,54 @@
+#####################################################################
+# ADOBE CONFIDENTIAL
+# ___________________
+#
+#  Copyright 2017 Adobe
+#  All Rights Reserved.
+#
+# NOTICE:  All information contained herein is, and remains
+# the property of Adobe and its suppliers, if any. The intellectual
+# and technical concepts contained herein are proprietary to Adobe
+# and its suppliers and are protected by all applicable intellectual
+# property laws, including trade secret and copyright laws.
+# Dissemination of this information or reproduction of this material
+# is strictly forbidden unless prior written permission is obtained
+# from Adobe.
+#####################################################################
+
+from sklearn.ensemble import GradientBoostingRegressor
+import numpy as np
+
+
+def train(configProperties, data):
+
+    print("Train Start")
+
+    X_train = data.drop('weeklySalesAhead', axis=1).values
+    y_train = data['weeklySalesAhead'].values
+
+    seed = 1234
+    model = GradientBoostingRegressor(random_state=seed)
+    model.fit(X_train, y_train)
+
+    print("Train Complete")
+
+    return model
+
+
+
+
+def score(configProperties, data, model):
+
+    print("Score Start")
+
+    X_test = data.drop('weeklySalesAhead', axis=1).values
+    y_test = data['weeklySalesAhead'].values
+    y_pred = model.predict(X_test)
+    mape = np.mean(np.abs((y_test - y_pred) / y_test))
+
+    print("MAPE: ")
+    print(mape)
+    print("Score Complete")
+
+    return y_pred
+
