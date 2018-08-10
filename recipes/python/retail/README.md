@@ -1,4 +1,4 @@
-# retaildemoPython
+# _retail_ Sample App
 
 Sample python recipe using the retail data.
 
