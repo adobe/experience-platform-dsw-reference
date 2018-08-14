@@ -8,7 +8,7 @@ lazy val commonSettings  = Seq(
 lazy val root = (project in file(".")).
   settings(commonSettings: _*).
   settings(
-    libraryDependencies += "com.adobe.platform.ml" %% "authoring-sdk" % "0.2.1",
+    libraryDependencies += "com.adobe.platform.ml" %% "authoring-sdk" % "0.8.0",
     libraryDependencies += "org.apache.spark" %% "spark-core" % "2.1.0" % "provided",
     libraryDependencies += "org.apache.spark" %% "spark-mllib" % "2.1.0" % "provided",
     libraryDependencies += "org.apache.spark" %% "spark-sql" % "2.1.0" % "provided",
@@ -28,8 +28,5 @@ assemblyMergeStrategy in assembly := {
 }
 
 resolvers ++= Seq(
-    "Artifactory" at "[[ARTIFACTORY URL]]"
+    "Artifactory" at "https://repo.adobe.com/nexus/content/groups/public"
   )
-
-publishTo := Some("Artifactory Realm" at "[[ARTIFACT BASE URL]]")
-credentials += Credentials("Artifactory Realm", "[[ARTIFACT HOST URL]]", System.getProperty("artifactoryUser"), System.getProperty("artifactoryToken"))
