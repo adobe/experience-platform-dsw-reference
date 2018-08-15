@@ -1,4 +1,4 @@
-FROM [DOCKER BASE IMAGE URL]/ml-runtime-r:0.2.1
+FROM adobe/acp-dsw-ml-runtime-r:0.2.1
 
 WORKDIR /root/sample/code
 
