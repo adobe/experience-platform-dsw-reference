@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-FROM [[ML Runtime - Pyspark Docker Image URL]]
+FROM adobe/acp-dsw-ml-runtime-pyspark
 
 COPY dist/sampleapp*.egg /application.egg
 
