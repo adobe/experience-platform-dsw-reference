@@ -15,7 +15,7 @@
 # from Adobe.
 #####################################################################
 
-FROM [Artifactory URL]/ml-runtime-python:0.0.2
+FROM adobe/acp-dsw-ml-runtime-python:0.0.2
 
 #INSTALL NLTK and other modules needed by application
 RUN /usr/bin/python3.5 -m pip install -U numpy
