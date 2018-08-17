@@ -18,7 +18,16 @@
 #Build sample python app
 sudo python setup.py install
 
-docker build --pull -t [DOCKER ARTIFCATORY URL]/ml-retaildemo-python:0.0.1 .
-docker push [DOCKER ARTIFCATORY URL]/ml-retaildemo-python:0.0.1
+echo ""
+echo ""
 
-echo "[DOCKER ARTIFCATORY URL]/ml-retaildemo-python:0.0.1"
+echo "please enter the version number for your recipe's docker image"
+read version
+
+echo "Enter Docker Host"
+read host
+
+docker build --pull -t $host/ml-retailsales-python:$version .
+docker push $host/ml-retailsales-python:$version
+
+echo "$host/ml-retailsales-python:$version"
