@@ -1,51 +1,51 @@
 {
-	"title": "DSWRetailSales",
-	"description": "string",
-	"type": "object",
-    "properties": {
-    	"date": {
-    		"id": "date",
-    		"type": "string"
-    	},
-    	"store": {
-    		"id": "store",
-    		"type": "string"
-    	},
-    	"storeType": {
-    		"id": "storeType",
-    		"type": "string"
-    	},
-    	"weeklySales": {
-    		"id": "weeklySales",
-    		"type": "number"
-    	},
-    	"storeSize": {
-    		"id": "storeSize",
-    		"type": "integer"
-    	},
-    	"temperature": {
-    		"id": "temperature",
-    		"type": "number"
-    	},
-    	"regionalFuelPrice": {
-    		"id": "regionalFuelPrice",
-    		"type": "number"
-    	},
-    	"markdown": {
-    		"id": "markdown",
-    		"type": "number"
-    	},
-    	"cpi": {
-    		"id": "cpi",
-    		"type": "number"
-    	},
-    	"unemployment": {
-    		"id": "unemployment",
-    		"type": "number"
-    	},
-    	"isHoliday": {
-    		"id": "isHoliday",
-    		"type": "boolean"
-    	}
+  "title": "DSWRetailSales",
+  "description": "string",
+  "type": "object",
+  "properties": {
+    "date": {
+      "id": "date",
+      "type": "string"
+    },
+    "store": {
+      "id": "store",
+      "type": "string"
+    },
+    "storeType": {
+      "id": "storeType",
+      "type": "string"
+    },
+    "weeklySales": {
+      "id": "weeklySales",
+      "type": "number"
+    },
+    "storeSize": {
+      "id": "storeSize",
+      "type": "integer"
+    },
+    "temperature": {
+      "id": "temperature",
+      "type": "number"
+    },
+    "regionalFuelPrice": {
+      "id": "regionalFuelPrice",
+      "type": "number"
+    },
+    "markdown": {
+      "id": "markdown",
+      "type": "number"
+    },
+    "cpi": {
+      "id": "cpi",
+      "type": "number"
+    },
+    "unemployment": {
+      "id": "unemployment",
+      "type": "number"
+    },
+    "isHoliday": {
+      "id": "isHoliday",
+      "type": "boolean"
     }
+  }
 }
