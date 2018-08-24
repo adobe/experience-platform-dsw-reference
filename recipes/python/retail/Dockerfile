@@ -15,7 +15,7 @@
 # from Adobe.
 #####################################################################
 
-FROM adobe/acp-dsw-ml-runtime-python:0.2.0
+FROM adobe/acp-dsw-ml-runtime-python:0.4.0
 
 #INSTALL NLTK and other modules needed by application
 RUN /usr/bin/python3.5 -m pip install -U numpy
@@ -23,7 +23,7 @@ RUN /usr/bin/python3.5 -m pip install -U pandas
 RUN /usr/bin/python3.5 -m pip install -U sklearn
 RUN /usr/bin/python3.5 -m pip install -U scipy
 
-COPY dist/retaildemo*.egg /application.egg
+COPY dist/retail*.egg /application.egg
 
 ENV PYTHONPATH=$PYTHONPATH:/application.egg
 

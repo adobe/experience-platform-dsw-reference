@@ -17,6 +17,7 @@
 
 import numpy as np
 import pandas as pd
+from data_access_sdk_python.reader import DataSetReader
 
 def load(configProperties):
 
@@ -32,8 +33,14 @@ def load(configProperties):
     #########################################
     # Load Data
     #########################################
-    df = pd.read_csv(data)
+    # df = pd.read_csv(data)
+    prodreader = DataSetReader(ims_url=configProperties['ims_url'],
+                               catalog_url=configProperties['catalog_url'],
+                               client_id=configProperties['client_id'],
+                               client_secret=configProperties['client_secret'],
+                               code=configProperties['code'])
 
+    df = prodreader.load(configProperties['data_set_id'], configProperties['ims_org'])
 
     #########################################
     # Data Preparation/Feature Engineering
