@@ -1,4 +1,4 @@
-FROM adobe/acp-dsw-ml-runtime-r:0.2.1
+FROM adobe/acp-dsw-ml-runtime-r:0.6.0
 
 WORKDIR /root/sample/code
 
