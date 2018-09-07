@@ -43,7 +43,14 @@ applicationTrainer <- setRefClass("applicationTrainer",
       #########################################
       # Extract fields from configProperties
       #########################################
-      data = configurationJSON$data
+      reticulate::use_python("/usr/bin/python3.6")
+      
+      data_access_sdk_python <- reticulate::import("data_access_sdk_python")
+      
+      reader <- data_access_sdk_python$reader$DataSetReader(user_token = <PYDASDK_IMS_USER_TOKEN>, service_token = <PYDASDK_IMS_SERVICE_TOKEN>)
+      
+      data <- reader$load(configurationJSON$dataSetId, configurationJSON$ML_FRAMEWORK_IMS_ORG_ID)
+      #data = configurationJSON$data
       train_start = configurationJSON$train_start
       train_end = configurationJSON$train_end
 
