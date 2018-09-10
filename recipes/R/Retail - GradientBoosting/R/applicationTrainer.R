@@ -47,7 +47,7 @@ applicationTrainer <- setRefClass("applicationTrainer",
       
       data_access_sdk_python <- reticulate::import("data_access_sdk_python")
       
-      reader <- data_access_sdk_python$reader$DataSetReader(user_token = <PYDASDK_IMS_USER_TOKEN>, service_token = <PYDASDK_IMS_SERVICE_TOKEN>)
+      reader <- data_access_sdk_python$reader$DataSetReader(user_token = customerConfigs$ML_FRAMEWORK_IMS_ML_TOKEN, service_token = customerConfigs$ML_FRAMEWORK_IMS_TOKEN)
       
       data <- reader$load(configurationJSON$dataSetId, configurationJSON$ML_FRAMEWORK_IMS_ORG_ID)
       #data = configurationJSON$data
