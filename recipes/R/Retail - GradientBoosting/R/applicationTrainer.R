@@ -47,9 +47,9 @@ applicationTrainer <- setRefClass("applicationTrainer",
       
       data_access_sdk_python <- reticulate::import("data_access_sdk_python")
       
-      reader <- data_access_sdk_python$reader$DataSetReader(user_token = customerConfigs$ML_FRAMEWORK_IMS_ML_TOKEN, service_token = customerConfigs$ML_FRAMEWORK_IMS_TOKEN)
+      reader <- data_access_sdk_python$reader$DataSetReader(client_id = "acp_machineLearning_customer",user_token = configurationJSON$ML_FRAMEWORK_IMS_TOKEN, service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
       
-      data <- reader$load(configurationJSON$dataSetId, configurationJSON$ML_FRAMEWORK_IMS_ORG_ID)
+      data <- reader$load(configurationJSON$data_set_id, configurationJSON$ML_FRAMEWORK_IMS_ORG_ID)
       #data = configurationJSON$data
       train_start = configurationJSON$train_start
       train_end = configurationJSON$train_end
@@ -58,7 +58,7 @@ applicationTrainer <- setRefClass("applicationTrainer",
       #########################################
       # Load Data
       #########################################
-      df <- as_tibble(read.csv(data))
+      df <- as_tibble(data)
 
 
       #########################################
