@@ -26,21 +26,19 @@ def load(configProperties):
     #########################################
     # Extract fields from configProperties
     #########################################
-    data = configProperties['data']
     test_start = configProperties['test_start']
 
 
     #########################################
     # Load Data
     #########################################
-    # df = pd.read_csv(data)
-    prodreader = DataSetReader(ims_url=configProperties['ims_url'],
-                               catalog_url=configProperties['catalog_url'],
-                               client_id=configProperties['client_id'],
-                               client_secret=configProperties['client_secret'],
-                               code=configProperties['code'])
+    prodreader = DataSetReader(client_id=configProperties['client_id'],
+                               user_token=configProperties['ML_FRAMEWORK_IMS_TOKEN'],
+                               service_token=configProperties['ML_FRAMEWORK_IMS_ML_TOKEN'])
 
-    df = prodreader.load(configProperties['data_set_id'], configProperties['ims_org'])
+    df = prodreader.load(data_set_id=configProperties['data_set_id'],
+                         ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'])
+
 
     #########################################
     # Data Preparation/Feature Engineering
