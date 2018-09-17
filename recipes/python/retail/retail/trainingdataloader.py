@@ -34,7 +34,7 @@ def load(configProperties):
     #########################################
     # Load Data
     #########################################
-    prodreader = DataSetReader(client_id=configProperties['client_id'],
+    prodreader = DataSetReader(client_id=configProperties['ML_FRAMEWORK_IMS_USER_CLIENT_ID'],
                                user_token=configProperties['ML_FRAMEWORK_IMS_TOKEN'],
                                service_token=configProperties['ML_FRAMEWORK_IMS_ML_TOKEN'])
 
