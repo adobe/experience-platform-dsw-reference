@@ -47,9 +47,9 @@ applicationTrainer <- setRefClass("applicationTrainer",
       
       data_access_sdk_python <- reticulate::import("data_access_sdk_python")
       
-      reader <- data_access_sdk_python$reader$DataSetReader(client_id = "acp_machineLearning_customer",user_token = configurationJSON$ML_FRAMEWORK_IMS_TOKEN, service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
+      reader <- data_access_sdk_python$reader$DataSetReader(client_id = configurationJSON$ML_FRAMEWORK_IMS_USER_CLIENT_ID ,user_token = configurationJSON$ML_FRAMEWORK_IMS_TOKEN, service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
       
-      data <- reader$load(configurationJSON$data_set_id, configurationJSON$ML_FRAMEWORK_IMS_ORG_ID)
+      data <- reader$load(configurationJSON$trainingDataSetId, configurationJSON$ML_FRAMEWORK_IMS_ORG_ID)
 
       train_start = configurationJSON$train_start
       train_end = configurationJSON$train_end
