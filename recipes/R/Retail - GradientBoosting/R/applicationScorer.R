@@ -44,20 +44,28 @@ applicationScorer <- setRefClass("applicationScorer",
       #########################################
       # Extract fields from configProperties
       #########################################
-      data = configurationJSON$data
+      reticulate::use_python("/usr/bin/python3.6")
+
+      data_access_sdk_python <- reticulate::import("data_access_sdk_python")
+
+      reader <- data_access_sdk_python$reader$DataSetReader(client_id = "acp_machineLearning_customer",user_token = configurationJSON$ML_FRAMEWORK_IMS_TOKEN, service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
+
+      data <- reader$load(configurationJSON$data_set_id, configurationJSON$ML_FRAMEWORK_IMS_ORG_ID)
+
       test_start = configurationJSON$test_start
 
 
       #########################################
       # Load Data
       #########################################
-      df <- as_tibble(read.csv(data))
+      df <- as_tibble(data)
 
 
       #########################################
       # Data Preparation/Feature Engineering
       #########################################
       df <- df %>%
+        mutate(store = as.numeric(store)) %>% # NEW
         mutate(date = mdy(date), week = week(date), year = year(date)) %>%
         mutate(new = 1) %>%
         spread(storeType, new, fill = 0) %>%

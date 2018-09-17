@@ -50,7 +50,7 @@ applicationTrainer <- setRefClass("applicationTrainer",
       reader <- data_access_sdk_python$reader$DataSetReader(client_id = "acp_machineLearning_customer",user_token = configurationJSON$ML_FRAMEWORK_IMS_TOKEN, service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
       
       data <- reader$load(configurationJSON$data_set_id, configurationJSON$ML_FRAMEWORK_IMS_ORG_ID)
-      #data = configurationJSON$data
+
       train_start = configurationJSON$train_start
       train_end = configurationJSON$train_end
 
@@ -65,6 +65,7 @@ applicationTrainer <- setRefClass("applicationTrainer",
       # Data Preparation/Feature Engineering
       #########################################
       df <- df %>%
+        mutate(store = as.numeric(store)) %>% # NEW
         mutate(date = mdy(date), week = week(date), year = year(date)) %>%
         mutate(new = 1) %>%
         spread(storeType, new, fill = 0) %>%
