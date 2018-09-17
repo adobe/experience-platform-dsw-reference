@@ -36,7 +36,7 @@ def load(configProperties):
                                user_token=configProperties['ML_FRAMEWORK_IMS_TOKEN'],
                                service_token=configProperties['ML_FRAMEWORK_IMS_ML_TOKEN'])
 
-    df = prodreader.load(data_set_id=configProperties['data_set_id'],
+    df = prodreader.load(data_set_id=configProperties['scoringDataSetId'],
                          ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'])
 
 
