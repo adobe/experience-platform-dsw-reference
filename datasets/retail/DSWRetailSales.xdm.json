@@ -9,7 +9,7 @@
     },
     "store": {
       "id": "store",
-      "type": "string"
+      "type": "integer"
     },
     "storeType": {
       "id": "storeType",
