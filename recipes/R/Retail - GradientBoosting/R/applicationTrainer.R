@@ -43,21 +43,26 @@ applicationTrainer <- setRefClass("applicationTrainer",
       #########################################
       # Extract fields from configProperties
       #########################################
-      data = configurationJSON$data
-      train_start = configurationJSON$train_start
-      train_end = configurationJSON$train_end
+      reticulate::use_python("/usr/bin/python3.6")
+      
+      data_access_sdk_python <- reticulate::import("data_access_sdk_python")
+      
+      reader <- data_access_sdk_python$reader$DataSetReader(client_id = configurationJSON$ML_FRAMEWORK_IMS_USER_CLIENT_ID, user_token = configurationJSON$ML_FRAMEWORK_IMS_TOKEN, service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
+      
+      data <- reader$load(configurationJSON$trainingDataSetId, configurationJSON$ML_FRAMEWORK_IMS_ORG_ID)
 
 
       #########################################
       # Load Data
       #########################################
-      df <- as_tibble(read.csv(data))
+      df <- as_tibble(data)
 
 
       #########################################
       # Data Preparation/Feature Engineering
       #########################################
       df <- df %>%
+        mutate(store = as.numeric(store)) %>% # NEW
         mutate(date = mdy(date), week = week(date), year = year(date)) %>%
         mutate(new = 1) %>%
         spread(storeType, new, fill = 0) %>%
@@ -65,17 +70,14 @@ applicationTrainer <- setRefClass("applicationTrainer",
         mutate(weeklySalesAhead = lead(weeklySales, 45),
            weeklySalesLag = lag(weeklySales, 45),
            weeklySalesDiff = (weeklySales - weeklySalesLag) / weeklySalesLag) %>%
-        drop_na()
-
-      train <- df %>%
-        filter(date >= train_start & date <= train_end) %>%
+        drop_na() %>%
         select(-date)
 
 
       #########################################
       # Build model and evaluate performance
       #########################################
-      model <- gbm(weeklySalesAhead ~ ., data = train, distribution = "gaussian",
+      model <- gbm(weeklySalesAhead ~ ., data = df, distribution = "gaussian",
              n.trees = 10000, interaction.depth = 4)
 
 

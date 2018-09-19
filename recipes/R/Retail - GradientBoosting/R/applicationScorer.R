@@ -44,20 +44,26 @@ applicationScorer <- setRefClass("applicationScorer",
       #########################################
       # Extract fields from configProperties
       #########################################
-      data = configurationJSON$data
-      test_start = configurationJSON$test_start
+      reticulate::use_python("/usr/bin/python3.6")
+
+      data_access_sdk_python <- reticulate::import("data_access_sdk_python")
+
+      reader <- data_access_sdk_python$reader$DataSetReader(client_id = configurationJSON$ML_FRAMEWORK_IMS_USER_CLIENT_ID, user_token = configurationJSON$ML_FRAMEWORK_IMS_TOKEN, service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
+
+      data <- reader$load(configurationJSON$scoringDataSetId, configurationJSON$ML_FRAMEWORK_IMS_ORG_ID)
 
 
       #########################################
       # Load Data
       #########################################
-      df <- as_tibble(read.csv(data))
+      df <- as_tibble(data)
 
 
       #########################################
       # Data Preparation/Feature Engineering
       #########################################
       df <- df %>%
+        mutate(store = as.numeric(store)) %>%
         mutate(date = mdy(date), week = week(date), year = year(date)) %>%
         mutate(new = 1) %>%
         spread(storeType, new, fill = 0) %>%
@@ -65,11 +71,9 @@ applicationScorer <- setRefClass("applicationScorer",
         mutate(weeklySalesAhead = lead(weeklySales, 45),
            weeklySalesLag = lag(weeklySales, 45),
            weeklySalesDiff = (weeklySales - weeklySalesLag) / weeklySalesLag) %>%
-        drop_na()
-
-      test <- df %>%
-        filter(date >= test_start) %>%
+        drop_na() %>%
         select(-date)
+
 
 
       #########################################
@@ -81,7 +85,7 @@ applicationScorer <- setRefClass("applicationScorer",
       #########################################
       # Evaluate Performance
       #########################################
-      pred <- predict(retrieved_model, test, n.trees = 10000)
+      pred <- predict(retrieved_model, df, n.trees = 10000)
       mape <- mean(abs((test$weeklySalesAhead -  pred) / test$weeklySalesAhead))
       print(paste("Test Set MAPE: ", mape, sep = ""))
       print("Predictions:")
