@@ -47,12 +47,9 @@ applicationTrainer <- setRefClass("applicationTrainer",
       
       data_access_sdk_python <- reticulate::import("data_access_sdk_python")
       
-      reader <- data_access_sdk_python$reader$DataSetReader(client_id = configurationJSON$ML_FRAMEWORK_IMS_USER_CLIENT_ID ,user_token = configurationJSON$ML_FRAMEWORK_IMS_TOKEN, service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
+      reader <- data_access_sdk_python$reader$DataSetReader(client_id = configurationJSON$ML_FRAMEWORK_IMS_USER_CLIENT_ID, user_token = configurationJSON$ML_FRAMEWORK_IMS_TOKEN, service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
       
       data <- reader$load(configurationJSON$trainingDataSetId, configurationJSON$ML_FRAMEWORK_IMS_ORG_ID)
-
-      train_start = configurationJSON$train_start
-      train_end = configurationJSON$train_end
 
 
       #########################################
@@ -73,17 +70,14 @@ applicationTrainer <- setRefClass("applicationTrainer",
         mutate(weeklySalesAhead = lead(weeklySales, 45),
            weeklySalesLag = lag(weeklySales, 45),
            weeklySalesDiff = (weeklySales - weeklySalesLag) / weeklySalesLag) %>%
-        drop_na()
-
-      train <- df %>%
-        filter(date >= train_start & date <= train_end) %>%
+        drop_na() %>%
         select(-date)
 
 
       #########################################
       # Build model and evaluate performance
       #########################################
-      model <- gbm(weeklySalesAhead ~ ., data = train, distribution = "gaussian",
+      model <- gbm(weeklySalesAhead ~ ., data = df, distribution = "gaussian",
              n.trees = 10000, interaction.depth = 4)
 
 
