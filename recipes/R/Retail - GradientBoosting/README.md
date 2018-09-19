@@ -6,9 +6,14 @@ Sample R recipe using the retail data.
 
 git clone this repository
 
-Navigate the directory to the one containing `build.sh` file
+Navigate the directory to the one containing `build.sh` file and run
 
-./build.sh
+```
+sh ./login.sh
+sh ./build.sh
+```
+
+Please note the `login.sh` script should only need to be run once.
 
 
 # Sample Configuration File
@@ -19,30 +24,51 @@ Sample configuration json to be used with the recipe.
     "name": "train",
     "parameters": [
       {
-        "key": "data",
-        "value": "https://raw.githubusercontent.com/adobe/acp-data-services-dsw-reference/master/datasets/retail/retail.csv"
+        "key": "ACP_DSW_INPUT_FEATURES",
+        "value": "date, store, storeType. storeSize, temperature, regionalFuelPrice, markdown, cpi, unemployment, isHoliday"
       },
       {
-        "key": "train_start",
-        "value": "2010-02-12"
+        "key": "ACP_DSW_TARGET_FEATURES",
+        "value": "weeklySales"
       },
       {
-        "key": "train_end",
-        "value": "2012-04-06"
+        "key": "ACP_DSW_FEATURE_UPDATE_SUPPORT",
+        "value": "false"
+      },
+      {
+        "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
+        "value": "_customer/default/DSWRetailSales"
+      },
+      {
+        "key": "trainingDataSetId",
+        "value": ""
       }
-    ]
+  	]
   },
-    {
+  {
     "name": "score",
     "parameters": [
       {
-        "key": "data",
-        "value": "https://raw.githubusercontent.com/adobe/acp-data-services-dsw-reference/master/datasets/retail/retail.csv"
+        "key": "ACP_DSW_INPUT_FEATURES",
+        "value": "date, store, storeType. storeSize, temperature, regionalFuelPrice, markdown, cpi, unemployment, isHoliday"
       },
       {
-        "key": "test_start",
-        "value": "2012-04-13"
+        "key": "ACP_DSW_TARGET_FEATURES",
+        "value": "weeklySales"
+      },
+      {
+        "key": "ACP_DSW_FEATURE_UPDATE_SUPPORT",
+        "value": "false"
+      },
+      {
+        "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
+        "value": "_customer/default/DSWRetailSales"
+      },
+      {
+        "key": "scoringDataSetId",
+        "value": ""
       }
+
     ]
   }
 ]
