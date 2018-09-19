@@ -6,13 +6,17 @@ Sample python recipe using the retail data.
 
 git clone this repository
 
-Navigate the directory to the one containing `build.sh` file
+Navigate the directory to the one containing `build.sh` file and run
 
+```
+sh ./login.sh
 sh ./build.sh
+```
 
+Please note the `login.sh` script should only need to be run once.
 
 # Sample Configuration File
-Sample configuration json to be used with the recipe. 
+Sample configuration json to be used with the recipe.
 ```
 [
   {
