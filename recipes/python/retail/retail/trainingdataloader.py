@@ -15,7 +15,6 @@
 # from Adobe.
 #####################################################################
 
-
 import numpy as np
 import pandas as pd
 from data_access_sdk_python.reader import DataSetReader
