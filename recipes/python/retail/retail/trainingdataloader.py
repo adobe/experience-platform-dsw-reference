@@ -25,13 +25,6 @@ def load(configProperties):
     print("Training Data Load Start")
 
     #########################################
-    # Extract fields from configProperties
-    #########################################
-    train_start = configProperties['train_start']
-    train_end = configProperties['train_end']
-
-
-    #########################################
     # Load Data
     #########################################
     prodreader = DataSetReader(client_id=configProperties['ML_FRAMEWORK_IMS_USER_CLIENT_ID'],
@@ -40,8 +33,6 @@ def load(configProperties):
 
     df = prodreader.load(data_set_id=configProperties['trainingDataSetId'],
                          ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'])
-
-
 
 
     #########################################
@@ -63,8 +54,6 @@ def load(configProperties):
     df = df.set_index(df.date)
     df.drop('date', axis=1, inplace=True)
 
-    train = df[train_start:train_end]
-
     print("Training Data Load Finish")
 
-    return train
+    return df

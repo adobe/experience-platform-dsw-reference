@@ -24,12 +24,6 @@ def load(configProperties):
     print("Scoring Data Load Start")
 
     #########################################
-    # Extract fields from configProperties
-    #########################################
-    test_start = configProperties['test_start']
-
-
-    #########################################
     # Load Data
     #########################################
     prodreader = DataSetReader(client_id=configProperties['ML_FRAMEWORK_IMS_USER_CLIENT_ID'],
@@ -59,8 +53,6 @@ def load(configProperties):
     df = df.set_index(df.date)
     df.drop('date', axis=1, inplace=True)
 
-    test = df[test_start:]
-
     print("Scoring Data Load Finish")
 
-    return test
+    return df
