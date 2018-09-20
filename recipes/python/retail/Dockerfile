@@ -15,9 +15,9 @@
 # from Adobe.
 #####################################################################
 
-FROM adobe/acp-dsw-ml-runtime-python:0.9.0
+FROM adobe/acp-dsw-ml-runtime-python:0.10.0
 
-#INSTALL NLTK and other modules needed by application
+#INSTALL modules needed by application
 RUN /usr/bin/python3.5 -m pip install -U numpy
 RUN /usr/bin/python3.5 -m pip install -U pandas
 RUN /usr/bin/python3.5 -m pip install -U sklearn
