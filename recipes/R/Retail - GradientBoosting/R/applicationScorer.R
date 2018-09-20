@@ -86,7 +86,7 @@ applicationScorer <- setRefClass("applicationScorer",
       # Evaluate Performance
       #########################################
       pred <- predict(retrieved_model, df, n.trees = 10000)
-      mape <- mean(abs((test$weeklySalesAhead -  pred) / test$weeklySalesAhead))
+      mape <- mean(abs((df$weeklySalesAhead -  pred) / df$weeklySalesAhead))
       print(paste("Test Set MAPE: ", mape, sep = ""))
       print("Predictions:")
       print(pred)
