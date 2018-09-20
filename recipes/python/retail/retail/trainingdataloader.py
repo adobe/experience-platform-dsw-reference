@@ -15,7 +15,6 @@
 # from Adobe.
 #####################################################################
 
-
 import numpy as np
 import pandas as pd
 from data_access_sdk_python.reader import DataSetReader
@@ -25,25 +24,15 @@ def load(configProperties):
     print("Training Data Load Start")
 
     #########################################
-    # Extract fields from configProperties
-    #########################################
-    data = configProperties['data']
-    train_start = configProperties['train_start']
-    train_end = configProperties['train_end']
-
-
-    #########################################
     # Load Data
     #########################################
-    # df = pd.read_csv(data)
+    prodreader = DataSetReader(client_id=configProperties['ML_FRAMEWORK_IMS_USER_CLIENT_ID'],
+                               user_token=configProperties['ML_FRAMEWORK_IMS_TOKEN'],
+                               service_token=configProperties['ML_FRAMEWORK_IMS_ML_TOKEN'])
 
-    prodreader = DataSetReader(ims_url=configProperties['ims_url'],
-                               catalog_url=configProperties['catalog_url'],
-                               client_id=configProperties['client_id'],
-                               client_secret=configProperties['client_secret'],
-                               code=configProperties['code'])
+    df = prodreader.load(data_set_id=configProperties['trainingDataSetId'],
+                         ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'])
 
-    df = prodreader.load(configProperties['data_set_id'], configProperties['ims_org'])
 
     #########################################
     # Data Preparation/Feature Engineering
@@ -64,8 +53,6 @@ def load(configProperties):
     df = df.set_index(df.date)
     df.drop('date', axis=1, inplace=True)
 
-    train = df[train_start:train_end]
-
     print("Training Data Load Finish")
 
-    return train
+    return df

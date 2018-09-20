@@ -24,23 +24,15 @@ def load(configProperties):
     print("Scoring Data Load Start")
 
     #########################################
-    # Extract fields from configProperties
-    #########################################
-    data = configProperties['data']
-    test_start = configProperties['test_start']
-
-
-    #########################################
     # Load Data
     #########################################
-    # df = pd.read_csv(data)
-    prodreader = DataSetReader(ims_url=configProperties['ims_url'],
-                               catalog_url=configProperties['catalog_url'],
-                               client_id=configProperties['client_id'],
-                               client_secret=configProperties['client_secret'],
-                               code=configProperties['code'])
+    prodreader = DataSetReader(client_id=configProperties['ML_FRAMEWORK_IMS_USER_CLIENT_ID'],
+                               user_token=configProperties['ML_FRAMEWORK_IMS_TOKEN'],
+                               service_token=configProperties['ML_FRAMEWORK_IMS_ML_TOKEN'])
 
-    df = prodreader.load(configProperties['data_set_id'], configProperties['ims_org'])
+    df = prodreader.load(data_set_id=configProperties['scoringDataSetId'],
+                         ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'])
+
 
     #########################################
     # Data Preparation/Feature Engineering
@@ -61,8 +53,6 @@ def load(configProperties):
     df = df.set_index(df.date)
     df.drop('date', axis=1, inplace=True)
 
-    test = df[test_start:]
-
     print("Scoring Data Load Finish")
 
-    return test
+    return df

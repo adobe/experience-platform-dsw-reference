@@ -1,6 +1,7 @@
 # OSX
 .DS_Store
 .vscode
+
 .Rproj.user
 recipes/R/.Rhistory
 recipes/R/Retail - GradientBoosting/.Rbuildignore
