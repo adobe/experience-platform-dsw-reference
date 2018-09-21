@@ -27,10 +27,10 @@ applicationTrainer <- setRefClass("applicationTrainer",
   methods = list(
     train = function(configurationJSON) {
       print("Running Trainer Function.")
-
+      
       # Set working directory to AZ_BATCHAI_INPUT_MODEL
       setwd(configurationJSON$modelPATH)
-
+      
       #########################################
       # Load Libraries
       #########################################
@@ -38,8 +38,8 @@ applicationTrainer <- setRefClass("applicationTrainer",
       library(lubridate)
       library(tidyverse)
       set.seed(1234)
-
-
+      
+      
       #########################################
       # Extract fields from configProperties
       #########################################
@@ -50,14 +50,21 @@ applicationTrainer <- setRefClass("applicationTrainer",
       reader <- data_access_sdk_python$reader$DataSetReader(client_id = configurationJSON$ML_FRAMEWORK_IMS_USER_CLIENT_ID, user_token = configurationJSON$ML_FRAMEWORK_IMS_TOKEN, service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
       
       data <- reader$load(configurationJSON$trainingDataSetId, configurationJSON$ML_FRAMEWORK_IMS_ORG_ID)
-
-
+      
+      
       #########################################
       # Load Data
       #########################################
       df <- as_tibble(data)
-
-
+      
+      #########################################
+      # Get hyperparameters
+      #########################################
+      
+      learning_rate = if(is.null(configurationJSON$learning_rate)) as.double(configurationJSON$learning_rate) else 0.1
+      n_estimators = if(is.null(configurationJSON$n_estimators)) as.integer(configurationJSON$n_estimators) else 100
+      max_depth = if(is.null(configurationJSON$max_depth)) as.integer(configurationJSON$max_depth) else 3
+      
       #########################################
       # Data Preparation/Feature Engineering
       #########################################
@@ -68,24 +75,25 @@ applicationTrainer <- setRefClass("applicationTrainer",
         spread(storeType, new, fill = 0) %>%
         mutate(isHoliday = as.integer(isHoliday)) %>%
         mutate(weeklySalesAhead = lead(weeklySales, 45),
-           weeklySalesLag = lag(weeklySales, 45),
-           weeklySalesDiff = (weeklySales - weeklySalesLag) / weeklySalesLag) %>%
+               weeklySalesLag = lag(weeklySales, 45),
+               weeklySalesDiff = (weeklySales - weeklySalesLag) / weeklySalesLag) %>%
         drop_na() %>%
         select(-date)
-
-
+      
+      
       #########################################
       # Build model and evaluate performance
       #########################################
       model <- gbm(weeklySalesAhead ~ ., data = df, distribution = "gaussian",
-             n.trees = 10000, interaction.depth = 4)
-
-
+                   n.trees = n_estimators, interaction.depth = max_depth, 
+                   shrinkage = learning_rate)
+      
+      
       #########################################
       # Save model to the chosen directory
       #########################################
       saveRDS(model, "model.rds")
-
+      
       print("Exiting Trainer Function.")
     }
   )
