@@ -23,11 +23,26 @@ def train(configProperties, data):
 
     print("Train Start")
 
+    #########################################
+    # Extract fields from configProperties
+    #########################################
+    learning_rate = float(configProperties['learning_rate'])
+    n_estimators = int(configProperties['n_estimators'])
+    max_depth = int(configProperties['max_depth'])
+
+
+    #########################################
+    # Fit model
+    #########################################
     X_train = data.drop('weeklySalesAhead', axis=1).values
     y_train = data['weeklySalesAhead'].values
 
     seed = 1234
-    model = GradientBoostingRegressor(random_state=seed)
+    model = GradientBoostingRegressor(learning_rate=learning_rate,
+                                      n_estimators=n_estimators,
+                                      max_depth=max_depth,
+                                      random_state=seed)
+
     model.fit(X_train, y_train)
 
     print("Train Complete")
