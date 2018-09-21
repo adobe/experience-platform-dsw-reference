@@ -51,7 +51,6 @@ Sample configuration json to be used with the recipe.
         "value": "_customer/default/DSWRetailSales"
       }
     ]
-
   }
 ]
 ```
