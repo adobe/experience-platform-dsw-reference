@@ -1,0 +1,2621 @@
+swagger: '2.0'
+info:
+  title: Sensei Unified Machine Learning API
+  version: beta
+  termsOfService: 'https://www.adobe.com/legal/terms.html'
+  description: >-
+    This API provides a mechanism for Data Scientists to organize and manage ML
+    services from algortithm onboarding through experimentation and to service
+    deployment.
+
+
+    Some common terminology used in this API document:
+      Term | Definition
+      --- | ---
+      **ML Algorithm** |  An algorithm that can learn from data and improve from experience, without human intervention. For example, linear regressions, logistic regression, Naive Bayes, Random Forest, and KNN
+      **ML library** |  A machine learning library or framework, typically language-specific, that provides fast, extensible implementations of cutting-edge machine learning algorithms. For example, TensorFlow, Caffe, Mlib (Spark), and H2O.
+      **Sensei Engine** | A project in a ML framework of the developer's choice. This constitutes templatized code and bindings in the language of choice for preprocessing, training, evaluation, and prediction.
+      **Sensei ML instance** |  The conceptual entity that is an instance of a Sensei Engine for a particular tenant made up of specific data, parameters, and Sensei code.
+      **Trained models** |  One of many models created via the process of experimenting and feature engineering before arriving at a validated, evaluated, and finalized model.
+      **Experiment**  | The process by which a model's reliability and generalization is validated by scoring on a small fraction of real live traffic. This process can include changing datasets, changing features, changing learning parameters and hardware.
+      **Published model** |  A finalized and versioned model arrived at after training, validation, and evaluation.
+      **Sensei runtime**  | The shell in which a Sensei ML instance executes.
+externalDocs:
+  description: Find out more about Sensei
+  url: 'https://www.adobe.io/apis/cloudplatform/sensei.html'
+host: platform.adobe.io
+tags:
+  - name: Engine
+    description: >-
+      The Sensei Engine is an umbrella entity holding all MLInstances. This is
+      tied to one or more docker images built to include the Sensei Code of a ML
+      developer.
+  - name: MLInstance
+    description: >-
+      The entity representing the combination of a Sensei Engine with Sensei
+      Configuration, which is often use-case specific for a customer or client.
+  - name: Experiment
+    description: >-
+      A data scientist conducts multiple experiments to arrive at a high
+      performing model while training. This can include changing datasets,
+      features, learning parameters, and hardware.
+  - name: Model
+    description: >-
+      This API allows to register a ML model (model artifact that is created by
+      the training process)
+schemes:
+  - https
+securityDefinitions:
+  XApiKey:
+    description: >-
+      An authenticating header identifying the consumer API Key for the client
+      software that is making the request.
+    type: apiKey
+    name: X-API-KEY
+    in: header
+  Bearer:
+    description: >-
+      An authenticating header identifying the user or service that is making
+      the API call. Must be a valid Adobe IMS User token or Service token
+      preceded by the string 'Bearer '.
+    type: apiKey
+    name: Authorization
+    in: header
+security:
+  - XApiKey: []
+  - Bearer: []
+paths:
+  /engines:
+    parameters:
+      - $ref: '#/parameters/gwImsOrgIdHeaderParam'
+    get:
+      tags:
+        - Engine
+      summary: Get a list of all Engines
+      description: >-
+        Lists all engines providing mechanisms for pagination, filtering, and
+        sorting.
+      operationId: retrieveEngines
+      produces:
+        - >-
+          application/vnd.adobe.platform.sensei+json;profile=engineListing.v1.json
+      parameters:
+        - $ref: '#/parameters/startQueryParam'
+        - $ref: '#/parameters/limitQueryParam'
+        - $ref: '#/parameters/orderbyQueryParam'
+        - $ref: '#/parameters/propertyQueryParam'
+      responses:
+        '200':
+          description: List of Engines
+          schema:
+            $ref: '#/definitions/EngineListing'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '406':
+          $ref: '#/responses/406'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+    post:
+      tags:
+        - Engine
+      summary: Add a new Engine
+      description: Creates a new Engine
+      operationId: createEngine
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/vnd.adobe.platform.sensei+json;profile=engine.v1.json
+      parameters:
+        - in: formData
+          name: engine
+          description: Engine entity description
+          x-content-type: application/vnd.adobe.platform.sensei+json;profile=engine.v1.json
+          schema:
+            $ref: '#/definitions/Engine'
+        - in: formData
+          name: defaultArtifact
+          type: file
+          description: >-
+            The binary engine artifact (e.g. JAR, EGG) used for all operations
+            by default
+          x-content-type: application/octet-stream
+        - in: formData
+          name: preprocessOverrideArtifact
+          type: file
+          description: >-
+            The binary engine artifact (e.g. JAR, EGG) used for the 'preprocess'
+            operation
+          x-content-type: application/octet-stream
+        - in: formData
+          name: trainOverrideArtifact
+          type: file
+          description: >-
+            The binary engine artifact (e.g. JAR, EGG) used for the 'train'
+            operation
+          x-content-type: application/octet-stream
+        - in: formData
+          name: batchScoreOverrideArtifact
+          type: file
+          description: >-
+            The binary engine artifact (e.g. JAR, EGG) used for the 'batchScore'
+            operation
+          x-content-type: application/octet-stream
+        - in: formData
+          name: validateOverrideArtifact
+          type: file
+          description: >-
+            The binary engine artifact (e.g. JAR, EGG) used for the 'validate'
+            operation
+          x-content-type: application/octet-stream
+        - in: formData
+          name: evaluateOverrideArtifact
+          type: file
+          description: >-
+            The binary engine artifact (e.g. JAR, EGG) used for the 'evaluate'
+            operation
+          x-content-type: application/octet-stream
+        - in: formData
+          name: publishOverrideArtifact
+          type: file
+          description: >-
+            The binary engine artifact (e.g. JAR, EGG) used for the 'publish'
+            operation
+          x-content-type: application/octet-stream
+      responses:
+        '201':
+          description: Creation successful
+          headers:
+            Location:
+              description: URL indicating the location of the created Engine resource
+              type: string
+          schema:
+            $ref: '#/definitions/Engine'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '406':
+          $ref: '#/responses/406'
+        '415':
+          $ref: '#/responses/415'
+        '422':
+          $ref: '#/responses/422'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+
+  /engines/dockerRegistry:
+    parameters:
+      - $ref: '#/parameters/gwImsOrgIdHeaderParam'
+
+    get:
+      tags:
+        - Engine
+      summary: Get Docker Registry information
+      description: >-
+        Get Docker Registry information for use in .
+      operationId: retrieveDockerRegistryInfo
+      produces:
+        - application/vnd.adobe.platform.sensei+json;profile=enginesDockerRegistryInfo.v1.json
+      responses:
+        200:
+          description: Docker Registry Information
+          schema:
+            $ref: '#/definitions/EnginesDockerRegistryInfo'
+        400:
+          $ref: '#/responses/400'
+        401:
+          $ref: '#/responses/401'
+        403:
+          $ref: '#/responses/403'
+        406:
+          $ref: '#/responses/406'
+        500:
+          $ref: '#/responses/500'
+        502:
+          $ref: '#/responses/502'
+        503:
+          $ref: '#/responses/503'
+        504:
+          $ref: '#/responses/504'
+
+  /engines/{engineId}:
+    parameters:
+      - $ref: '#/parameters/gwImsOrgIdHeaderParam'
+      - $ref: '#/parameters/engineIdPathParam'
+    get:
+      tags:
+        - Engine
+      summary: Returns Engine by id
+      description: Retrieves a specific engine
+      operationId: retrieveEngine
+      produces:
+        - application/vnd.adobe.platform.sensei+json;profile=engine.v1.json
+      responses:
+        '200':
+          description: Engine object
+          schema:
+            $ref: '#/definitions/Engine'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '404':
+          $ref: '#/responses/404'
+        '406':
+          $ref: '#/responses/406'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+    put:
+      tags:
+        - Engine
+      summary: Update an Engine by id
+      description: Updates a specific engine
+      operationId: updateEngine
+      consumes:
+        - application/vnd.adobe.platform.sensei+json;profile=engine.v1.json
+      produces:
+        - application/vnd.adobe.platform.sensei+json;profile=engine.v1.json
+      parameters:
+        - in: body
+          name: engine
+          description: Engine object to be updated
+          required: true
+          schema:
+            $ref: '#/definitions/Engine'
+        - $ref: '#/parameters/ifMatchHeaderParam'
+      responses:
+        '200':
+          description: Engine object
+          schema:
+            $ref: '#/definitions/Engine'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '404':
+          $ref: '#/responses/404'
+        '406':
+          $ref: '#/responses/406'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+    delete:
+      tags:
+        - Engine
+      summary: Delete an existing Engine
+      description: Deletes a specific engine
+      operationId: deleteEngine
+      produces:
+        - >-
+          application/vnd.adobe.platform.sensei+json;profile=api-response.v1.json
+      responses:
+        '200':
+          description: Engine deleted successfully
+          schema:
+            $ref: '#/definitions/SenseiApiResponse'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '404':
+          $ref: '#/responses/404'
+        '406':
+          $ref: '#/responses/406'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+  /mlInstances:
+    parameters:
+      - $ref: '#/parameters/gwImsOrgIdHeaderParam'
+    get:
+      tags:
+        - MLInstance
+      summary: Get List of MLInstances matching given criteria
+      description: MLInstances may be searched by name or tags.
+      operationId: retrieveMLInstances
+      produces:
+        - >-
+          application/vnd.adobe.platform.sensei+json;profile=mlInstanceListing.v1.json
+      parameters:
+        - $ref: '#/parameters/startQueryParam'
+        - $ref: '#/parameters/limitQueryParam'
+        - $ref: '#/parameters/orderbyQueryParam'
+        - $ref: '#/parameters/propertyQueryParam'
+      responses:
+        '200':
+          description: List of MLInstances
+          schema:
+            $ref: '#/definitions/MLInstanceListing'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '406':
+          $ref: '#/responses/406'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+    post:
+      tags:
+        - MLInstance
+      summary: Add a new ML Instance
+      description: Creates a new MLInstance of an Engine
+      operationId: createMLInstance
+      consumes:
+        - application/vnd.adobe.platform.sensei+json;profile=mlInstance.v1.json
+      produces:
+        - application/vnd.adobe.platform.sensei+json;profile=mlInstance.v1.json
+      parameters:
+        - in: body
+          name: mlInstance
+          description: >-
+            MLInstance object that needs to be added. Note that a valid
+            `engineId` has to be listed in the object.
+          required: true
+          schema:
+            $ref: '#/definitions/MLInstance'
+      responses:
+        '201':
+          description: Creation successful
+          headers:
+            Location:
+              description: URL indicating the location of the created MLInstance resource
+              type: string
+          schema:
+            $ref: '#/definitions/MLInstance'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '406':
+          $ref: '#/responses/406'
+        '415':
+          $ref: '#/responses/415'
+        '422':
+          $ref: '#/responses/422'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+    delete:
+      tags:
+        - MLInstance
+      summary: Delete ML instances for engineId
+      description: Deletes all ML instances for provided engineId
+      operationId: deleteMLInstances
+      produces:
+        - >-
+          application/vnd.adobe.platform.sensei+json;profile=api-response.v1.json
+      parameters:
+        - in: query
+          name: engineId
+          type: string
+          description: The engineId for which ML instances should be deleted
+          required: true
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/SenseiApiResponse'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '404':
+          $ref: '#/responses/404'
+        '410':
+          $ref: '#/responses/410'
+        '500':
+          $ref: '#/responses/500'
+        '503':
+          $ref: '#/responses/503'
+  '/mlInstances/{mlInstanceId}':
+    parameters:
+      - $ref: '#/parameters/gwImsOrgIdHeaderParam'
+      - $ref: '#/parameters/mlInstanceIdPathParam'
+    get:
+      tags:
+        - MLInstance
+      summary: Returns MLInstance by id
+      operationId: retrieveMLInstance
+      produces:
+        - application/vnd.adobe.platform.sensei+json;profile=mlInstance.v1.json
+      responses:
+        '200':
+          description: MLInstance object
+          schema:
+            $ref: '#/definitions/MLInstance'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '404':
+          $ref: '#/responses/404'
+        '406':
+          $ref: '#/responses/406'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+    put:
+      tags:
+        - MLInstance
+      summary: Update a ML Instance by id
+      operationId: updateMLInstance
+      consumes:
+        - application/vnd.adobe.platform.sensei+json;profile=mlInstance.v1.json
+      produces:
+        - application/vnd.adobe.platform.sensei+json;profile=mlInstance.v1.json
+      parameters:
+        - in: body
+          name: mlInstance
+          description: MLInstance object to be updated
+          required: true
+          schema:
+            $ref: '#/definitions/MLInstance'
+        - $ref: '#/parameters/ifMatchHeaderParam'
+      responses:
+        '200':
+          description: MLInstance object
+          schema:
+            $ref: '#/definitions/MLInstance'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '404':
+          $ref: '#/responses/404'
+        '406':
+          $ref: '#/responses/406'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+    delete:
+      tags:
+        - MLInstance
+      summary: Delete an existing MLInstance
+      operationId: deleteMLInstance
+      produces:
+        - >-
+          application/vnd.adobe.platform.sensei+json;profile=api-response.v1.json
+      responses:
+        '200':
+          description: MLInstance deleted successfully
+          schema:
+            $ref: '#/definitions/SenseiApiResponse'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '404':
+          $ref: '#/responses/404'
+        '406':
+          $ref: '#/responses/406'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+  /experiments:
+    parameters:
+      - $ref: '#/parameters/gwImsOrgIdHeaderParam'
+    get:
+      tags:
+        - Experiment
+      summary: Get All Experiments for an ML Instance
+      description: ''
+      operationId: retrieveExperiments
+      produces:
+        - >-
+          application/vnd.adobe.platform.sensei+json;profile=experimentListing.v1.json
+      parameters:
+        - $ref: '#/parameters/startQueryParam'
+        - $ref: '#/parameters/limitQueryParam'
+        - $ref: '#/parameters/orderbyQueryParam'
+        - $ref: '#/parameters/propertyQueryParam'
+      responses:
+        '200':
+          description: List of Experiments
+          schema:
+            $ref: '#/definitions/ExperimentListing'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '406':
+          $ref: '#/responses/406'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+    post:
+      tags:
+        - Experiment
+      summary: Create Experiment
+      description: ''
+      operationId: createExperiment
+      consumes:
+        - application/vnd.adobe.platform.sensei+json;profile=experiment.v1.json
+      produces:
+        - application/vnd.adobe.platform.sensei+json;profile=experiment.v1.json
+      parameters:
+        - in: body
+          name: experiment
+          description: Experiment object that needs to be created
+          required: true
+          schema:
+            $ref: '#/definitions/Experiment'
+        - $ref: '#/parameters/authHeaderParam'
+      responses:
+        '201':
+          description: Creation successful
+          headers:
+            Location:
+              description: URL indicating the location of the created Experiment resource
+              type: string
+          schema:
+            $ref: '#/definitions/Experiment'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '406':
+          $ref: '#/responses/406'
+        '415':
+          $ref: '#/responses/415'
+        '422':
+          $ref: '#/responses/422'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+    delete:
+      tags:
+        - Experiment
+      summary: Delete experiments for mlInstanceId
+      description: Deletes all Experiments for provided mlInstance
+      operationId: deleteExperiments
+      produces:
+        - >-
+          application/vnd.adobe.platform.sensei+json;profile=api-response.v1.json
+      parameters:
+        - in: query
+          name: mlInstanceId
+          type: string
+          description: The mlInstanceId for which Experiments should be deleted
+          required: true
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/SenseiApiResponse'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '404':
+          $ref: '#/responses/404'
+        '410':
+          $ref: '#/responses/410'
+        '500':
+          $ref: '#/responses/500'
+        '503':
+          $ref: '#/responses/503'
+  '/experiments/{experimentId}':
+    parameters:
+      - $ref: '#/parameters/gwImsOrgIdHeaderParam'
+      - $ref: '#/parameters/experimentIdPathParam'
+    get:
+      tags:
+        - Experiment
+      summary: Read an Experiment using Experiment ID
+      description: ''
+      operationId: retrieveExperiment
+      produces:
+        - application/vnd.adobe.platform.sensei+json;profile=experiment.v1.json
+      responses:
+        '200':
+          description: Returns the Experiment object
+          schema:
+            $ref: '#/definitions/Experiment'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '404':
+          $ref: '#/responses/404'
+        '406':
+          $ref: '#/responses/406'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+    put:
+      tags:
+        - Experiment
+      summary: Update an Experiment using Experiment ID
+      operationId: updateExperiment
+      consumes:
+        - application/vnd.adobe.platform.sensei+json;profile=experiment.v1.json
+      produces:
+        - application/vnd.adobe.platform.sensei+json;profile=experiment.v1.json
+      parameters:
+        - in: body
+          name: experiment
+          description: Experiment object to be updated
+          required: true
+          schema:
+            $ref: '#/definitions/Experiment'
+        - $ref: '#/parameters/ifMatchHeaderParam'
+      responses:
+        '200':
+          description: Returns the Experiment object
+          schema:
+            $ref: '#/definitions/Experiment'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '404':
+          $ref: '#/responses/404'
+        '406':
+          $ref: '#/responses/406'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+    delete:
+      tags:
+        - Experiment
+      summary: Delete an Experiment using Experiment ID
+      description: ''
+      operationId: deleteExperiment
+      produces:
+        - >-
+          application/vnd.adobe.platform.sensei+json;profile=api-response.v1.json
+      responses:
+        '200':
+          description: Experiment deleted successfully
+          schema:
+            $ref: '#/definitions/SenseiApiResponse'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '404':
+          $ref: '#/responses/404'
+        '406':
+          $ref: '#/responses/406'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+  '/experiments/{experimentId}/runs':
+    parameters:
+      - $ref: '#/parameters/gwImsOrgIdHeaderParam'
+      - $ref: '#/parameters/experimentIdPathParam'
+    get:
+      tags:
+        - Experiment
+      summary: Get List of all Experiment Runs
+      description: ''
+      operationId: retrieveExperimentRuns
+      produces:
+        - >-
+          application/vnd.adobe.platform.sensei+json;profile=experimentRunListing.v1.json
+      parameters:
+        - $ref: '#/parameters/startQueryParam'
+        - $ref: '#/parameters/limitQueryParam'
+        - $ref: '#/parameters/orderbyQueryParam'
+        - $ref: '#/parameters/propertyQueryParam'
+      responses:
+        '200':
+          description: List of Engines
+          schema:
+            $ref: '#/definitions/ExperimentRunListing'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '406':
+          $ref: '#/responses/406'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+    post:
+      tags:
+        - Experiment
+      summary: Run an experiment with parameter values
+      description: ''
+      operationId: createExperimentRun
+      consumes:
+        - >-
+          application/vnd.adobe.platform.sensei+json;profile=experimentRun.v1.json
+      produces:
+        - >-
+          application/vnd.adobe.platform.sensei+json;profile=experimentRun.v1.json
+      parameters:
+        - in: body
+          name: Run
+          description: Run object that needs to be added
+          required: true
+          schema:
+            $ref: '#/definitions/ExperimentRun'
+        - $ref: '#/parameters/authHeaderParam'
+      responses:
+        '201':
+          description: Creation successful
+          headers:
+            Location:
+              description: >-
+                URL indicating the location of the created ExperimentRun
+                resource
+              type: string
+          schema:
+            $ref: '#/definitions/ExperimentRun'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '406':
+          $ref: '#/responses/406'
+        '415':
+          $ref: '#/responses/415'
+        '422':
+          $ref: '#/responses/422'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+  '/experiments/{experimentId}/runs/{experimentRunId}':
+    parameters:
+      - $ref: '#/parameters/gwImsOrgIdHeaderParam'
+      - $ref: '#/parameters/experimentIdPathParam'
+      - $ref: '#/parameters/experimentRunIdPathParam'
+    get:
+      tags:
+        - Experiment
+      summary: Get the Run status and info
+      description: ''
+      operationId: retrieveExperimentRun
+      produces:
+        - >-
+          application/vnd.adobe.platform.sensei+json;profile=experimentRun.v1.json
+      responses:
+        '200':
+          description: Returns the Run status and info
+          schema:
+            $ref: '#/definitions/ExperimentRun'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '404':
+          $ref: '#/responses/404'
+        '406':
+          $ref: '#/responses/406'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+  '/experiments/{experimentId}/runs/{experimentRunId}/status':
+    parameters:
+      - $ref: '#/parameters/gwImsOrgIdHeaderParam'
+      - $ref: '#/parameters/experimentIdPathParam'
+      - $ref: '#/parameters/experimentRunIdPathParam'
+    get:
+      tags:
+        - Experiment
+      summary: Get the Run status and info
+      description: ''
+      operationId: retrieveExperimentRunStatus
+      produces:
+        - >-
+          application/vnd.adobe.platform.sensei+json;profile=experimentRunStatus.v1.json
+      responses:
+        '200':
+          description: Returns the Run status and info
+          schema:
+            $ref: '#/definitions/RunStatus'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '404':
+          $ref: '#/responses/404'
+        '406':
+          $ref: '#/responses/406'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+  /models:
+    parameters:
+      - $ref: '#/parameters/gwImsOrgIdHeaderParam'
+    get:
+      tags:
+        - Model
+      summary: Get List of all Models
+      description: >-
+        List all models providing mechanisms for pagination, filtering, and
+        sorting.
+      operationId: retrieveModels
+      produces:
+        - >-
+          application/vnd.adobe.platform.sensei+json;profile=modelListing.v1.json
+      parameters:
+        - $ref: '#/parameters/startQueryParam'
+        - $ref: '#/parameters/limitQueryParam'
+        - $ref: '#/parameters/orderbyQueryParam'
+        - $ref: '#/parameters/propertyQueryParam'
+      responses:
+        '200':
+          description: List of Models
+          schema:
+            $ref: '#/definitions/ModelListing'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '404':
+          $ref: '#/responses/404'
+        '406':
+          $ref: '#/responses/406'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+    post:
+      tags:
+        - Model
+      summary: Registers a generated Model
+      description: Creates a model for a particular engine and mlinstance
+      operationId: createModel
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/vnd.adobe.platform.sensei+json;profile=model.v1.json
+      parameters:
+        - in: formData
+          name: modelArtifact
+          type: file
+          description: The artifact containing the model
+          x-content-type: application/octet-stream
+        - in: formData
+          name: model
+          type: string
+          description: Model object that needs to be created
+          x-content-type: application/vnd.adobe.platform.sensei+json;profile=model.v1.json
+          schema:
+            $ref: '#/definitions/Model'
+      responses:
+        '201':
+          description: Creation successful
+          headers:
+            Location:
+              description: URL indicating the location of the created Model resource
+              type: string
+          schema:
+            $ref: '#/definitions/Model'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '406':
+          $ref: '#/responses/406'
+        '415':
+          $ref: '#/responses/415'
+        '422':
+          $ref: '#/responses/422'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+  '/models/{modelId}':
+    parameters:
+      - $ref: '#/parameters/gwImsOrgIdHeaderParam'
+      - $ref: '#/parameters/modelIdPathParam'
+    get:
+      tags:
+        - Model
+      summary: Returns a Model by Id
+      description: Retrieves a specific model
+      operationId: retrieveModel
+      produces:
+        - application/vnd.adobe.platform.sensei+json;profile=model.v1.json
+      responses:
+        '200':
+          description: Returns the Model object
+          schema:
+            $ref: '#/definitions/Model'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '404':
+          $ref: '#/responses/404'
+        '406':
+          $ref: '#/responses/406'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+    put:
+      tags:
+        - Model
+      summary: Update a Model by Id
+      description: Update an existing model
+      operationId: updateModel
+      consumes:
+        - application/vnd.adobe.platform.sensei+json;profile=model.v1.json
+      produces:
+        - application/vnd.adobe.platform.sensei+json;profile=model.v1.json
+      parameters:
+        - in: body
+          name: model
+          description: Model object to be updated
+          required: true
+          schema:
+            $ref: '#/definitions/Model'
+        - $ref: '#/parameters/ifMatchHeaderParam'
+      responses:
+        '200':
+          description: Returns the updated Model object
+          schema:
+            $ref: '#/definitions/Model'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '404':
+          $ref: '#/responses/404'
+        '406':
+          $ref: '#/responses/406'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+    delete:
+      tags:
+        - Model
+      summary: Deletes a Model by Id
+      description: Deletes a specific model
+      operationId: deleteModel
+      produces:
+        - >-
+          application/vnd.adobe.platform.sensei+json;profile=api-response.v1.json
+      responses:
+        '200':
+          description: Model deleted successfully
+          schema:
+            $ref: '#/definitions/SenseiApiResponse'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '404':
+          $ref: '#/responses/404'
+        '406':
+          $ref: '#/responses/406'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+  '/models/{modelId}/artifact':
+    parameters:
+      - $ref: '#/parameters/gwImsOrgIdHeaderParam'
+      - $ref: '#/parameters/modelIdPathParam'
+    get:
+      tags:
+        - Model
+      summary: Returns a binary model artifact by model Id
+      description: ''
+      operationId: retrieveModelArtifact
+      produces:
+        - application/octet-stream
+      responses:
+        '200':
+          description: Returns the binary Model artifact
+          schema:
+            type: string
+            format: binary
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '404':
+          $ref: '#/responses/404'
+        '406':
+          $ref: '#/responses/406'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+  '/models/{modelId}/transcodings':
+    parameters:
+      - $ref: '#/parameters/gwImsOrgIdHeaderParam'
+      - $ref: '#/parameters/modelIdPathParam'
+    get:
+      tags:
+        - Model
+      summary: Get List of all Model Transcodings
+      description: ''
+      operationId: retrieveModelTranscodings
+      produces:
+        - >-
+          application/vnd.adobe.platform.sensei+json;profile=modelTranscodingListing.v1.json
+      parameters:
+        - $ref: '#/parameters/startQueryParam'
+        - $ref: '#/parameters/limitQueryParam'
+        - $ref: '#/parameters/orderbyQueryParam'
+        - $ref: '#/parameters/propertyQueryParam'
+      responses:
+        '200':
+          description: List of Model Transcodings
+          schema:
+            $ref: '#/definitions/ModelTranscodingListing'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '404':
+          $ref: '#/responses/404'
+        '406':
+          $ref: '#/responses/406'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+    post:
+      tags:
+        - Model
+      summary: Creates a model transcoding
+      description: ''
+      operationId: createModelTranscoding
+      consumes:
+        - >-
+          application/vnd.adobe.platform.sensei+json;profile=modelTranscoding.v1.json
+      produces:
+        - >-
+          application/vnd.adobe.platform.sensei+json;profile=modelTranscoding.v1.json
+      parameters:
+        - in: body
+          name: model
+          description: Model Transcoding to be created
+          required: true
+          schema:
+            $ref: '#/definitions/ModelTranscoding'
+      responses:
+        '201':
+          description: Creation successful
+          headers:
+            Location:
+              description: URL indicating the location of the created Model resource
+              type: string
+          schema:
+            $ref: '#/definitions/ModelTranscoding'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '406':
+          $ref: '#/responses/406'
+        '415':
+          $ref: '#/responses/415'
+        '422':
+          $ref: '#/responses/422'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+  '/models/{modelId}/transcodings/{modelTranscodingId}':
+    parameters:
+      - $ref: '#/parameters/gwImsOrgIdHeaderParam'
+      - $ref: '#/parameters/modelIdPathParam'
+      - $ref: '#/parameters/modelTranscodingIdPathParam'
+    get:
+      tags:
+        - Model
+      summary: Returns a Model Transcoding by Id
+      description: ''
+      operationId: retrieveModelTranscoding
+      produces:
+        - >-
+          application/vnd.adobe.platform.sensei+json;profile=modelTranscoding.v1.json
+      responses:
+        '200':
+          description: Returns the Model object
+          schema:
+            $ref: '#/definitions/ModelTranscoding'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '404':
+          $ref: '#/responses/404'
+        '406':
+          $ref: '#/responses/406'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+  /insights:
+    parameters:
+      - $ref: '#/parameters/gwImsOrgIdHeaderParam'
+    get:
+      tags:
+        - Insight
+      summary: Get a list of insights
+      description: Lists all insights for all experiment runs
+      operationId: retrieveInsights
+      produces:
+        - >-
+          application/vnd.adobe.platform.sensei+json;profile=insightListing.v1.json
+      parameters:
+        - $ref: '#/parameters/startQueryParam'
+        - $ref: '#/parameters/limitQueryParam'
+        - $ref: '#/parameters/orderbyQueryParam'
+        - $ref: '#/parameters/propertyQueryParam'
+      responses:
+        '200':
+          description: List of Insights
+          schema:
+            $ref: '#/definitions/InsightListing'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '406':
+          $ref: '#/responses/406'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+    post:
+      tags:
+        - Insight
+      summary: Add a new model insight
+      description: Creates a new model insight
+      operationId: createInsights
+      consumes:
+        - application/vnd.adobe.platform.sensei+json;profile=insight.v1.json
+      produces:
+        - application/vnd.adobe.platform.sensei+json;profile=insight.v1.json
+      parameters:
+        - in: body
+          name: insight
+          description: Insight object that needs to be added
+          required: true
+          schema:
+            $ref: '#/definitions/Insight'
+      responses:
+        '201':
+          description: Creation successful
+          headers:
+            Location:
+              description: URL indicating the location of the created Engine resource
+              type: string
+          schema:
+            $ref: '#/definitions/Insight'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '406':
+          $ref: '#/responses/406'
+        '415':
+          $ref: '#/responses/415'
+        '422':
+          $ref: '#/responses/422'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+  '/insights/{insightId}':
+    parameters:
+      - $ref: '#/parameters/gwImsOrgIdHeaderParam'
+      - $ref: '#/parameters/insightIdPathParam'
+    get:
+      tags:
+        - Insight
+      summary: Returns Insight by id
+      description: Retrieves a specific insight
+      operationId: retrieveInsight
+      produces:
+        - application/vnd.adobe.platform.sensei+json;profile=insight.v1.json
+      responses:
+        '200':
+          description: Insight object
+          schema:
+            $ref: '#/definitions/Insight'
+        '400':
+          $ref: '#/responses/400'
+        '401':
+          $ref: '#/responses/401'
+        '403':
+          $ref: '#/responses/403'
+        '404':
+          $ref: '#/responses/404'
+        '406':
+          $ref: '#/responses/406'
+        '500':
+          $ref: '#/responses/500'
+        '502':
+          $ref: '#/responses/502'
+        '503':
+          $ref: '#/responses/503'
+        '504':
+          $ref: '#/responses/504'
+parameters:
+  startQueryParam:
+    name: start
+    in: query
+    description: >-
+      Start value for pagination. Indicates the starting index for the items to
+      return.
+    required: false
+    type: string
+  limitQueryParam:
+    name: limit
+    in: query
+    description: >-
+      Limit value for pagination. Indicates the requested number of items to
+      return. The service may return a different number of items than requested.
+    required: false
+    type: integer
+    format: int32
+    default: 25
+    minimum: 0
+    maximum: 100
+  orderbyQueryParam:
+    name: orderby
+    in: query
+    description: >-
+      Sort order for pagination. Indicates the fields and direction to use for
+      sorting in priority order.
+    required: false
+    type: array
+    collectionFormat: csv
+    items:
+      type: string
+    default:
+      - '-updated'
+  propertyQueryParam:
+    name: property
+    in: query
+    description: >-
+      Property matching expression for filtering paginated results. Indicates
+      the comparision expression that items must match in order to be returned.
+    required: false
+    type: array
+    collectionFormat: csv
+    items:
+      type: string
+  engineIdPathParam:
+    name: engineId
+    in: path
+    description: The identifier of the Sensei Engine
+    required: true
+    type: string
+  mlInstanceIdPathParam:
+    name: mlInstanceId
+    in: path
+    description: The identifier of the Sensei ML instance
+    required: true
+    type: string
+  experimentIdPathParam:
+    name: experimentId
+    in: path
+    description: The identifier of the experiment
+    required: true
+    type: string
+  experimentRunIdPathParam:
+    name: experimentRunId
+    in: path
+    description: The identifier of the experiment run
+    required: true
+    type: string
+  experimentTemplateIdPathParam:
+    name: experimentTemplateId
+    in: path
+    description: The identifier of the experimentTemplate
+    required: true
+    type: string
+  modelIdPathParam:
+    name: modelId
+    in: path
+    description: The identifier of the trained or published model
+    required: true
+    type: string
+  modelTranscodingIdPathParam:
+    name: modelTranscodingId
+    in: path
+    description: The identifier of the transcoded model artifact
+    required: true
+    type: string
+  serviceIdPathParam:
+    name: serviceId
+    in: path
+    description: The identifier of the Sensei Service
+    required: true
+    type: string
+  insightIdPathParam:
+    name: insightId
+    in: path
+    description: The identifier of the Sensei Insight
+    required: true
+    type: string
+  gwImsOrgIdHeaderParam:
+    name: x-gw-ims-org-id
+    in: header
+    description: IMS org id of the caller
+    required: true
+    type: string
+  ifMatchHeaderParam:
+    name: If-Match
+    in: header
+    description: Optional header field with ETag value provided by client
+    type: string
+  authHeaderParam:
+    name: Authorization
+    in: header
+    description: IMS User token or Service token of the caller
+    required: true
+    type: string
+responses:
+  '400':
+    description: Bad request
+    schema:
+      $ref: '#/definitions/SenseiApiResponse'
+  '401':
+    description: Unauthorized
+    schema:
+      $ref: '#/definitions/SenseiApiResponse'
+  '403':
+    description: Forbidden
+    schema:
+      $ref: '#/definitions/SenseiApiResponse'
+  '404':
+    description: Resource could not be found
+    schema:
+      $ref: '#/definitions/SenseiApiResponse'
+  '406':
+    description: Unacceptable
+    schema:
+      $ref: '#/definitions/SenseiApiResponse'
+  '409':
+    description: Conflict
+    schema:
+      $ref: '#/definitions/SenseiApiResponse'
+  '410':
+    description: Resource gone
+    schema:
+      $ref: '#/definitions/SenseiApiResponse'
+  '415':
+    description: Unsupported media type
+    schema:
+      $ref: '#/definitions/SenseiApiResponse'
+  '422':
+    description: Unprocessable input
+    schema:
+      $ref: '#/definitions/SenseiApiResponse'
+  '500':
+    description: Internal Server Error
+    schema:
+      $ref: '#/definitions/SenseiApiResponse'
+  '501':
+    description: Not Implemented
+    schema:
+      $ref: '#/definitions/SenseiApiResponse'
+  '502':
+    description: Bad Gateway
+    schema:
+      $ref: '#/definitions/SenseiApiResponse'
+  '503':
+    description: Service Unavailable
+    schema:
+      $ref: '#/definitions/SenseiApiResponse'
+  '504':
+    description: Gateway Timeout
+    schema:
+      $ref: '#/definitions/SenseiApiResponse'
+definitions:
+  EngineListing:
+    type: object
+    properties:
+      children:
+        type: array
+        items:
+          $ref: '#/definitions/EngineSummary'
+      _page:
+        $ref: '#/definitions/PagingInformationAttributes'
+      _links:
+        $ref: '#/definitions/EngineListingLinks'
+  EngineListingLinks:
+    type: object
+    allOf:
+      - $ref: '#/definitions/PagingNavigationAttributes'
+      - properties:
+          self:
+            $ref: '#/definitions/LinkObject'
+          createEngine:
+            $ref: '#/definitions/LinkObject'
+
+  EnginesDockerRegistryInfo:
+    type: object
+    properties:
+      host:
+        type: string
+        readOnly: true
+      username:
+        type: string
+        readOnly: true
+      password:
+        type: string
+        readOnly: true
+
+  EngineSummary:
+    type: object
+    required:
+      - name
+    properties:
+      id:
+        type: string
+        readOnly: true
+      name:
+        type: string
+      description:
+        type: string
+      documentationUrl:
+        type: string
+      type:
+        type: string
+      iconUrl:
+        type: string
+        description: Url of the thumbnail image
+      gitRepo:
+        type: string
+      algorithm:
+        type: string
+      language:
+        type: array
+        items:
+          type: string
+          enum:
+            - Python
+            - Java
+            - Scala
+            - R
+            - C++
+      mlLibrary:
+        type: string
+      created:
+        type: string
+        format: date-time
+        readOnly: true
+      createdBy:
+        type: object
+        properties:
+          displayName:
+            type: string
+          avatar:
+            type: string
+          userId:
+            type: string
+      updated:
+        type: string
+        format: date-time
+        readOnly: true
+      deleted:
+        type: boolean
+        default: false
+      _links:
+        type: object
+        properties:
+          self:
+            $ref: '#/definitions/LinkObject'
+  Engine:
+    type: object
+    allOf:
+      - $ref: '#/definitions/EngineSummary'
+      - properties:
+          artifacts:
+            type: object
+            properties:
+              default:
+                type: object
+                properties:
+                  image:
+                    $ref: '#/definitions/MLEngineArtifact'
+                  defaultMLInstanceConfigs:
+                    $ref: '#/definitions/MLInstanceTaskList'
+              overrides:
+                type: array
+                items:
+                  $ref: '#/definitions/MLEngineArtifactOverride'
+          tags:
+            type: object
+            additionalProperties:
+              type: string
+          _links:
+            type: object
+            properties:
+              self:
+                $ref: '#/definitions/LinkObject'
+              getEngine:
+                $ref: '#/definitions/LinkObject'
+              createMLInstance:
+                $ref: '#/definitions/LinkObject'
+              listMLInstances:
+                $ref: '#/definitions/LinkObject'
+  MLEngineArtifact:
+    type: object
+    required:
+      - location
+      - name
+      - packagingType
+    properties:
+      location:
+        type: string
+      reference:
+        $ref: '#/definitions/ArtifactReference'
+      name:
+        type: string
+      executionType:
+        type: string
+      packagingType:
+        type: string
+        enum:
+          - docker
+          - jar
+          - egg
+        default: docker
+      metadata:
+        type: object
+        readOnly: true
+        additionalProperties:
+          type: object
+  MLEngineArtifactOverride:
+    type: object
+    required:
+      - id
+      - name
+      - artifact
+      - defaultMLInstanceConfigs
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      artifact:
+        $ref: '#/definitions/MLEngineArtifact'
+      defaultMLInstanceConfigs:
+        $ref: '#/definitions/MLInstanceTask'
+  ArtifactReference:
+    type: object
+    required:
+      - artifactId
+    properties:
+      artifactId:
+        type: string
+      version:
+        type: string
+  MLInstanceListing:
+    type: object
+    properties:
+      children:
+        type: array
+        items:
+          $ref: '#/definitions/MLInstanceSummary'
+      _page:
+        $ref: '#/definitions/PagingInformationAttributes'
+      _links:
+        $ref: '#/definitions/MLInstanceListingLinks'
+  MLInstanceListingLinks:
+    type: object
+    allOf:
+      - $ref: '#/definitions/PagingNavigationAttributes'
+      - properties:
+          self:
+            $ref: '#/definitions/LinkObject'
+          createMLInstance:
+            $ref: '#/definitions/LinkObject'
+  MLInstanceSummary:
+    type: object
+    required:
+      - name
+    properties:
+      id:
+        type: string
+        readOnly: true
+      name:
+        type: string
+      description:
+        type: string
+      engineId:
+        type: string
+      created:
+        type: string
+        format: date-time
+        readOnly: true
+      createdBy:
+        type: object
+        properties:
+          displayName:
+            type: string
+          avatar:
+            type: string
+          userId:
+            type: string
+      updated:
+        type: string
+        format: date-time
+        readOnly: true
+      deleted:
+        type: boolean
+        default: false
+      _links:
+        type: object
+        properties:
+          self:
+            $ref: '#/definitions/LinkObject'
+  MLInstance:
+    type: object
+    allOf:
+      - $ref: '#/definitions/MLInstanceSummary'
+      - properties:
+          tags:
+            type: object
+            additionalProperties:
+              type: string
+          tasks:
+            $ref: '#/definitions/MLInstanceTaskList'
+          _links:
+            type: object
+            properties:
+              self:
+                $ref: '#/definitions/LinkObject'
+              getMLInstance:
+                $ref: '#/definitions/LinkObject'
+              deleteMLInstance:
+                $ref: '#/definitions/LinkObject'
+              getEngine:
+                $ref: '#/definitions/LinkObject'
+              listExperiments:
+                $ref: '#/definitions/LinkObject'
+              createExperiment:
+                $ref: '#/definitions/LinkObject'
+  MLInstanceTaskList:
+    type: array
+    items:
+      $ref: '#/definitions/MLInstanceTask'
+  MLInstanceTask:
+    type: object
+    description: A single execution unit of Sensei
+    properties:
+      name:
+        type: string
+      parameters:
+        type: array
+        items:
+          $ref: '#/definitions/MLInstanceTaskParameter'
+      specification:
+        $ref: '#/definitions/TaskSpec'
+      datasets:
+        type: object
+        properties:
+          inputs:
+            type: array
+            items:
+              properties:
+                name:
+                  type: string
+                id:
+                  type: string
+                  format: urn
+                diskSizeInGB:
+                  type: integer
+                resType:
+                  type: string
+                  enum:
+                    - dataset
+                    - model
+                    - genericFile
+                downloadRequired:
+                  type: boolean
+                refInput:
+                  type: object
+                  properties:
+                    experimentRunId:
+                      type: string
+                    taskName:
+                      type: string
+                    outputName:
+                      type: string
+                metadata:
+                  type: object
+                  additionalProperties:
+                    type: object
+          outputs:
+            type: array
+            items:
+              properties:
+                name:
+                  type: string
+                id:
+                  type: string
+                  format: urn
+                diskSizeInGB:
+                  type: integer
+                resType:
+                  type: string
+                  enum:
+                    - dataset
+                    - model
+                    - genericFile
+                uploadRequired:
+                  type: boolean
+                generatedURI:
+                  type: string
+                metadata:
+                  type: object
+                  additionalProperties:
+                    type: object
+  TaskSpec:
+    type: object
+    discriminator: type
+    description: >-
+      Refer to ContainerTaskSpec and SparkTaskSpec definitions for the specific
+      types of TaskSpec
+    required:
+      - type
+    properties:
+      type:
+        type: string
+        enum:
+          - ContainerTaskSpec
+          - SparkTaskSpec
+  ContainerTaskSpec:
+    allOf:
+      - $ref: '#/definitions/TaskSpec'
+      - type: object
+        required:
+          - cpus
+          - diskSizeInGB
+          - gpus
+          - instances
+          - memoryInMB
+        properties:
+          cmd:
+            type: string
+          memoryInMB:
+            type: integer
+            format: int32
+          instances:
+            type: integer
+            format: int32
+          gpus:
+            type: integer
+            format: int32
+          cpus:
+            type: number
+            format: float
+          diskSizeInGB:
+            type: number
+            format: float
+            description: >-
+              used to attach a disk of mentioned size to container.This acts as
+              working space for code
+  SparkTaskSpec:
+    allOf:
+      - $ref: '#/definitions/TaskSpec'
+      - type: object
+        required:
+          - className
+          - driverCores
+          - driverMemoryInMB
+          - executorCores
+          - executorMemoryInMB
+          - name
+          - numExecutors
+          - sparkConf
+        properties:
+          name:
+            type: string
+          sparkConf:
+            type: object
+            additionalProperties:
+              type: string
+          className:
+            type: string
+          args:
+            type: array
+            items:
+              type: string
+          driverMemoryInMB:
+            type: integer
+            format: int32
+          executorMemoryInMB:
+            type: integer
+            format: int32
+          driverCores:
+            type: integer
+            format: int32
+          executorCores:
+            type: integer
+            format: int32
+          numExecutors:
+            type: integer
+            format: int32
+  MLInstanceTaskParameter:
+    type: object
+    description: A parameter passed to an MLInstanceTask
+    properties:
+      key:
+        type: string
+      value:
+        type: string
+      secret:
+        type: boolean
+  ExperimentListing:
+    type: object
+    properties:
+      children:
+        type: array
+        items:
+          $ref: '#/definitions/ExperimentSummary'
+      _page:
+        $ref: '#/definitions/PagingInformationAttributes'
+      _links:
+        $ref: '#/definitions/ExperimentListingLinks'
+  ExperimentListingLinks:
+    type: object
+    allOf:
+      - $ref: '#/definitions/PagingNavigationAttributes'
+      - properties:
+          self:
+            $ref: '#/definitions/LinkObject'
+          createExperiment:
+            $ref: '#/definitions/LinkObject'
+  ExperimentSummary:
+    type: object
+    required:
+      - name
+    properties:
+      id:
+        type: string
+        readOnly: true
+      name:
+        type: string
+      mlInstanceId:
+        type: string
+      mlInstanceQuery:
+        type: string
+      description:
+        type: string
+      created:
+        type: string
+        format: date-time
+        readOnly: true
+      createdBy:
+        type: object
+        properties:
+          displayName:
+            type: string
+          avatar:
+            type: string
+          userId:
+            type: string
+      updated:
+        type: string
+        format: date-time
+        readOnly: true
+      deleted:
+        type: boolean
+        default: false
+      workflowId:
+        type: string
+      _links:
+        type: object
+        properties:
+          self:
+            $ref: '#/definitions/LinkObject'
+  Experiment:
+    type: object
+    allOf:
+      - $ref: '#/definitions/ExperimentSummary'
+      - properties:
+          tags:
+            type: object
+            additionalProperties:
+              type: string
+          template:
+            type: object
+            $ref: '#/definitions/ExperimentTemplate'
+          _links:
+            type: object
+            properties:
+              self:
+                $ref: '#/definitions/LinkObject'
+              getExperiment:
+                $ref: '#/definitions/LinkObject'
+              createExperimentRun:
+                $ref: '#/definitions/LinkObject'
+              listExperimentRuns:
+                $ref: '#/definitions/LinkObject'
+  ExperimentTemplate:
+    type: object
+    properties:
+      experimentRunId:
+        type: string
+      tasks:
+        $ref: '#/definitions/MLInstanceTaskList'
+      schedule:
+        type: object
+        properties:
+          cron:
+            type: string
+          startTime:
+            type: string
+            format: datetime
+          endTime:
+            type: string
+            format: datetime
+  ExperimentRunListing:
+    type: object
+    properties:
+      children:
+        type: array
+        items:
+          $ref: '#/definitions/ExperimentRunSummary'
+      _page:
+        $ref: '#/definitions/PagingInformationAttributes'
+      _links:
+        $ref: '#/definitions/ExperimentRunListingLinks'
+  ExperimentRunListingLinks:
+    type: object
+    allOf:
+      - $ref: '#/definitions/PagingNavigationAttributes'
+      - properties:
+          self:
+            $ref: '#/definitions/LinkObject'
+          createExperimentRun:
+            $ref: '#/definitions/LinkObject'
+  ExperimentRunSummary:
+    type: object
+    required:
+      - experimentId
+    properties:
+      id:
+        type: string
+      mode:
+        type: string
+      description:
+        type: string
+      experimentId:
+        type: string
+      created:
+        type: string
+        format: date-time
+        readOnly: true
+      createdBy:
+        type: object
+        properties:
+          displayName:
+            type: string
+          avatar:
+            type: string
+          userId:
+            type: string
+      updated:
+        type: string
+        format: date-time
+        readOnly: true
+      deleted:
+        type: boolean
+        default: false
+      _links:
+        type: object
+        properties:
+          self:
+            $ref: '#/definitions/LinkObject'
+  ExperimentRun:
+    type: object
+    allOf:
+      - $ref: '#/definitions/ExperimentRunSummary'
+      - properties:
+          tasks:
+            $ref: '#/definitions/MLInstanceTaskList'
+          runChain:
+            type: object
+            properties:
+              preprocessTaskId:
+                type: string
+                format: urn
+              trainTaskId:
+                type: string
+                format: urn
+              batchScoreTaskId:
+                type: string
+                format: urn
+              validateTaskId:
+                type: string
+                format: urn
+              evaluateTaskId:
+                type: string
+                format: urn
+  RunStatus:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      experimentRunId:
+        type: string
+      description:
+        type: string
+      deleted:
+        type: boolean
+        default: false
+      status:
+        type: object
+        properties:
+          tasks:
+            type: array
+            items:
+              $ref: '#/definitions/Status'
+  Status:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      state:
+        type: string
+        enum:
+          - PENDING
+          - RUNNING
+          - ABORTED
+          - FAILED
+          - RETRY
+          - DONE
+      logs:
+        type: string
+      tasklogs:
+        type: array
+        readOnly: true
+        items:
+          $ref: '#/definitions/TaskLog'
+      message:
+        type: string
+      started:
+        type: string
+        format: datetime
+      ended:
+        type: string
+        format: datetime
+  TaskLog:
+    type: object
+    properties:
+      name:
+        type: string
+        readOnly: true
+      url:
+        type: string
+        readOnly: true
+  ModelListing:
+    type: object
+    properties:
+      children:
+        type: array
+        items:
+          $ref: '#/definitions/ModelSummary'
+      _page:
+        $ref: '#/definitions/PagingInformationAttributes'
+      _links:
+        $ref: '#/definitions/ModelListingLinks'
+  ModelListingLinks:
+    type: object
+    allOf:
+      - $ref: '#/definitions/PagingNavigationAttributes'
+      - properties:
+          self:
+            $ref: '#/definitions/LinkObject'
+          createModel:
+            $ref: '#/definitions/LinkObject'
+  ModelSummary:
+    type: object
+    required:
+      - experimentRunId
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      experimentId:
+        type: string
+      experimentRunId:
+        type: string
+      description:
+        type: string
+      modelArtifactUri:
+        type: string
+      state:
+        type: array
+        items:
+          type: string
+          enum:
+            - trained
+            - published
+            - transcoded
+      created:
+        type: string
+        format: date-time
+        readOnly: true
+      createdBy:
+        type: object
+        properties:
+          displayName:
+            type: string
+          avatar:
+            type: string
+          userId:
+            type: string
+      updated:
+        type: string
+        format: date-time
+        readOnly: true
+      deleted:
+        type: boolean
+        default: false
+      _links:
+        type: object
+        properties:
+          self:
+            $ref: '#/definitions/LinkObject'
+  Model:
+    type: object
+    allOf:
+      - $ref: '#/definitions/ModelSummary'
+      - properties:
+          tags:
+            type: object
+            additionalProperties:
+              type: string
+  ModelTranscodingListing:
+    type: object
+    properties:
+      children:
+        type: array
+        items:
+          $ref: '#/definitions/ModelTranscodingSummary'
+      _page:
+        $ref: '#/definitions/PagingInformationAttributes'
+      _links:
+        $ref: '#/definitions/ModelTranscodingListingLinks'
+  ModelTranscodingListingLinks:
+    type: object
+    allOf:
+      - $ref: '#/definitions/PagingNavigationAttributes'
+      - properties:
+          self:
+            $ref: '#/definitions/LinkObject'
+          createService:
+            $ref: '#/definitions/LinkObject'
+  ModelTranscodingSummary:
+    type: object
+    required:
+      - modelId
+    properties:
+      id:
+        type: string
+      modelId:
+        type: string
+      targetFormat:
+        type: string
+        enum:
+          - CoreML
+          - TF
+          - K2
+          - Deepnet
+      created:
+        type: string
+        format: date-time
+        readOnly: true
+      createdBy:
+        type: object
+        properties:
+          displayName:
+            type: string
+          avatar:
+            type: string
+          userId:
+            type: string
+      updated:
+        type: string
+        format: date-time
+        readOnly: true
+      deleted:
+        type: boolean
+        default: false
+      _links:
+        type: object
+        properties:
+          self:
+            $ref: '#/definitions/LinkObject'
+  ModelTranscoding:
+    allOf:
+      - $ref: '#/definitions/ModelTranscodingSummary'
+      - properties:
+          _links:
+            type: object
+            properties:
+              self:
+                $ref: '#/definitions/LinkObject'
+              getModelTranscoding:
+                $ref: '#/definitions/LinkObject'
+  InsightListing:
+    type: object
+    properties:
+      children:
+        type: array
+        items:
+          $ref: '#/definitions/Insight'
+      _page:
+        $ref: '#/definitions/PagingInformationAttributes'
+      _links:
+        $ref: '#/definitions/InsightListingLinks'
+  InsightListingLinks:
+    type: object
+    allOf:
+      - $ref: '#/definitions/PagingNavigationAttributes'
+      - properties:
+          self:
+            $ref: '#/definitions/LinkObject'
+          createService:
+            $ref: '#/definitions/LinkObject'
+  Insight:
+    type: object
+    required:
+      - insightId
+    properties:
+      id:
+        type: string
+      context:
+        $ref: '#/definitions/InsightContext'
+      events:
+        $ref: '#/definitions/InsightEvent'
+      metrics:
+        $ref: '#/definitions/InsightMetricList'
+      created:
+        type: string
+        format: date-time
+        readOnly: true
+      updated:
+        type: string
+        format: date-time
+        readOnly: true
+      _links:
+        type: object
+        properties:
+          self:
+            $ref: '#/definitions/LinkObject'
+  InsightContext:
+    type: object
+    properties:
+      clientId:
+        type: string
+      notebookId:
+        type: string
+      experimentId:
+        type: string
+      engineId:
+        type: string
+      mlInstanceId:
+        type: string
+      experimentRunId:
+        type: string
+      modelId:
+        type: string
+      dataSetId:
+        type: string
+  InsightEvent:
+    type: object
+    properties:
+      name:
+        type: string
+      eventValues:
+        type: object
+        additionalProperties:
+          type: string
+  InsightMetricList:
+    type: array
+    items:
+      $ref: '#/definitions/InsightMetric'
+  InsightMetric:
+    type: object
+    properties:
+      name:
+        type: string
+      value:
+        type: string
+      valueType:
+        type: string
+  LinkObject:
+    type: object
+    required:
+      - href
+    properties:
+      href:
+        type: string
+        description: >-
+          Either an URI (RFC3986) or an URI Template (RFC6570) in which case the
+          linkObject SHOULD have a 'templated' attribute whose value is true
+      templated:
+        type: boolean
+        default: false
+        description: >-
+          True if the link href is templated, false otherwise which is also the
+          default
+      type:
+        type: string
+        description: >-
+          A hint to indicate the media type expected when dereferencing the
+          target resource
+      method:
+        type: string
+        default: GET
+        description: >-
+          The HTTP method to be applied when using this link. This should be a
+          valid HTTP method name such as GET, PUT, POST, PATCH, DELETE where GET
+          implies support for HEAD as well
+      title:
+        type: string
+        description: A label with a human-readable identifier (as defined by RFC5988)
+      hrefLang:
+        type: string
+        description: The language of the target resource (as defined by RFC5988)
+  PagingInformationAttributes:
+    type: object
+    properties:
+      orderby:
+        type: string
+        readOnly: true
+      property:
+        type: string
+        readOnly: true
+      start:
+        type: string
+        readOnly: true
+      count:
+        type: integer
+        format: int64
+        readOnly: true
+      next:
+        type: string
+        readOnly: true
+  PagingNavigationAttributes:
+    type: object
+    properties:
+      next:
+        $ref: '#/definitions/LinkObject'
+      page:
+        $ref: '#/definitions/LinkObject'
+  SenseiApiResponse:
+    type: object
+    properties:
+      type:
+        type: string
+        readOnly: true
+        example: 'https://platform.adobe.io/data/foundation/ml/problems/illegal-argument'
+      title:
+        type: string
+        readOnly: true
+        example: Illegal Argument
+      status:
+        type: integer
+        format: int32
+        readOnly: true
+        example: 400
+      detail:
+        type: string
+        readOnly: true
+        example: Model specification name must not be empty
+      additionalDetails:
+        type: object
+        additionalProperties:
+          type: string
