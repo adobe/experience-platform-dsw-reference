@@ -12,7 +12,7 @@ sh ./build.sh
 
 # Recipe Development Files
 
-`./login.sh`
+:page_facing_up: `./login.sh`
 
 Docker Login utility. This file will ask for your Docker Registry credentials provided by the Data Science Workspace, within the _Recipe Import_ Workflow. Run it as such:
 
