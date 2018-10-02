@@ -34,6 +34,10 @@ class Evaluator(AbstractEvaluator):
 
     def split(self, config={}):
         print ("Split triggered")
+
+        #########################################
+        # Load Data
+        #########################################
         prodreader = DataSetReader(client_id=configProperties['ML_FRAMEWORK_IMS_USER_CLIENT_ID'],
                                    user_token=configProperties['ML_FRAMEWORK_IMS_TOKEN'],
                                    service_token=configProperties['ML_FRAMEWORK_IMS_ML_TOKEN'])
@@ -41,12 +45,34 @@ class Evaluator(AbstractEvaluator):
         df = prodreader.load(data_set_id=configProperties['trainingDataSetId'],
                              ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'])
 
-        # split df into train and test
+        #########################################
+        # Data Preparation/Feature Engineering
+        #########################################
+        df.date = pd.to_datetime(df.date)
+        df['week'] = df.date.dt.week
+        df['year'] = df.date.dt.year
+
+        df = pd.concat([df, pd.get_dummies(df['storeType'])], axis=1)
+        df.drop('storeType', axis=1, inplace=True)
+        df['isHoliday'] = df['isHoliday'].astype(int)
+
+        df['weeklySalesAhead'] = df.shift(-45)['weeklySales']
+        df['weeklySalesLag'] = df.shift(45)['weeklySales']
+        df['weeklySalesDiff'] = (df['weeklySales'] - df['weeklySalesLag']) / df['weeklySalesLag']
+        df.dropna(0, inplace=True)
+
+        df = df.set_index(df.date)
+        df.drop('date', axis=1, inplace=True)
+
+        # Additional Split
         train_start = '2010-02-12'
         train_end = '2012-01-27'
         test_start = '2012-02-03'
         train = df[train_start:train_end]
         test = df[test_start:]
 
-        # return 'train', 'test'
+        print("Training Data Load Finish")
+
         return train, test
+
+
