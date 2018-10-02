@@ -30,6 +30,9 @@ setup(name='retail',
             'scoring_dataloader=retail.scoringdataloader',
             'scoring_pipeline=retail.pipeline',
             'scoring_datasaver=retail.datasaver'
+        ],
+        'Evaluation': [
+            'evaluator=retail.evaluator:Evaluator'
         ]
         }
       )

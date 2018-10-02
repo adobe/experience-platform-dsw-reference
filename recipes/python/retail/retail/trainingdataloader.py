@@ -53,6 +53,16 @@ def load(configProperties):
     df = df.set_index(df.date)
     df.drop('date', axis=1, inplace=True)
 
+
+    # Additional Split
+    train_start = '2010-02-12'
+    train_end = '2012-01-27'
+    test_start = '2012-02-03'
+    train = df[train_start:train_end]
+    test = df[test_start:]
+
+
     print("Training Data Load Finish")
 
-    return df
+    # return df
+    return train
