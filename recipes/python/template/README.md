@@ -22,7 +22,7 @@ sh ./login.sh
 
 You will be asked for Docker Host, Username, and Password.
 
-`./build.sh`
+:page_facing_up: `./build.sh`
 
 Docker Image Building utility. Running this file will enable you to build an push your recipe as a Docker image to the provided Docker Registry. To run it:
 
@@ -33,20 +33,20 @@ sh ./build.sh
 You will be prompted for Recipe Image version and Docker Host. Once the image is pushed you will be presented with the URL to your hosted Recipe Docker Image.
 
 
-`./Dockerfile`
+:page_facing_up: `./Dockerfile`
 
 This file lists all the dependencies your recipe requires to run properly. It is important to add into the `Dockerfile` all packages and libraries that need to be installed on the system that will run your recipe.
 
 
-`./setup.py`
+:page_facing_up: `./setup.py`
 
 This file defines the entry points of the classes and methods required by the Machine Learning Framework to execute tasks related to data loading, training, scoring, and data saving.
 
-`./template/datasaver.py`
+:page_facing_up: `./template/datasaver.py`
 
 Following a scoring task `datasaver.save(configProperties, prediction)` is called to ensure the developer is given a way to persist evaluated predictions.
 
-`./template/pipeline.py`
+:page_facing_up: `./template/pipeline.py`
 
 The pipeline is the class that is tasked with defining the methods required for training and scoring.
 
@@ -55,11 +55,11 @@ The pipeline is the class that is tasked with defining the methods required for 
 `score(configProperties, data, model)` is passed the model instance so that predictions can be called, using methods such as `model.predict()` depending on your model implementation.
 
 
-`./template/scoringdataloader.py`
+:page_facing_up: `./template/scoringdataloader.py`
 
 This class defines the `scoringdataloader.load(configProperties)` method. Its goal is to load the scoring data and return it to the framework, usually in the form of a dataframe.
 
-`./template/trainingdataloader.py` -
+:page_facing_up: `./template/trainingdataloader.py`
 
 This class defines the `trainingdataloader.load(configProperties)` method. Its goal is to load the training data and return it to the framework, usually in the form of a dataframe.
 
