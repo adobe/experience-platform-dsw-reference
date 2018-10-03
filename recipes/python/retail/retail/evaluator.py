@@ -15,14 +15,18 @@
 # from Adobe.
 #####################################################################
 from ml.runtime.python.Interfaces.AbstractEvaluator import AbstractEvaluator
+from data_access_sdk_python.reader import DataSetReader
+import numpy as np
+import pandas as pd
 
 class Evaluator(AbstractEvaluator):
     def __init__(self):
-       print ("initiate")
+       print ("Initiate")
 
-    def evaluate(self, data=[], config={}):
+    def evaluate(self, data=[], model={}, configProperties={}):
         print ("Evaluation evaluate triggered")
-        y_pred = data['ml_score'].values
+        test = data.drop('weeklySalesAhead', axis=1)
+        y_pred = model.predict(test)
         y_actual = data['weeklySalesAhead'].values
         mape = np.mean(np.abs((y_actual - y_pred) / y_actual))
 
@@ -32,9 +36,7 @@ class Evaluator(AbstractEvaluator):
 
 
 
-    def split(self, config={}):
-        print ("Split triggered")
-
+    def split(self, configProperties={}):
         #########################################
         # Load Data
         #########################################
@@ -64,14 +66,12 @@ class Evaluator(AbstractEvaluator):
         df = df.set_index(df.date)
         df.drop('date', axis=1, inplace=True)
 
-        # Additional Split
+        # Split
         train_start = '2010-02-12'
         train_end = '2012-01-27'
         test_start = '2012-02-03'
         train = df[train_start:train_end]
         test = df[test_start:]
-
-        print("Training Data Load Finish")
 
         return train, test
 
