@@ -48,7 +48,7 @@ Sample configuration json to be used with the recipe.
       },
       {
         "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
-        "value": "_customer/default/DSWRetailSales"
+        "value": "/_customer/default/DSWRetailSales"
       }
     ]
   }

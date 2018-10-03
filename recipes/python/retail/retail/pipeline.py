@@ -51,7 +51,6 @@ def train(configProperties, data):
 
 
 
-
 def score(configProperties, data, model):
 
     print("Score Start")
