@@ -20,11 +20,12 @@ import numpy as np
 import pandas as pd
 from data_access_sdk_python.reader import DataSetReader
 
-def load(configProperties):
-    # This variable will hold the part of the data on which we train our model
-    train = None
+from template.evaluator import Evaluator
 
+def load(configProperties):
     print("Training Data Load Start")
+    evaluator = Evaluator()
+    (train, _) = evaluator.split(configProperties)
 
     #########################################
     # Extract fields from configProperties
