@@ -11,10 +11,10 @@ lazy val root = (project in file(".")).
   settings(commonSettings: _*).
   settings(
     libraryDependencies += "com.adobe.platform.ml" % "authoring-sdk_2.11" % "0.14.0" classifier "jar-with-dependencies",
-    libraryDependencies += "org.apache.spark" %% "spark-core" % "2.1.0",
-    libraryDependencies += "org.apache.spark" %% "spark-mllib" % "2.1.0" ,
-    libraryDependencies += "org.apache.spark" %% "spark-sql" % "2.1.0" ,
-    libraryDependencies += "com.databricks" %% "spark-csv" % "1.5.0" ,
+    libraryDependencies += "org.apache.spark" %% "spark-core" % "2.1.0" % "provided",
+    libraryDependencies += "org.apache.spark" %% "spark-mllib" % "2.1.0" % "provided",
+    libraryDependencies += "org.apache.spark" %% "spark-sql" % "2.1.0" % "provided",
+    libraryDependencies += "com.databricks" %% "spark-csv" % "1.5.0" % "provided",
     libraryDependencies += "com.typesafe.scala-logging" % "scala-logging-slf4j_2.11" % "2.1.2"
   ).
   settings(
