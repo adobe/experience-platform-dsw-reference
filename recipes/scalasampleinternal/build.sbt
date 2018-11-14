@@ -35,4 +35,4 @@ resolvers ++= Seq(
 
 
 publishTo := Some("Artifactory Realm" at "https://artifactory.corp.adobe.com/artifactory/maven-experienceplatform-release/")
-credentials += Credentials("Artifactory Realm", "artifactory.corp.adobe.com", "platci", "AKCp5Z2Y84JMqFMWY7dD3v71aLVSRTh7BW15A52CabCRTKkTxgRtAfDrCeVkvL5pbgiEB9P4S")
+credentials += Credentials("Artifactory Realm", "artifactory.corp.adobe.com", "platci", "")
