@@ -16,6 +16,10 @@
 #####################################################################
 
 #Build sample python app
+echo "Deleting previous egg binaries from dist directory"
+sudo rm dist/*
+
+echo "Building .egg binary for project"
 sudo python setup.py install
 
 echo ""

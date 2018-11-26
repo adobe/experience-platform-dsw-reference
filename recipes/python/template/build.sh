@@ -15,7 +15,11 @@
 # from Adobe.
 #####################################################################
 
-#Build template app
+#Build sample python app
+echo "Deleting previous egg binaries from dist directory"
+sudo rm dist/*
+
+echo "Building .egg binary for project"
 sudo python setup.py install
 
 echo ""
@@ -27,7 +31,7 @@ read version
 echo "Enter Docker Host"
 read host
 
-docker build --pull -t $host/ml-template-python:$version .
-docker push $host/ml-template-python:$version
+docker build --pull -t $host/ml-retailsales-python:$version .
+docker push $host/ml-retailsales-python:$version
 
-echo "$host/ml-template-python:$version"
+echo "$host/ml-retailsales-python:$version"
