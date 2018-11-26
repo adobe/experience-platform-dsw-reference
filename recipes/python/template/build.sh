@@ -31,7 +31,7 @@ read version
 echo "Enter Docker Host"
 read host
 
-docker build --pull -t $host/ml-retailsales-python:$version .
-docker push $host/ml-retailsales-python:$version
+docker build --pull -t $host/ml-template-python:$version .
+docker push $host/ml-template-python:$version
 
-echo "$host/ml-retailsales-python:$version"
+echo "$host/ml-template-python:$version"
