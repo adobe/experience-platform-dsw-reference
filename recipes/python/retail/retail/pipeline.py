@@ -58,11 +58,10 @@ def score(configProperties, data, model):
     X_test = data.drop('weeklySalesAhead', axis=1).values
     y_test = data['weeklySalesAhead'].values
     y_pred = model.predict(X_test)
-    mape = np.mean(np.abs((y_test - y_pred) / y_test))
 
-    print("MAPE: ")
-    print(mape)
+    data['prediction'] = y_pred
+    data = data[['store', 'prediction']].reset_index()
+
     print("Score Complete")
 
-    return y_pred
-
+    return data

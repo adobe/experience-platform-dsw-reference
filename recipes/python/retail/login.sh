@@ -29,7 +29,7 @@ echo "Enter Docker Username"
 
 read username
 
-echo "enter Docker Password"
+echo "Enter Docker Password"
 
 read password
 
