@@ -43,14 +43,38 @@ applicationTrainer <- setRefClass("applicationTrainer",
       #########################################
       # Extract fields from configProperties
       #########################################
-      reticulate::use_python("/usr/bin/python3.6")
+      # reticulate::use_python("/usr/bin/python3.6")
+      # 
+      # data_access_sdk_python <- reticulate::import("data_access_sdk_python")
+      # print("PRE")
+      # reader <- data_access_sdk_python$reader$DataSetReader(client_id = configurationJSON$ML_FRAMEWORK_IMS_USER_CLIENT_ID, 
+      #                                                       user_token = configurationJSON$ML_FRAMEWORK_IMS_TOKEN, 
+      #                                                       service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
+      # print("POST")
       
+      reticulate::use_python("/usr/bin/python3.6")
       data_access_sdk_python <- reticulate::import("data_access_sdk_python")
       
-      reader <- data_access_sdk_python$reader$DataSetReader(client_id = configurationJSON$ML_FRAMEWORK_IMS_USER_CLIENT_ID, user_token = configurationJSON$ML_FRAMEWORK_IMS_TOKEN, service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
+      reader <- data_access_sdk_python$reader$DataSetReader(client_id = configurationJSON$ML_FRAMEWORK_IMS_USER_CLIENT_ID,
+                                                            user_token = configurationJSON$ML_FRAMEWORK_IMS_TOKEN,
+                                                            service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
       
       data <- reader$load(configurationJSON$trainingDataSetId, configurationJSON$ML_FRAMEWORK_IMS_ORG_ID)
       
+      # print("configurationJSON$ML_FRAMEWORK_IMS_USER_CLIENT_ID")
+      # print(configurationJSON$ML_FRAMEWORK_IMS_USER_CLIENT_ID)
+      # print("configurationJSON$ML_FRAMEWORK_IMS_TOKEN")
+      # print(configurationJSON$ML_FRAMEWORK_IMS_TOKEN)
+      # print("configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN")
+      # print(configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
+      # 
+      # print("configurationJSON$trainingDataSetId")
+      # print(configurationJSON$trainingDataSetId)
+      # print("configurationJSON$ML_FRAMEWORK_IMS_ORG_ID")
+      # print(configurationJSON$ML_FRAMEWORK_IMS_ORG_ID)
+      
+      # data <- reader$load(configurationJSON$trainingDataSetId, configurationJSON$ML_FRAMEWORK_IMS_ORG_ID)
+      print(data)
       
       #########################################
       # Load Data
