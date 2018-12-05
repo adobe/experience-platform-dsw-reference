@@ -41,17 +41,8 @@ applicationTrainer <- setRefClass("applicationTrainer",
       
       
       #########################################
-      # Extract fields from configProperties
+      # Load Data
       #########################################
-      # reticulate::use_python("/usr/bin/python3.6")
-      # 
-      # data_access_sdk_python <- reticulate::import("data_access_sdk_python")
-      # print("PRE")
-      # reader <- data_access_sdk_python$reader$DataSetReader(client_id = configurationJSON$ML_FRAMEWORK_IMS_USER_CLIENT_ID, 
-      #                                                       user_token = configurationJSON$ML_FRAMEWORK_IMS_TOKEN, 
-      #                                                       service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
-      # print("POST")
-      
       reticulate::use_python("/usr/bin/python3.6")
       data_access_sdk_python <- reticulate::import("data_access_sdk_python")
       
@@ -59,41 +50,23 @@ applicationTrainer <- setRefClass("applicationTrainer",
                                                             user_token = configurationJSON$ML_FRAMEWORK_IMS_TOKEN,
                                                             service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
       
-      data <- reader$load(configurationJSON$trainingDataSetId, configurationJSON$ML_FRAMEWORK_IMS_ORG_ID)
+      df <- reader$load(configurationJSON$trainingDataSetId, configurationJSON$ML_FRAMEWORK_IMS_ORG_ID)
+      df <- as_tibble(df)
       
-      # print("configurationJSON$ML_FRAMEWORK_IMS_USER_CLIENT_ID")
-      # print(configurationJSON$ML_FRAMEWORK_IMS_USER_CLIENT_ID)
-      # print("configurationJSON$ML_FRAMEWORK_IMS_TOKEN")
-      # print(configurationJSON$ML_FRAMEWORK_IMS_TOKEN)
-      # print("configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN")
-      # print(configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
-      # 
-      # print("configurationJSON$trainingDataSetId")
-      # print(configurationJSON$trainingDataSetId)
-      # print("configurationJSON$ML_FRAMEWORK_IMS_ORG_ID")
-      # print(configurationJSON$ML_FRAMEWORK_IMS_ORG_ID)
-      
-      # data <- reader$load(configurationJSON$trainingDataSetId, configurationJSON$ML_FRAMEWORK_IMS_ORG_ID)
-      print(data)
-      
-      #########################################
-      # Load Data
-      #########################################
-      df <- as_tibble(data)
       
       #########################################
       # Get hyperparameters
       #########################################
+      learning_rate = if(!is.null(configurationJSON$learning_rate)) as.double(configurationJSON$learning_rate) else 0.1
+      n_estimators = if(!is.null(configurationJSON$n_estimators)) as.integer(configurationJSON$n_estimators) else 100
+      max_depth = if(!is.null(configurationJSON$max_depth)) as.integer(configurationJSON$max_depth) else 3
       
-      learning_rate = if(is.null(configurationJSON$learning_rate)) as.double(configurationJSON$learning_rate) else 0.1
-      n_estimators = if(is.null(configurationJSON$n_estimators)) as.integer(configurationJSON$n_estimators) else 100
-      max_depth = if(is.null(configurationJSON$max_depth)) as.integer(configurationJSON$max_depth) else 3
       
       #########################################
       # Data Preparation/Feature Engineering
       #########################################
       df <- df %>%
-        mutate(store = as.numeric(store)) %>% # NEW
+        mutate(store = as.numeric(store)) %>% 
         mutate(date = mdy(date), week = week(date), year = year(date)) %>%
         mutate(new = 1) %>%
         spread(storeType, new, fill = 0) %>%
@@ -102,6 +75,7 @@ applicationTrainer <- setRefClass("applicationTrainer",
                weeklySalesLag = lag(weeklySales, 45),
                weeklySalesDiff = (weeklySales - weeklySalesLag) / weeklySalesLag) %>%
         drop_na() %>%
+        filter(date >= "2010-02-12" & date <= "2012-01-27") %>% 
         select(-date)
       
       
@@ -117,6 +91,7 @@ applicationTrainer <- setRefClass("applicationTrainer",
       # Save model to the chosen directory
       #########################################
       saveRDS(model, "model.rds")
+      
       
       print("Exiting Trainer Function.")
     }
