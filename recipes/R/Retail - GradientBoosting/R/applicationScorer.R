@@ -88,7 +88,8 @@ applicationScorer <- setRefClass("applicationScorer",
       output_df <- df %>% 
         select(date, store) %>% 
         mutate(prediction = pred,
-               store = as.integer(store))
+               store = as.integer(store),
+               date = as.character(date))
       
       
       #########################################
