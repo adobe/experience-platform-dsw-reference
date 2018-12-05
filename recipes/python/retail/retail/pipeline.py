@@ -61,6 +61,7 @@ def score(configProperties, data, model):
 
     data['prediction'] = y_pred
     data = data[['store', 'prediction']].reset_index()
+    data['date'] = data['date'].astype(str)
 
     print("Score Complete")
 
