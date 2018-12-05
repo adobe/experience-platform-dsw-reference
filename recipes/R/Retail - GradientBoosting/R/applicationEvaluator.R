@@ -67,7 +67,7 @@ applicationEvaluator <- setRefClass("applicationEvaluator",
       
       mape <- mean(abs((df$weeklySalesAhead - pred) / df$weeklySalesAhead))
       mae <- mean(abs(df$weeklySalesAhead - pred))
-      rmse <- mean(abs((df$weeklySalesAhead - pred)^2))
+      rmse <- sqrt(mean((df$weeklySalesAhead - pred)^2))
       
       insight1 <- list(name = "MAPE", valueType = "number",
                        value = round(mape, 3))
