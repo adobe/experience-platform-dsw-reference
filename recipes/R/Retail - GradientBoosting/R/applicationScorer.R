@@ -42,21 +42,18 @@ applicationScorer <- setRefClass("applicationScorer",
 
 
       #########################################
-      # Extract fields from configProperties
+      # Load Data
       #########################################
       reticulate::use_python("/usr/bin/python3.6")
 
       data_access_sdk_python <- reticulate::import("data_access_sdk_python")
 
-      reader <- data_access_sdk_python$reader$DataSetReader(client_id = configurationJSON$ML_FRAMEWORK_IMS_USER_CLIENT_ID, user_token = configurationJSON$ML_FRAMEWORK_IMS_TOKEN, service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
+      reader <- data_access_sdk_python$reader$DataSetReader(client_id = configurationJSON$ML_FRAMEWORK_IMS_USER_CLIENT_ID, 
+                                                            user_token = configurationJSON$ML_FRAMEWORK_IMS_TOKEN, 
+                                                            service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
 
-      data <- reader$load(configurationJSON$scoringDataSetId, configurationJSON$ML_FRAMEWORK_IMS_ORG_ID)
-
-
-      #########################################
-      # Load Data
-      #########################################
-      df <- as_tibble(data)
+      df <- reader$load(configurationJSON$scoringDataSetId, configurationJSON$ML_FRAMEWORK_IMS_ORG_ID)
+      df <- as_tibble(df)
 
 
       #########################################
@@ -71,9 +68,10 @@ applicationScorer <- setRefClass("applicationScorer",
         mutate(weeklySalesAhead = lead(weeklySales, 45),
            weeklySalesLag = lag(weeklySales, 45),
            weeklySalesDiff = (weeklySales - weeklySalesLag) / weeklySalesLag) %>%
-        drop_na() %>%
+        drop_na() 
+      
+      test_df <- df %>%
         select(-date)
-
 
 
       #########################################
@@ -83,14 +81,41 @@ applicationScorer <- setRefClass("applicationScorer",
 
 
       #########################################
-      # Evaluate Performance
+      # Generate Predictions
       #########################################
-      pred <- predict(retrieved_model, df, n.trees = 10000)
-      mape <- mean(abs((df$weeklySalesAhead -  pred) / df$weeklySalesAhead))
-      print(paste("Test Set MAPE: ", mape, sep = ""))
-      print("Predictions:")
-      print(pred)
+      pred <- predict(retrieved_model, test_df, n.trees = retrieved_model$n.trees)
 
+      output_df <- df %>% 
+        select(date, store) %>% 
+        mutate(prediction = pred,
+               store = as.integer(store),
+               date = as.character(date))
+      
+      
+      #########################################
+      # Write Results
+      #########################################
+      reticulate::use_python("/usr/bin/python3.6")
+      data_access_sdk_python <- reticulate::import("data_access_sdk_python")
+      
+      ims_url <- "https://ims-na1.adobelogin.com/ims/token/v1"
+      catalog_url <- "https://platform.adobe.io/data/foundation/catalog"
+      ingestion_url <- "https://platform.adobe.io/data/foundation/import"
+      
+      print("Set up writer")
+      writer <- data_access_sdk_python$writer$DataSetWriter(catalog_url = catalog_url,
+                                                            ingestion_url = ingestion_url,
+                                                            client_id = configurationJSON$ML_FRAMEWORK_IMS_USER_CLIENT_ID,
+                                                            user_token = configurationJSON$ML_FRAMEWORK_IMS_TOKEN,
+                                                            service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
+      print("Writer configured")
+      
+      writer$write(data_set_id = configurationJSON$output_dataset_id,
+                   dataframe = output_df,
+                   ims_org = configurationJSON$ML_FRAMEWORK_IMS_ORG_ID)
+      print("Write done")
+      
+      
       print("Exiting Scorer Function.")
     }
   )

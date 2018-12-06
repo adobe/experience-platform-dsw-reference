@@ -18,7 +18,7 @@
 echo ""
 echo ""
 
-echo "please enter the version number for your recipe's docker image"
+echo "Please enter the version number for your recipe's docker image"
 
 read version
 
