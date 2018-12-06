@@ -22,7 +22,7 @@ sudo python setup.py clean --all install
 echo ""
 echo ""
 
-echo "please enter the version number for your recipe's docker image"
+echo "Please enter the version number for your recipe's docker image"
 read version
 
 echo "Enter Docker Host"

@@ -29,8 +29,12 @@ class Evaluator(AbstractEvaluator):
         y_pred = model.predict(test)
         y_actual = data['weeklySalesAhead'].values
         mape = np.mean(np.abs((y_actual - y_pred) / y_actual))
+        mae = np.mean(np.abs(y_actual - y_pred))
+        rmse = np.sqrt(np.mean((y_actual - y_pred) ** 2))
 
-        metric = [{"name": "MAPE", "value": mape, "valueType": "double"}]
+        metric = [{"name": "MAPE", "value": mape, "valueType": "double"},
+                  {"name": "MAE", "value": mae, "valueType": "double"},
+                  {"name": "RMSE", "value": rmse, "valueType": "double"}]
 
         return metric
 
