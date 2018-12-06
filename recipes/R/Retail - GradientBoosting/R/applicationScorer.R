@@ -98,7 +98,6 @@ applicationScorer <- setRefClass("applicationScorer",
       reticulate::use_python("/usr/bin/python3.6")
       data_access_sdk_python <- reticulate::import("data_access_sdk_python")
       
-      ims_url <- "https://ims-na1.adobelogin.com/ims/token/v1"
       catalog_url <- "https://platform.adobe.io/data/foundation/catalog"
       ingestion_url <- "https://platform.adobe.io/data/foundation/import"
       
