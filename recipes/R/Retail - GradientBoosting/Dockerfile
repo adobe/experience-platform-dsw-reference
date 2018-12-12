@@ -1,4 +1,4 @@
-FROM adobe/acp-dsw-ml-runtime-r:0.13.0
+FROM adobe/acp-dsw-ml-runtime-r:0.13.1
 
 RUN install2.r gbm
 RUN install2.r lubridate
