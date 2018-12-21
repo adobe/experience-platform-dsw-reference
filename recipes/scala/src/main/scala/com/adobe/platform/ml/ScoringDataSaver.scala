@@ -42,9 +42,9 @@ class ScoringDataSaver extends DataSaver {
     val serviceToken: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_ML_TOKEN", "").toString
     val userToken: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_TOKEN", "").toString
     val orgId: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_ORG_ID", "").toString
-    val apiKey:String = configProperties.get("apiKey").getOrElse("acp_machineLearning_customer")
+    val apiKey:String = configProperties.get("apiKey").getOrElse("")
 
-    val scoredDataSetId: String = configProperties.get("scoredDataSetId").getOrElse("5c1bd652cf294b00001b3650")
+    val scoredDataSetId: String = configProperties.get("scoredDataSetId").getOrElse("")
 
     dataFrame.select("prediction", "store", "date").write.format("com.adobe.platform.dataset")
       .option(DataSetOptions.orgId, orgId)

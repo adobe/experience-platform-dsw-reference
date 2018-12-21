@@ -17,8 +17,8 @@ class TrainingDataLoader extends DataLoader {
     val serviceToken: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_ML_TOKEN", "").toString
     val userToken: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_TOKEN", "").toString
     val orgId: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_ORG_ID", "").toString
-    val dataSetId: String = configProperties.get("dataSetId").getOrElse("5c05ba9c7276150000be60f2")
-    val batchId: String = configProperties.get("batchId").getOrElse("e1df7c83c030498685ce4e5f5072c179")
+    val dataSetId: String = configProperties.get("dataSetId").getOrElse("")
+    val batchId: String = configProperties.get("batchId").getOrElse("")
     val apiKey:String = configProperties.get("apiKey").getOrElse("")
 
     var df = sparkSession.read.format("com.adobe.platform.dataset")
