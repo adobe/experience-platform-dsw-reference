@@ -31,6 +31,9 @@ class ScoringDataLoader extends DataLoader {
 
   override def load(configProperties: ConfigProperties, sparkSession: SparkSession): DataFrame = {
 
+    require(configProperties != null)
+    require(sparkSession != null)
+
     val serviceToken: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_ML_TOKEN", "").toString
     val userToken: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_TOKEN", "").toString
     val orgId: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_ORG_ID", "").toString

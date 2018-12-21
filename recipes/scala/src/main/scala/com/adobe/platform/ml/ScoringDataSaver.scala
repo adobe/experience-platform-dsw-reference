@@ -21,13 +21,11 @@ import com.adobe.platform.dataset.DataSetOptions
 import com.adobe.platform.ml.config.ConfigProperties
 import com.adobe.platform.ml.sdk.DataSaver
 import org.apache.spark.sql.DataFrame
-import org.slf4j.LoggerFactory
 
 /**
   * Implementation of data saver which saves the output dataframe
   */
 class ScoringDataSaver extends DataSaver {
-  private val logger = LoggerFactory.getLogger(this.getClass)
 
   /**
     * Method that saves the scoring data into a dataframe
@@ -35,6 +33,9 @@ class ScoringDataSaver extends DataSaver {
     * @param dataFrame Dataframe with the scoring results
     */
   override def save(configProperties: ConfigProperties, dataFrame: DataFrame): Unit =  {
+
+    require(configProperties != null)
+    require(dataFrame != null)
 
     val sparkSession = dataFrame.sparkSession
 

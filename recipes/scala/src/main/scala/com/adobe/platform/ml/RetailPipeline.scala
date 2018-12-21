@@ -35,6 +35,8 @@ class RetailPipeline extends PipelineFactory {
       */
     override def apply(configProperties: ConfigProperties) = {
 
+      require(configProperties != null)
+
       val inputFeatures: String = configProperties.get("ACP_DSW_INPUT_FEATURES").get.toString
       println("Input features are " + inputFeatures )
 
