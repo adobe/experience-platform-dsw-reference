@@ -77,10 +77,10 @@ class TrainingDataLoader extends DataLoader {
         acc.withColumn(c,getCategoryIndex(categoriesMap,categoriesMap(c))($"storeType"))
     )
 
-    df= df.drop("storeTypeIndex")
+    df = df.drop("storeTypeIndex")
 
     // Order by date and split the data
-    df= df.orderBy("date").withColumn("date", $"date".cast("String"))
+    df = df.orderBy("date").withColumn("date", $"date".cast("String"))
     df = df.filter($"date".<=("2012-01-27 00:00:00"))
     df
   }

@@ -41,8 +41,8 @@ class RetailPipeline extends PipelineFactory {
       println("Input features are " + inputFeatures )
 
       val learning_rate : Float = configProperties.get("learning_rate").get.toFloat
-      val n_estimators : Int  = configProperties.get("n_estimators").get.toInt
-      val max_depth : Int  = configProperties.get("max_depth").get.toInt
+      val n_estimators : Int = configProperties.get("n_estimators").get.toInt
+      val max_depth : Int = configProperties.get("max_depth").get.toInt
 
       val featureList = inputFeatures.split(",").toList
 
