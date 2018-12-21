@@ -1,27 +1,26 @@
-/** ***********************************************************************
-  * ADOBE CONFIDENTIAL
-  * ___________________
-  *
-  * Copyright 2017 Adobe Systems Incorporated
-  * All Rights Reserved.
-  *
-  * NOTICE:  All information contained herein is, and remains
-  * the property of Adobe Systems Incorporated and its suppliers,
-  * if any.  The intellectual and technical concepts contained
-  * herein are proprietary to Adobe Systems Incorporated and its
-  * suppliers and are protected by all applicable intellectual property
-  * laws, including trade secret and copyright laws.
-  * Dissemination of this information or reproduction of this material
-  * is strictly forbidden unless prior written permission is obtained
-  * from Adobe Systems Incorporated.
-  * *************************************************************************/
+/*#####################################################################
+# ADOBE CONFIDENTIAL
+# ___________________
+#
+#  Copyright 2018 Adobe
+#  All Rights Reserved.
+#
+# NOTICE:  All information contained herein is, and remains
+# the property of Adobe and its suppliers, if any. The intellectual
+# and technical concepts contained herein are proprietary to Adobe
+# and its suppliers and are protected by all applicable intellectual
+# property laws, including trade secret and copyright laws.
+# Dissemination of this information or reproduction of this material
+# is strictly forbidden unless prior written permission is obtained
+# from Adobe.
+#####################################################################*/
+
 package com.adobe.platform.ml
 
 import com.adobe.platform.dataset.DataSetOptions
 import com.adobe.platform.ml.config.ConfigProperties
 import com.adobe.platform.ml.sdk.DataSaver
-import org.apache.spark.sql.{DataFrame}
-import org.apache.spark.sql.functions._
+import org.apache.spark.sql.DataFrame
 import org.slf4j.LoggerFactory
 
 /**

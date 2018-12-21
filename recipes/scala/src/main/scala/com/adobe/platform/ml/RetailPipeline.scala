@@ -1,29 +1,29 @@
-/** ***********************************************************************
-  * ADOBE CONFIDENTIAL
-  * ___________________
-  *
-  * Copyright 2017 Adobe Systems Incorporated
-  * All Rights Reserved.
-  *
-  * NOTICE:  All information contained herein is, and remains
-  * the property of Adobe Systems Incorporated and its suppliers,
-  * if any.  The intellectual and technical concepts contained
-  * herein are proprietary to Adobe Systems Incorporated and its
-  * suppliers and are protected by all applicable intellectual property
-  * laws, including trade secret and copyright laws.
-  * Dissemination of this information or reproduction of this material
-  * is strictly forbidden unless prior written permission is obtained
-  * from Adobe Systems Incorporated.
-  * *************************************************************************/
+/*#####################################################################
+# ADOBE CONFIDENTIAL
+# ___________________
+#
+#  Copyright 2018 Adobe
+#  All Rights Reserved.
+#
+# NOTICE:  All information contained herein is, and remains
+# the property of Adobe and its suppliers, if any. The intellectual
+# and technical concepts contained herein are proprietary to Adobe
+# and its suppliers and are protected by all applicable intellectual
+# property laws, including trade secret and copyright laws.
+# Dissemination of this information or reproduction of this material
+# is strictly forbidden unless prior written permission is obtained
+# from Adobe.
+#####################################################################*/
+
 package com.adobe.platform.ml
 
 import com.adobe.platform.ml.config.ConfigProperties
 import com.adobe.platform.ml.sdk.PipelineFactory
 import org.apache.spark.ml.Pipeline
-import org.apache.spark.ml.feature.{StringIndexer, VectorAssembler}
+import org.apache.spark.ml.feature.VectorAssembler
 import org.apache.spark.ml.param.ParamMap
 import org.apache.spark.ml.regression.GBTRegressor
-import org.apache.spark.sql.{DataFrame, SparkSession}
+import org.apache.spark.sql.SparkSession
 
 
 class RetailPipeline extends PipelineFactory {
