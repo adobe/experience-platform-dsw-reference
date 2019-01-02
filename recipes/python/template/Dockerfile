@@ -15,7 +15,7 @@
 # from Adobe.
 #####################################################################
 
-FROM adobe/acp-dsw-ml-runtime-python:0.17.0
+FROM adobe/acp-dsw-ml-runtime-python:0.19.0
 
 #INSTALL NLTK and other modules needed by application
 RUN /usr/bin/python3.5 -m pip install -U numpy

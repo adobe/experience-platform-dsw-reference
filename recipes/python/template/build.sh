@@ -15,8 +15,9 @@
 # from Adobe.
 #####################################################################
 
-#Build template app
-sudo python setup.py install
+#Build sample python app
+echo "Building .egg binary for project"
+sudo python setup.py clean --all install
 
 echo ""
 echo ""

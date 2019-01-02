@@ -15,22 +15,20 @@
 # from Adobe.
 #####################################################################
 
-#
-# login to your docker account
-#
+#Build sample python app
+echo "Building .egg binary for project"
+sudo python setup.py clean --all install
+
 echo ""
 echo ""
+
+echo "Please enter the version number for your recipe's docker image"
+read version
 
 echo "Enter Docker Host"
-
 read host
 
-echo "Enter Docker Username"
+docker build --pull -t $host/samples-tensorflow:$version .
+docker push $host/samples-tensorflow:$version
 
-read username
-
-echo "Enter Docker Password"
-
-read password
-
-docker login --username $username --password $password $host
+echo "$host/samples-tensorflow:$version"

@@ -30,6 +30,9 @@ setup(name='template',
             'scoring_dataloader=template.scoringdataloader',
             'scoring_pipeline=template.pipeline',
             'scoring_datasaver=template.datasaver'
+        ],
+        'Evaluation': [
+              'evaluator=template.evaluator:Evaluator'
         ]
         }
       )

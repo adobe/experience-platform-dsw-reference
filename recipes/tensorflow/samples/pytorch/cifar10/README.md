@@ -1,17 +1,22 @@
-# sample pytorch recipie
-intelligent service sample which can be onboarded on ML Framework.
+# Sample PyTorch Recipe
+Intelligent service sample which can be onboarded on the DSW ML Framework.
 
-## Commands to build:
+## Steps:
+
+git clone this repository
+
+Navigate the directory to the one containing `build.sh` file and run
 
 ```
-git clone [[GITHUB BASE URL]]:ml/samples-tensorflow.git
-
-cd samples-tensorflow/samples/pytorch/cifar10
-
-docker login --username sdkutil --password <> [[DOCKER ML RUNTIME BASE URL]]
-docker build -t [[DOCKER ML RUNTIME BASE URL]]/tf-sample:<version> .
-Docker push [[DOCKER ML RUNTIME BASE URL]]/tf-sample:<version>
+sh ./login.sh
+sh ./build.sh
 ```
+
+Please note the `login.sh` script should only need to be run once.
+
+
+## Information
+
 We use a package called
 ``torchvision``, that has data loaders for common datasets such as
 Imagenet, CIFAR10, MNIST, etc. and data transformers for images, viz.,

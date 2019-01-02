@@ -26,5 +26,6 @@ def load(configProperties):
     print("Training Data Load Start")
     evaluator = Evaluator()
     (train_data, _) = evaluator.split(configProperties)
+
     print("Training Data Load Finish")
     return train_data

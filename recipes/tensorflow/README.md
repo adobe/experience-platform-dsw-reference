@@ -1,21 +1,15 @@
-"# samples-tensorflow"
+# Tensorflow Sample
+A sample project highlighting how to build a Tensorflow-based ML pipeline for deployment onto the Data Science Workspace.
 
-Instructions
-	git clone [[GITHUB BASE URL]]:ml/samples-tensorflow.git
+## Steps:
 
-	cd samples/perceptron
+git clone this repository
 
-	python setup.py install
+Navigate the directory to the one containing `build.sh` file and run
 
-Create the docker image
+```
+sh ./login.sh
+sh ./build.sh
+```
 
-	docker login -u sdkutil -p <artifactory_token> [[DOCKER ML RUNTIME BASE URL]]
-
-	#  Build the Docker image: e.g., docker build -t [[DOCKER ML RUNTIME BASE URL]]/kumar-sample-is:1.0 .
-	docker build -t [[DOCKER ML RUNTIME BASE URL]]/<<intelligent-service>>:<<version_tag>> .
-	docker push [[DOCKER ML RUNTIME BASE URL]]/<<intelligent-service>>:<<version_tag>>
-
-
-Follow the instructions in Sensei ML API Driven or  Import Recipe UI Workflow tabs tabs to create the engine with the docker image.
-
-
+Please note the `login.sh` script should only need to be run once.

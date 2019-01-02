@@ -51,6 +51,15 @@ Sample configuration json to be used with the recipe.
         "value": "/_customer/default/DSWRetailSales"
       }
     ]
+  },
+  {
+        "name": "score",
+        "parameters": [
+            {
+                "key": "output_dataset_id",
+                "value": "<output_dataset_id>"
+            }
+        ]
   }
 ]
 ```
