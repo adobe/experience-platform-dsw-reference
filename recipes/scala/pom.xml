@@ -27,6 +27,14 @@
 			</releases>
 		</repository>
 	</repositories>
+
+	<!-- Enable this for staged release of the artifact
+	<repositories>
+		<repository>
+			<id>staged-releases</id>
+			<url>https://oss.sonatype.org/content/repositories/comadobeplatform-1037</url>
+		</repository>
+	</repositories> -->
 	
 	<dependencies>
 		<dependency>
@@ -42,8 +50,8 @@
 		<dependency>
 			<groupId>com.adobe.platform.ml</groupId>
 			<artifactId>authoring-sdk_2.11</artifactId>
-			<version>0.16.0</version>
-			<classifier>dependencies</classifier>
+			<version>0.16.1</version>
+			<classifier>jar-with-dependencies</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.spark</groupId>
