@@ -1,0 +1,20 @@
+#Name of the class which contains pipeline. It should implements PipelineFactory.scala
+pipeline.class: pipeline
+
+#Name of the class which contains implementation to get the training data.
+training.dataLoader: trainingdataloader
+#use platformdataloader to load from platform
+#training.dataLoader: platformdataloader
+
+#Name of the class which contains implementation to get the scoring data.
+scoring.dataLoader: scoringdataloader
+
+#Name of the class which contains implementation to save the scoring data.
+scoring.dataSaver: datasaver
+
+#Type of the model which is being trained
+#TODO: Yet to define enums/constants for model type.
+#ModelType:
+
+#comma separated list of config files
+#config.file: sample-config-1.json
