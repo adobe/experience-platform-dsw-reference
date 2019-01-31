@@ -118,7 +118,7 @@ Get this datasetId and plugin it in pipelineservice.json. For eg: it is referenc
 ```
 # Video to create dataset and upload parquet file
 
-[![Watch the video](../images/HomePage.png)](https://youtu.be/pRyN-Xb2cyo)
+[![Watch the video](../../docs/images/HomePage.png)](https://youtu.be/pRyN-Xb2cyo)
 
 # Sample Config json
 ```
@@ -212,7 +212,7 @@ This generates a fat jar and is saved in the target directory of the project.
 Use this jar and go to platform UI and run training and scoring.
 
 # Video for Training, Scoring and Saving output data
-[![Watch the video](../images/HomePage.png)](https://youtu.be/SmOD-LBISwU)
+[![Watch the video](../../docs/images/HomePage.png)](https://youtu.be/SmOD-LBISwU)
 
 
 
