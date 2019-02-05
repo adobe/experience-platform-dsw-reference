@@ -123,8 +123,7 @@ Also replace the title of the schema in the url to `https://platform.adobe.io/da
 Create an empty dataset with this schema. 
 Please look at the video `Video to create dataset and upload parquet file`. 
 (Do not have to upload any parquet for this because we want an empty dataset)
-Get this datasetId and plugin it in pipelineservice.json. For eg: it is referenced as scoredDatasetId in the sample json. All the prerequisites are 
-now complete and now you can now proceed to running some training and scoring jobs. 
+Get this datasetId and plugin it in pipelineservice.json. For eg: it is referenced as scoredDatasetId in the sample json. All the prerequisites are complete and you can now proceed to running some training and scoring jobs. 
 
 
 # Steps to run training and scoring jobs
