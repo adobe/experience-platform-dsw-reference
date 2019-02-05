@@ -219,11 +219,4 @@ Please look at the video `Video for Training, Scoring and Saving data`
         ]
     }
 ]
-
 ```
-
-
-
-
-
-
