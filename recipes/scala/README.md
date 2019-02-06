@@ -13,7 +13,7 @@ Sample Scala Recipe using the retail data.
 
 # Prerequisites
 
-To run the recipe in any untrusted org, we would need the schema of the dataset(if not uploaded previously),the input dataset, output schema and empty output dataset uploaded to the platform UI.
+To run the recipe in any org, we would need the schema of the dataset(if not uploaded previously),the input dataset, output schema and empty output dataset uploaded to the platform UI.
 If all of these are previouly uploaded in you org you can directly go to the section `Steps to run training and scoring jobs`
 Make sure that the name of the schema and the dataset ids match the ones being supplied in `Sample config json`
 
@@ -86,7 +86,7 @@ Upload the schema of the retail data (input data) from:
 Upload the parquet file from here:
 `https://github.com/adobe/experience-platform-dsw-reference/blob/master/datasets/retail/DSWRetailSales.parquet`
 
-Create a dataset with "DSWRetailSales" schema and the parquet file as the source. Get this datasetID and plugin it in pipelineservice.json.
+Create a dataset with "DSWRetailSales" schema and the parquet file as the source. Get this datasetID and plug it in pipelineservice.json.
 Please look at the `Video to create dataset and upload parquet file` to platform UI.
 
 ### Video to create dataset and upload parquet file
@@ -123,7 +123,7 @@ Also replace the title of the schema in the url to `https://platform.adobe.io/da
 Create an empty dataset with this schema. 
 Please look at the video `Video to create dataset and upload parquet file`. 
 (Do not have to upload any parquet for this because we want an empty dataset)
-Get this datasetId and plugin it in pipelineservice.json. For eg: it is referenced as scoredDatasetId in the sample json. All the prerequisites are complete and you can now proceed to running some training and scoring jobs. 
+Get this datasetId and plug it in pipelineservice.json. For eg: it is referenced as scoredDatasetId in the sample json. All the prerequisites are complete and you can now proceed to running some training and scoring jobs. 
 
 
 # Steps to run training and scoring jobs
