@@ -14,7 +14,7 @@ Sample Scala Recipe using the retail data.
 # Prerequisites
 
 To run the recipe in any org, we would need the schema of the dataset(if not uploaded previously),the input dataset, output schema and empty output dataset uploaded to the platform UI.
-If all of these are previouly uploaded in you org you can directly go to the section `Steps to run training and scoring jobs`
+If all of these are previously uploaded in your org you can directly go to the section `Steps to run training and scoring jobs`
 Make sure that the name of the schema and the dataset ids match the ones being supplied in `Sample config json`
 
 ### Upload Schema
