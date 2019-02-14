@@ -38,7 +38,6 @@ class Evaluator extends MLEvaluator {
 
   def evaluate(configProperties: ConfigProperties, model: Transformer, dataFrame: DataFrame): util.ArrayList[MLMetric] = {
 
-    println("In evaluate")
     val sparkSession = dataFrame.sparkSession
     import sparkSession.implicits._
 
@@ -48,13 +47,9 @@ class Evaluator extends MLEvaluator {
     df = df.withColumn("AbsValueOfDiff", abs($"weeklySalesAhead" - $"prediction"))
     df = df.withColumn("forMAPE", $"AbsValueOfDiff"/$"weeklySalesAhead")
 
-    val mape = df.select(avg("forMAPE")).collectAsList().get(0).toString()
-    val mae = df.select(avg("AbsValueOfDiff")).collectAsList().get(0).toString()
-    val rmse = df.select(sqrt(avg(pow("Diff", 2)))).collectAsList().get(0).toString()
-
-    println("MAPE is " + mape)
-    println("MAE is " + mae)
-    println("RMSE is " + rmse)
+    val mape = df.select(avg("forMAPE")).first.getDouble(0).toString()
+    val mae = df.select(avg("AbsValueOfDiff")).first.getDouble(0).toString()
+    val rmse = df.select(sqrt(avg(pow("Diff", 2)))).first.getDouble(0).toString()
 
     val metrics = new util.ArrayList[MLMetric]()
     metrics.add(new MLMetric("MAPE", mape, "double"))
