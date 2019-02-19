@@ -24,9 +24,10 @@ import numpy as np
 
 def apply(configProperties):
 
-    input_features = str(configProperties.get("ACP_DSW_INPUT_FEATURES"))
+    if(configProperties is None) :
+        raise ValueError("configProperties parameter is null")
 
-    print("Input features are " + input_features)
+    input_features = str(configProperties.get("ACP_DSW_INPUT_FEATURES"))
 
     learning_rate = float(configProperties.get("learning_rate"))
     n_estimators = int(configProperties.get("n_estimators"))

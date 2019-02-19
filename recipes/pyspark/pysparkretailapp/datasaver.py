@@ -17,24 +17,24 @@
 
 
 def save(configProperties, prediction, sparkSession):
-    print("In save")
-    print("Count is " + str(prediction.count()))
-    print(" dataframe is")
-    prediction.show()
-    #print("The config Properties are ")
-    #for key in configProperties.keys():
-        #for value in configProperties[key]:
-            #print(key, value)
+
+    if(configProperties is None) :
+        raise ValueError("configProperties parameter is null")
+    if(prediction is None):
+        raise ValueError("prediction parameter is null")
+    if(sparkSession is None):
+        raise ValueError("sparkSession parameter is null")
 
     service_token = str(sparkSession.sparkContext.getConf().get("ML_FRAMEWORK_IMS_ML_TOKEN"))
     user_token = str(sparkSession.sparkContext.getConf().get("ML_FRAMEWORK_IMS_TOKEN"))
     org_id = str(sparkSession.sparkContext.getConf().get("ML_FRAMEWORK_IMS_ORG_ID"))
 
-
-    print(service_token, user_token, org_id)
-
     scored_dataset_id = str(configProperties.get("scored_dataset_id"))
     api_key = str(configProperties.get("api_key"))
+
+    for arg in ['service_token', 'user_token', 'org_id', 'scored_dataset_id', 'api_key']:
+        if eval(arg) == 'None':
+            raise ValueError("%s is empty" % arg)
 
     prediction.select("prediction", "store", "date").write.format("com.adobe.platform.dataset") \
         .option('orgId', org_id) \

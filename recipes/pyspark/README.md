@@ -139,7 +139,10 @@ sh ./build.sh
 
 This generates an egg and is saved in the dist directory of the project. 
 Use this egg and go to platform UI and run training and scoring. 
+Please look at the video `Video for Training, Scoring and Saving data`
 
+### Video for Training, Scoring and Saving data
+[![Watch the video](../../docs/images/HomePage.png)](https://youtu.be/4alPIS-3mMM)
 
 # Sample Config json
 ```
