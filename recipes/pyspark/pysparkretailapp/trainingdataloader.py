@@ -22,10 +22,9 @@ from pyspark.sql.functions import unix_timestamp, from_unixtime, to_date, lit, l
 from pyspark.sql import Window
 
 
-
 def load(configProperties, spark):
 
-    if(configProperties is None) :
+    if(configProperties is  None) :
         raise ValueError("configProperties parameter is null")
     if(spark is None):
         raise ValueError("spark parameter is null")
@@ -34,20 +33,18 @@ def load(configProperties, spark):
     user_token = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_TOKEN"))
     org_id = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_ORG_ID"))
 
-    dataset_id = str(configProperties.get("dataset_id"))
-    batch_id = str(configProperties.get("batch_id"))
+    dataset_id = str(configProperties.get("trainingDataSetId"))
     api_key = str(configProperties.get("api_key"))
 
-    for arg in ['service_token', 'user_token', 'org_id', 'dataset_id', 'batch_id', 'api_key']:
+    for arg in ['service_token', 'user_token', 'org_id', 'dataset_id', 'api_key']:
         if eval(arg) == 'None':
             raise ValueError("%s is empty" % arg)
 
     pd = spark.read.format("com.adobe.platform.dataset") \
         .option('serviceToken', service_token) \
         .option('userToken', user_token) \
-        .option('serviceApiKey', api_key) \
         .option('orgId', org_id) \
-        .option('batchId', batch_id) \
+        .option('serviceApiKey', api_key) \
         .load(dataset_id)
 
     # Convert isHoliday boolean value to Int

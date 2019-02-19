@@ -33,11 +33,10 @@ def load(configProperties, spark):
     user_token = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_TOKEN"))
     org_id = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_ORG_ID"))
 
-    dataset_id = str(configProperties.get("dataset_id"))
-    batch_id = str(configProperties.get("batch_id"))
+    dataset_id = str(configProperties.get("scoringDataSetId"))
     api_key = str(configProperties.get("api_key"))
 
-    for arg in ['service_token', 'user_token', 'org_id', 'dataset_id', 'batch_id', 'api_key']:
+    for arg in ['service_token', 'user_token', 'org_id', 'dataset_id', 'api_key']:
         if eval(arg) == 'None':
             raise ValueError("%s is empty" % arg)
 
@@ -46,7 +45,6 @@ def load(configProperties, spark):
         .option('userToken', user_token) \
         .option('serviceApiKey', api_key) \
         .option('orgId', org_id) \
-        .option('batchId', batch_id) \
         .load(dataset_id)
 
     # Convert isHoliday boolean value to Int

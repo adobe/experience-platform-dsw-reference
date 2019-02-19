@@ -15,16 +15,6 @@
         "value": "3"
       },
       {
-        "key": "dataset_id",
-        "value": "5c364304d1a0db0000786201"
-
-      },
-      {
-        "key": "batch_id",
-        "value": "53a840cc4e2a41198c6ab5dc5195384f"
-
-      },
-      {
         "key": "ACP_DSW_INPUT_FEATURES",
         "value": "date,store,storeType,storeSize,temperature,regionalFuelPrice,markdown,cpi,unemployment,isHoliday"
       },
@@ -50,15 +40,6 @@
   {
     "name": "score",
     "parameters": [
-      {
-        "key": "dataset_id",
-        "value": "5c364304d1a0db0000786201"
-      },
-      {
-        "key": "batch_id",
-        "value": "53a840cc4e2a41198c6ab5dc5195384f"
-
-      },
       {
         "key": "api_key",
         "value": "acp_machineLearning_customer"
