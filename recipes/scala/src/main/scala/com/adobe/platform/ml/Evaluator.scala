@@ -30,7 +30,6 @@ import org.apache.spark.sql.functions._
 class Evaluator extends MLEvaluator {
 
   override def split(configProperties:ConfigProperties, data: DataFrame): (DataFrame, DataFrame) = {
-    println("In split")
     val dataSplit = data.randomSplit(Array(0.8, 0.2), seed = 11L)
     (dataSplit(0), dataSplit(1))
 
