@@ -40,7 +40,7 @@ def apply(configProperties):
     cols = np.array(feature_list)
 
     # Gradient-boosted tree estimator
-    gbt = GBTRegressor(featuresCol='features', labelCol='weeklySalesAhead', maxIter=10, predictionCol='prediction',
+    gbt = GBTRegressor(featuresCol='features', labelCol='weeklySalesAhead', predictionCol='prediction',
                        maxDepth=max_depth, maxBins=n_estimators, stepSize=learning_rate)
 
     # Assemble the fields to a vector
