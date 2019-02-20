@@ -2,7 +2,7 @@
 # ADOBE CONFIDENTIAL
 # ___________________
 #
-#  Copyright 2018 Adobe
+#  Copyright 2019 Adobe
 #  All Rights Reserved.
 #
 # NOTICE:  All information contained herein is, and remains
@@ -54,7 +54,7 @@ class Evaluator extends MLEvaluator {
     */
 
   def evaluate(configProperties: ConfigProperties, model: Transformer, dataFrame: DataFrame): util.ArrayList[MLMetric] = {
-
+    
     val sparkSession = dataFrame.sparkSession
     import sparkSession.implicits._
 
