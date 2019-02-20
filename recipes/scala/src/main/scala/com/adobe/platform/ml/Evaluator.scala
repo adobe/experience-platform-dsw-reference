@@ -26,14 +26,32 @@ import org.apache.spark.ml.Transformer
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.functions._
 
+/**
+  * Implementation of Evaluator which splits the dataframe and evaluates it
+  */
 
 class Evaluator extends MLEvaluator {
+
+  /**
+    *
+    * @param configProperties - Configuration Properties map
+    * @param data             - DataFrame that is used to split the data
+    * @return                 - Tuple of the dataframes
+    */
 
   override def split(configProperties:ConfigProperties, data: DataFrame): (DataFrame, DataFrame) = {
     val dataSplit = data.randomSplit(Array(0.8, 0.2), seed = 11L)
     (dataSplit(0), dataSplit(1))
 
   }
+
+  /**
+    *
+    * @param configProperties - Configuration Properties map
+    * @param model            - Trained model to be used for evaluation
+    * @param dataFrame        - DataFrame on which scoring and evaluations are made
+    * @return                 - Arraylist of metrics
+    */
 
   def evaluate(configProperties: ConfigProperties, model: Transformer, dataFrame: DataFrame): util.ArrayList[MLMetric] = {
 

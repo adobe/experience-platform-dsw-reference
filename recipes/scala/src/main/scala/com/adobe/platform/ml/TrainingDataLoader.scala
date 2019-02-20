@@ -26,8 +26,19 @@ import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.TimestampType
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
+/**
+  * Implementation of DataLoader which loads the dataframe and prepares the data
+  */
+
 
 class TrainingDataLoader extends DataLoader {
+
+  /**
+    *
+    * @param configProperties - Configuration Properties map
+    * @param sparkSession     - SparkSession
+    * @return                 - DataFrame which is prepared for training
+    */
 
   override def load(configProperties: ConfigProperties, sparkSession: SparkSession): DataFrame = {
 
