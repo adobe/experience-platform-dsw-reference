@@ -25,20 +25,23 @@ import org.apache.spark.ml.param.ParamMap
 import org.apache.spark.ml.regression.GBTRegressor
 import org.apache.spark.sql.SparkSession
 
+/**
+  * Implementation of pipeline factory to configure the pipeline
+  */
+
 
 class RetailPipeline extends PipelineFactory {
 
     /**
-      * Implementation of pipeline factory to configure the pipeline
-      * @param configProperties Properties map from the pipelineservice.json
-      * @return
+      * @param configProperties  - Configuration Properties map from the pipelineservice.json
+      * @return                  - Pipeline
       */
+
     override def apply(configProperties: ConfigProperties) = {
 
       require(configProperties != null)
 
       val inputFeatures: String = configProperties.get("ACP_DSW_INPUT_FEATURES").get.toString
-      println("Input features are " + inputFeatures )
 
       val learning_rate : Float = configProperties.get("learning_rate").get.toFloat
       val n_estimators : Int = configProperties.get("n_estimators").get.toInt
@@ -77,9 +80,9 @@ class RetailPipeline extends PipelineFactory {
 
   /***
     * Ability to add paramMap just before calling transform for your pipeline
-    * @param configProperties
-    * @param sparkSession
-    * @return
+    * @param configProperties - Configration Properties map
+    * @param sparkSession     - SparkSession
+    * @return                 - ParamMap
     */
     override def getParamMap(configProperties: ConfigProperties, sparkSession: SparkSession) : ParamMap = {
       val map = new ParamMap()
