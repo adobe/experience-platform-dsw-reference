@@ -86,7 +86,7 @@ Upload the schema of the retail data (input data) from:
 Upload the parquet file from here:
 `https://github.com/adobe/experience-platform-dsw-reference/blob/master/datasets/retail/DSWRetailSales.parquet`
 
-Create a dataset with "DSWRetailSales" schema and the parquet file as the source. Get this datasetID and plug it in pipelineservice.json.
+Create a dataset with "DSWRetailSales" schema and the parquet file as the source.
 Please look at the `Video to create dataset and upload parquet file` to platform UI.
 
 ### Video to create dataset and upload parquet file
@@ -164,16 +164,6 @@ Please look at the video `Video for Training, Scoring and Saving data`
                 "value": "3"
             },
             {
-                "key": "dataSetId",
-                "value": "5c05ba9c7276150000be60f2"
-
-            },
-            {
-                "key": "batchId",
-                "value": "e1df7c83c030498685ce4e5f5072c179"
-
-            },
-            {
                 "key": "ACP_DSW_INPUT_FEATURES",
                 "value": "date,store,storeType,storeSize,temperature,regionalFuelPrice,markdown,cpi,unemployment,isHoliday"
             },
@@ -199,15 +189,6 @@ Please look at the video `Video for Training, Scoring and Saving data`
     {
         "name": "score",
         "parameters": [
-            {
-                "key": "dataSetId",
-                "value": "5c05ba9c7276150000be60f2"
-            },
-            {
-                "key": "batchId",
-                "value": "e1df7c83c030498685ce4e5f5072c179"
-
-            },
             {
                 "key": "apiKey",
                 "value": "acp_machineLearning_customer"

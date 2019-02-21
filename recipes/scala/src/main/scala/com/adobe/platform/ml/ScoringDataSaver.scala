@@ -29,8 +29,8 @@ class ScoringDataSaver extends DataSaver {
 
   /**
     * Method that saves the scoring data into a dataframe
-    * @param configProperties Properties map
-    * @param dataFrame Dataframe with the scoring results
+    * @param configProperties  - Configuration Properties map
+    * @param dataFrame         - Dataframe with the scoring results
     */
   override def save(configProperties: ConfigProperties, dataFrame: DataFrame): Unit =  {
 

@@ -26,8 +26,18 @@ import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.TimestampType
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
+/**
+  * Implementation of DataLoader which loads the dataframe and prepares the data
+  */
 
 class ScoringDataLoader extends DataLoader {
+
+  /**
+    *
+    * @param configProperties - Configuration properties map
+    * @param sparkSession     - SparkSession
+    * @return                 - DataFrame which is prepared for scoring
+    */
 
   override def load(configProperties: ConfigProperties, sparkSession: SparkSession): DataFrame = {
 
@@ -38,8 +48,7 @@ class ScoringDataLoader extends DataLoader {
     val userToken: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_TOKEN", "").toString
     val orgId: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_ORG_ID", "").toString
 
-    val dataSetId: String = configProperties.get("dataSetId").getOrElse("")
-    val batchId: String = configProperties.get("batchId").getOrElse("")
+    val dataSetId: String = configProperties.get("scoringDataSetId").getOrElse("")
     val apiKey:String = configProperties.get("apiKey").getOrElse("")
 
     var df = sparkSession.read.format("com.adobe.platform.dataset")
@@ -47,7 +56,6 @@ class ScoringDataLoader extends DataLoader {
       .option(DataSetOptions.userToken, userToken)
       .option(DataSetOptions.serviceApiKey, apiKey)
       .option(DataSetOptions.orgId, orgId)
-      .option(DataSetOptions.batchId, batchId)
       .load(dataSetId)
 
     import sparkSession.implicits._
