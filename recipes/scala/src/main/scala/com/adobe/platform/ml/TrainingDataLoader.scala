@@ -17,6 +17,8 @@
 
 package com.adobe.platform.ml
 
+import java.time.LocalDateTime
+
 import com.adobe.platform.dataset.DataSetOptions
 import com.adobe.platform.ml.config.ConfigProperties
 import com.adobe.platform.ml.sdk.DataLoader
@@ -30,7 +32,6 @@ import org.apache.spark.sql.{DataFrame, SparkSession}
   * Implementation of DataLoader which loads the dataframe and prepares the data
   */
 
-
 class TrainingDataLoader extends DataLoader {
 
   /**
@@ -40,6 +41,7 @@ class TrainingDataLoader extends DataLoader {
     * @return                 - DataFrame which is prepared for training
     */
 
+
   override def load(configProperties: ConfigProperties, sparkSession: SparkSession): DataFrame = {
 
     require(configProperties != null)
@@ -48,7 +50,9 @@ class TrainingDataLoader extends DataLoader {
     val serviceToken: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_ML_TOKEN", "").toString
     val userToken: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_TOKEN", "").toString
     val orgId: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_ORG_ID", "").toString
-    val dataSetId: String = configProperties.get("trainingDataSetId").getOrElse("")
+    val timeframe: String = configProperties.get("timeframe").getOrElse("")
+    val dataSetId: String = configProperties.get("dataSetId").getOrElse("")
+    val batchId: String = configProperties.get("batchId").getOrElse("")
     val apiKey:String = configProperties.get("apiKey").getOrElse("")
 
     var df = sparkSession.read.format("com.adobe.platform.dataset")
@@ -56,6 +60,7 @@ class TrainingDataLoader extends DataLoader {
       .option(DataSetOptions.userToken, userToken)
       .option(DataSetOptions.serviceApiKey, apiKey)
       .option(DataSetOptions.orgId, orgId)
+      .option(DataSetOptions.batchId, batchId)
       .load(dataSetId)
 
     import sparkSession.implicits._
@@ -90,7 +95,14 @@ class TrainingDataLoader extends DataLoader {
 
     // Order by date and split the data
     df = df.orderBy("date").withColumn("date", $"date".cast("String"))
-    df = df.filter($"date".<=("2012-01-27 00:00:00"))
+    if(!timeframe.isEmpty) {
+      val timeForFiltering = LocalDateTime.now().minusMinutes(timeframe.toLong)
+        .toString.replace("T", " ")
+      df = df.filter($"date".>=(timeForFiltering))
+    }
+    else {
+      df = df.filter($"date".<=("2012-02-10 00:00:00"))
+    }
     df
   }
 }

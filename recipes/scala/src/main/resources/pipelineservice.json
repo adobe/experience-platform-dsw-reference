@@ -15,6 +15,16 @@
                 "value": "3"
             },
             {
+                "key": "dataSetId",
+                "value": "5c05ba9c7276150000be60f2"
+
+            },
+            {
+                "key": "batchId",
+                "value": "e1df7c83c030498685ce4e5f5072c179"
+
+            },
+            {
                 "key": "ACP_DSW_INPUT_FEATURES",
                 "value": "date,store,storeType,storeSize,temperature,regionalFuelPrice,markdown,cpi,unemployment,isHoliday"
             },
@@ -30,7 +40,6 @@
                 "key": "ACP_DSW_FEATURE_UPDATE_SUPPORT",
                 "value": false
             },
-
             {
                 "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
                 "value": "/_customer/default/DSWRetailSales"
@@ -41,6 +50,15 @@
         "name": "score",
         "parameters": [
             {
+                "key": "dataSetId",
+                "value": "5c05ba9c7276150000be60f2"
+            },
+            {
+                "key": "batchId",
+                "value": "e1df7c83c030498685ce4e5f5072c179"
+
+            },
+            {
                 "key": "apiKey",
                 "value": "acp_machineLearning_customer"
             },
@@ -48,6 +66,7 @@
                 "key": "scoredDataSetId",
                 "value": "5c1bd652cf294b00001b3650"
             }
+
         ]
     }
 ]
