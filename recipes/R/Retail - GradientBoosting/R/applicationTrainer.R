@@ -50,7 +50,7 @@ applicationTrainer <- setRefClass("applicationTrainer",
                                                             user_token = configurationJSON$ML_FRAMEWORK_IMS_TOKEN,
                                                             service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
       
-      df <- reader$load(configurationJSON$trainingDataSetId, configurationJSON$ML_FRAMEWORK_IMS_ORG_ID)
+      df <- reader$load(configurationJSON$dataSetId, configurationJSON$ML_FRAMEWORK_IMS_ORG_ID, batch_id = configurationJSON$batchId)
       df <- as_tibble(df)
       
       
@@ -65,6 +65,7 @@ applicationTrainer <- setRefClass("applicationTrainer",
       #########################################
       # Data Preparation/Feature Engineering
       #########################################
+      timeframe <- configurationJSON$timeframe
       df <- df %>%
         mutate(store = as.numeric(store)) %>% 
         mutate(date = mdy(date), week = week(date), year = year(date)) %>%
@@ -75,8 +76,13 @@ applicationTrainer <- setRefClass("applicationTrainer",
                weeklySalesLag = lag(weeklySales, 45),
                weeklySalesDiff = (weeklySales - weeklySalesLag) / weeklySalesLag) %>%
         drop_na() %>%
-        filter(date >= "2010-02-12" & date <= "2012-01-27") %>% 
+        filter(if(!is.null(timeframe)) {
+        date >= as.Date(Sys.time()-as.numeric(timeframe)*60) & date <= as.Date(Sys.time())
+        } else {
+        date >= "2010-02-12" & date <= "2012-01-27"  
+        }) %>%
         select(-date)
+        print(nrow(df))
       
       
       #########################################
