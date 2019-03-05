@@ -16,6 +16,7 @@
 #####################################################################
 from ml.runtime.python.Interfaces.AbstractEvaluator import AbstractEvaluator
 from data_access_sdk_python.reader import DataSetReader
+from datetime import datetime, timedelta
 import numpy as np
 import pandas as pd
 
@@ -48,8 +49,17 @@ class Evaluator(AbstractEvaluator):
                                    user_token=configProperties['ML_FRAMEWORK_IMS_TOKEN'],
                                    service_token=configProperties['ML_FRAMEWORK_IMS_ML_TOKEN'])
 
-        df = prodreader.load(data_set_id=configProperties['trainingDataSetId'],
-                             ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'])
+        data_set_id = configProperties.get("dataSetId")
+        timeframe = configProperties.get("timeframe")
+
+        if (data_set_id is not None and timeframe is not None):
+            date_before = datetime.utcnow().date()
+            date_after = date_before - timedelta(minutes=int(timeframe))
+            df = prodreader.load(data_set_id=data_set_id, ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'],
+                                 date_after=date_after, date_before=date_before)
+        else:
+            df = prodreader.load(data_set_id=configProperties['trainingDataSetId'],
+                                 ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'])
 
         #########################################
         # Data Preparation/Feature Engineering
