@@ -24,7 +24,7 @@ import numpy as np
 
 def apply(configProperties):
 
-    if(configProperties is None) :
+    if configProperties is None:
         raise ValueError("configProperties parameter is null")
 
     input_features = str(configProperties.get("ACP_DSW_INPUT_FEATURES"))

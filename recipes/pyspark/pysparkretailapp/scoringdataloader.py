@@ -21,9 +21,9 @@ from .helper import *
 
 def load(configProperties, spark):
 
-    if(configProperties is None) :
+    if configProperties is None:
         raise ValueError("configProperties parameter is null")
-    if(spark is None):
+    if spark is None:
         raise ValueError("spark parameter is null")
 
     pd = loaddataset(configProperties, spark, "scoringDataSetId")

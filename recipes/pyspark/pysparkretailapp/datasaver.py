@@ -18,11 +18,11 @@
 
 def save(configProperties, prediction, sparkSession):
 
-    if(configProperties is None) :
+    if configProperties is None:
         raise ValueError("configProperties parameter is null")
-    if(prediction is None):
+    if prediction is None:
         raise ValueError("prediction parameter is null")
-    if(sparkSession is None):
+    if sparkSession is None:
         raise ValueError("sparkSession parameter is null")
 
     service_token = str(sparkSession.sparkContext.getConf().get("ML_FRAMEWORK_IMS_ML_TOKEN"))
