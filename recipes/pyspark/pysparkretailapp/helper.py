@@ -23,7 +23,7 @@ from pyspark.sql.functions import unix_timestamp, from_unixtime, to_date, lit, l
 from pyspark.sql import Window
 
 
-def loaddataset(configProperties, spark, taskId):
+def load_dataset(configProperties, spark, taskId):
 
     service_token = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_ML_TOKEN"))
     user_token = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_TOKEN"))
@@ -45,7 +45,7 @@ def loaddataset(configProperties, spark, taskId):
     return pd
 
 
-def preparedataset(dataset):
+def prepare_dataset(dataset):
 
     # Convert isHoliday boolean value to Int
     pd = dataset.withColumn("isHoliday", col("isHoliday").cast(IntegerType()))

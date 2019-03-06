@@ -26,8 +26,8 @@ def load(configProperties, spark):
     if spark is None:
         raise ValueError("spark parameter is null")
 
-    pd = loaddataset(configProperties, spark, "scoringDataSetId")
-    pd = preparedataset(pd)
+    pd = load_dataset(configProperties, spark, "scoringDataSetId")
+    pd = prepare_dataset(pd)
 
     # Split the data
     score = pd.filter(pd["tx_date"] > lit('2012-01-27'))
