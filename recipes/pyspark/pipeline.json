@@ -1,0 +1,53 @@
+[
+  {
+    "name": "train",
+    "parameters": [
+      {
+        "key": "learning_rate",
+        "value": "0.1"
+      },
+      {
+        "key": "n_estimators",
+        "value": "100"
+      },
+      {
+        "key": "max_depth",
+        "value": "3"
+      },
+      {
+        "key": "ACP_DSW_INPUT_FEATURES",
+        "value": "date,store,storeType,storeSize,temperature,regionalFuelPrice,markdown,cpi,unemployment,isHoliday"
+      },
+      {
+        "key": "api_key",
+        "value": "acp_machineLearning_customer"
+      },
+      {
+        "key": "ACP_DSW_TARGET_FEATURES",
+        "value": "weeklySales"
+      },
+      {
+        "key": "ACP_DSW_FEATURE_UPDATE_SUPPORT",
+        "value": false
+      },
+
+      {
+        "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
+        "value": "/_customer/default/DSWRetailSales"
+      }
+    ]
+  },
+  {
+    "name": "score",
+    "parameters": [
+      {
+        "key": "api_key",
+        "value": "acp_machineLearning_customer"
+      },
+      {
+        "key": "scored_dataset_id",
+        "value": "5c4bb577cfec4a152d19b228"
+      }
+    ]
+  }
+]
