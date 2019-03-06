@@ -59,7 +59,7 @@ applicationEvaluator <- setRefClass("applicationEvaluator",
         filter(if(!is.null(timeframe)) {
         date >= as.Date(Sys.time()-as.numeric(timeframe)*60) & date <= as.Date(Sys.time())
         } else {
-        filter(date >= "2012-02-03")  
+        date >= "2012-02-03"  
         }) %>%
         select(-date)
       
