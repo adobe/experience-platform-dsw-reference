@@ -49,16 +49,16 @@ class Evaluator(AbstractEvaluator):
                                    user_token=configProperties['ML_FRAMEWORK_IMS_TOKEN'],
                                    service_token=configProperties['ML_FRAMEWORK_IMS_ML_TOKEN'])
 
-        data_set_id = configProperties.get("dataSetId")
+        training_data_set_id = configProperties.get("trainingDataSetId")
         timeframe = configProperties.get("timeframe")
 
-        if (data_set_id is not None and timeframe is not None):
+        if (timeframe is not None):
             date_before = datetime.utcnow().date()
             date_after = date_before - timedelta(minutes=int(timeframe))
-            df = prodreader.load(data_set_id=data_set_id, ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'],
+            df = prodreader.load(data_set_id=training_data_set_id, ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'],
                                  date_after=date_after, date_before=date_before)
         else:
-            df = prodreader.load(data_set_id=configProperties['trainingDataSetId'],
+            df = prodreader.load(data_set_id=training_data_set_id,
                                  ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'])
 
         #########################################
