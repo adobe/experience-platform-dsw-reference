@@ -50,7 +50,7 @@ applicationTrainer <- setRefClass("applicationTrainer",
                                                             user_token = configurationJSON$ML_FRAMEWORK_IMS_TOKEN,
                                                             service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
       
-      df <- reader$load(configurationJSON$dataSetId, configurationJSON$ML_FRAMEWORK_IMS_ORG_ID, batch_id = configurationJSON$batchId)
+      df <- reader$load(configurationJSON$trainingDataSetId, configurationJSON$ML_FRAMEWORK_IMS_ORG_ID)
       df <- as_tibble(df)
       
       
