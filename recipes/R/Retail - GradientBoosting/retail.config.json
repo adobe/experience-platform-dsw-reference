@@ -31,14 +31,6 @@
         "value": "/_customer/default/DSWRetailSales"
       },
       {
-        "key": "dataSetId",
-        "value": "5c79353929eae6152b14a534"
-      },
-      {
-        "key": "batchId",
-        "value": "60988e0b83fb4ce9b8ad14805ed268f4"
-      },
-      {
         "key": "timeframe",
         "value": "4000000"
       }
@@ -50,14 +42,6 @@
             {
                 "key": "output_dataset_id",
                 "value": "<output_dataset_id>"
-            },
-            {
-                "key": "dataSetId",
-                "value": "5c6e8dfb95db5e152d6c3947"
-            },
-            {
-                "key": "batchId",
-                "value": "7916166b171245d38f09ba395c6dbe36"
             },
             {
                 "key": "timeframe",
