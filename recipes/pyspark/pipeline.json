@@ -34,6 +34,10 @@
       {
         "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
         "value": "/_customer/default/DSWRetailSales"
+      },
+      {
+        "key": "timeframe",
+        "value": "4000000"
       }
     ]
   },
@@ -47,6 +51,10 @@
       {
         "key": "scored_dataset_id",
         "value": "5c4bb577cfec4a152d19b228"
+      },
+      {
+        "key": "timeframe",
+        "value": "4000000"
       }
     ]
   }
