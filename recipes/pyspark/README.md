@@ -182,6 +182,10 @@ Please look at the video `Video for Training, Scoring and Saving data`
             {
                 "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
                 "value": "/_customer/default/DSWRetailSales"
+            },
+            {
+                "key": "timeframe",
+                "value": "4000000"
             }
         ]
     },
@@ -195,8 +199,16 @@ Please look at the video `Video for Training, Scoring and Saving data`
             {
                 "key": "scoredDataSetId",
                 "value": "5c1bd652cf294b00001b3650"
+            },
+            {
+                "key": "timeframe",
+                "value": "4000000"
             }
         ]
     }
 ]
 ```
+Note : 
+Filtering rows in dataset is possible with timeframe property. 
+This property must be specified in minutes.
+Filtering is calculated : current time - timeframe.
