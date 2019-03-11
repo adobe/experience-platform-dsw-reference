@@ -30,10 +30,13 @@
                 "key": "ACP_DSW_FEATURE_UPDATE_SUPPORT",
                 "value": false
             },
-
             {
                 "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
                 "value": "/_customer/default/DSWRetailSales"
+            },
+            {
+               "key": "timeframe",
+               "value": "4000000"
             }
         ]
     },
@@ -47,7 +50,12 @@
             {
                 "key": "scoredDataSetId",
                 "value": "5c1bd652cf294b00001b3650"
+            },
+            {
+                "key": "timeframe",
+                "value": "4000000"
             }
+
         ]
     }
 ]
