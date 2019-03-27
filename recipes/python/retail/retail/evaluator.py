@@ -14,32 +14,15 @@
 # is strictly forbidden unless prior written permission is obtained
 # from Adobe.
 #####################################################################
-from ml.runtime.python.Interfaces.AbstractEvaluator import AbstractEvaluator
+from ml.runtime.python.core.RegressionEvaluator import RegressionEvaluator
 from data_access_sdk_python.reader import DataSetReader
 from datetime import datetime, timedelta
 import numpy as np
 import pandas as pd
 
-class Evaluator(AbstractEvaluator):
+class Evaluator(RegressionEvaluator):
     def __init__(self):
        print ("Initiate")
-
-    def evaluate(self, data=[], model={}, configProperties={}):
-        print ("Evaluation evaluate triggered")
-        test = data.drop('weeklySalesAhead', axis=1)
-        y_pred = model.predict(test)
-        y_actual = data['weeklySalesAhead'].values
-        mape = np.mean(np.abs((y_actual - y_pred) / y_actual))
-        mae = np.mean(np.abs(y_actual - y_pred))
-        rmse = np.sqrt(np.mean((y_actual - y_pred) ** 2))
-
-        metric = [{"name": "MAPE", "value": mape, "valueType": "double"},
-                  {"name": "MAE", "value": mae, "valueType": "double"},
-                  {"name": "RMSE", "value": rmse, "valueType": "double"}]
-
-        return metric
-
-
 
     def split(self, configProperties={}):
         #########################################
@@ -78,8 +61,8 @@ class Evaluator(AbstractEvaluator):
         df.dropna(0, inplace=True)
 
         df = df.set_index(df.date)
-        df.drop('date', axis=1, inplace=True)
 
+        df.drop('date', axis=1, inplace=True)
         # Split
         train_start = '2010-02-12'
         train_end = '2012-01-27'
@@ -88,5 +71,3 @@ class Evaluator(AbstractEvaluator):
         test = df[test_start:]
 
         return train, test
-
-
