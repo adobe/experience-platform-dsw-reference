@@ -53,6 +53,8 @@ class TrainingDataLoader extends DataLoader {
     val timeframe: String = configProperties.get("timeframe").getOrElse("")
     val dataSetId: String = configProperties.get("trainingDataSetId").getOrElse("")
     val apiKey:String = configProperties.get("apiKey").getOrElse("")
+    val labelColumn: String = configProperties.get("evaluation.labelColumn").getOrElse("label")
+    val scalingColumn: String = configProperties.get("evaluation.scalingColumn").getOrElse("scalingColumn")
 
     var df = sparkSession.read.format("com.adobe.platform.dataset")
       .option(DataSetOptions.serviceToken, serviceToken)
@@ -72,7 +74,8 @@ class TrainingDataLoader extends DataLoader {
     // Compute the weeklySalesAhead, weeklySalesLag, weeklySalesDiff
     val window = Window.partitionBy("store").orderBy("date")
     df = df.withColumn("weeklySalesLag", lag("weeklySales", 1).over(window)).filter(!isnull($"weeklySalesLag"))
-    df = df.withColumn("weeklySalesAhead", lag("weeklySales", -1).over(window)).filter(!isnull($"weeklySalesAhead"))
+    df = df.withColumn(labelColumn, lag("weeklySales", -1).over(window)).filter(!isnull(col(labelColumn)))
+    df = df.withColumn(scalingColumn, lag(labelColumn, -1).over(window)).filter(!isnull(col(scalingColumn)))
     df = df.withColumn("weeklySalesDiff", ($"weeklySales" - $"weeklySalesLag")/$"weeklySalesLag")
 
     // Convert the categorical data of storeType
