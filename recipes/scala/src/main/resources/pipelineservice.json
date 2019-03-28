@@ -70,6 +70,10 @@
             {
                 "key": "timeframe",
                 "value": "4000000"
+            },
+            {
+                "key": "evaluation.predictionColumn",
+                "value": "weeklySalesPrediction"
             }
 
         ]
