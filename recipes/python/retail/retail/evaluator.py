@@ -24,34 +24,12 @@ class Evaluator(RegressionEvaluator):
     def __init__(self):
        print ("Initiate")
 
-    def split(self, configProperties={}):
-        #########################################
-        # Load Data
-        #########################################
-        prodreader = DataSetReader(client_id=configProperties['ML_FRAMEWORK_IMS_USER_CLIENT_ID'],
-                                   user_token=configProperties['ML_FRAMEWORK_IMS_TOKEN'],
-                                   service_token=configProperties['ML_FRAMEWORK_IMS_ML_TOKEN'])
+    def split(self, configProperties={}, dataframe=None):
+        dataframe.date = pd.to_datetime(dataframe.date)
+        dataframe['week'] = dataframe.date.dt.week
+        dataframe['year'] = dataframe.date.dt.year
 
-        training_data_set_id = configProperties.get("trainingDataSetId")
-        timeframe = configProperties.get("timeframe")
-
-        if (timeframe is not None):
-            date_before = datetime.utcnow().date()
-            date_after = date_before - timedelta(minutes=int(timeframe))
-            df = prodreader.load(data_set_id=training_data_set_id, ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'],
-                                 date_after=date_after, date_before=date_before)
-        else:
-            df = prodreader.load(data_set_id=training_data_set_id,
-                                 ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'])
-
-        #########################################
-        # Data Preparation/Feature Engineering
-        #########################################
-        df.date = pd.to_datetime(df.date)
-        df['week'] = df.date.dt.week
-        df['year'] = df.date.dt.year
-
-        df = pd.concat([df, pd.get_dummies(df['storeType'])], axis=1)
+        df = pd.concat([dataframe, pd.get_dummies(dataframe['storeType'])], axis=1)
         df.drop('storeType', axis=1, inplace=True)
         df['isHoliday'] = df['isHoliday'].astype(int)
 
