@@ -74,6 +74,7 @@ applicationTrainer <- setRefClass("applicationTrainer",
         mutate(isHoliday = as.integer(isHoliday)) %>%
         mutate(weeklySalesAhead = lead(weeklySales, 45),
                weeklySalesLag = lag(weeklySales, 45),
+               weeklySalesScaled = lead(weeklySalesAhead, 45),
                weeklySalesDiff = (weeklySales - weeklySalesLag) / weeklySalesLag) %>%
         drop_na() %>%
         filter(if(!is.null(timeframe)) {
@@ -97,9 +98,11 @@ applicationTrainer <- setRefClass("applicationTrainer",
       # Save model to the chosen directory
       #########################################
       saveRDS(model, "model.rds")
-      
-      
+
       print("Exiting Trainer Function.")
+
+      return(df)
+
     }
   )
 )
