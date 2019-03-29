@@ -33,6 +33,26 @@
       {
         "key": "timeframe",
         "value": "4000000"
+      },
+      {
+        "key": "evaluation.labelColumn",
+        "value": "weeklySalesAhead"
+      },
+      {
+        "key": "evaluation.trainRatio",
+        "value": "0.7"
+      },
+      {
+        "key": "evaluation.seed",
+        "value": "4"
+      },
+      {
+        "key": "evaluation.scalingColumn",
+        "value": "weeklySalesScaled"
+      },
+      {
+        "key": "evaluation.metrics",
+        "value": "MAPE,MAE,RMSE,MASE"
       }
   	]
   },
