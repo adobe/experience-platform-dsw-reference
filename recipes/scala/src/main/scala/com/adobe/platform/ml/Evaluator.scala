@@ -23,8 +23,9 @@ import com.adobe.platform.ml.sdk.MLEvaluator
 import com.adobe.platform.ml.sdk.MLMetric
 import com.adobe.platform.ml.config.ConfigProperties
 import org.apache.spark.ml.Transformer
-import org.apache.spark.sql.DataFrame
+import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.sql.functions._
+import org.apache.spark.sql.types.TimestampType
 
 /**
   * Implementation of Evaluator which splits the dataframe and evaluates it
@@ -40,9 +41,15 @@ class Evaluator extends MLEvaluator {
     */
 
   override def split(configProperties:ConfigProperties, data: DataFrame): (DataFrame, DataFrame) = {
-    val dataSplit = data.randomSplit(Array(0.8, 0.2), seed = 11L)
-    (dataSplit(0), dataSplit(1))
 
+    val sparkSession = data.sparkSession
+    import sparkSession.implicits._
+
+    // Order by date and split the data
+    var df = data.orderBy("date").withColumn("date", $"date".cast("String"))
+    var train_data = df.filter($"date".<=("2012-02-10 00:00:00"))
+    var test_data = df.filter($"date".>("2012-01-27 00:00:00"))
+    (train_data, test_data)
   }
 
   /**

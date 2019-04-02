@@ -32,11 +32,19 @@
             },
             {
                 "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
-                "value": "/_customer/default/DSWRetailSales"
+                "value": "https://ns.adobe.com/acpmlexploratoryexternal/schemas/4fb4c8779c692fb7643c19e6009a8542"
+            },
+            {
+                "key":"tenantId",
+                "value": "_acpmlexploratoryexternal"
+            },
+            {
+                "key":"batchId",
+                "value": "cef66f5531e44037a44071300ad95337"
             },
             {
                "key": "timeframe",
-               "value": "4000000"
+               "value": "600000000"
             }
         ]
     },
@@ -49,11 +57,23 @@
             },
             {
                 "key": "scoredDataSetId",
-                "value": "5c1bd652cf294b00001b3650"
+                "value": "5ca3c1f12a7d4114b357da4d"
             },
             {
                 "key": "timeframe",
-                "value": "4000000"
+                "value": "600000000"
+            },
+            {
+                "key":"ACP_DSW_SCORING_RESULTS_XDM_SCHEMA",
+                "value":"https://ns.adobe.com/acpmlexploratoryexternal/schemas/f54e82c6625daba3c12b3e7a2590fa5c"
+            },
+            {
+                "key":"batchId",
+                "value": "cef66f5531e44037a44071300ad95337"
+            },
+            {
+                "key":"tenantId",
+                "value": "_acpmlexploratoryexternal"
             }
 
         ]
