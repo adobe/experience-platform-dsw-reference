@@ -25,27 +25,27 @@ class Evaluator(RegressionEvaluator):
        print ("Initiate")
 
     def split(self, configProperties={}, dataframe=None):
+
         dataframe.date = pd.to_datetime(dataframe.date)
         dataframe['week'] = dataframe.date.dt.week
         dataframe['year'] = dataframe.date.dt.year
 
-        df = pd.concat([dataframe, pd.get_dummies(dataframe['storeType'])], axis=1)
-        df.drop('storeType', axis=1, inplace=True)
-        df['isHoliday'] = df['isHoliday'].astype(int)
+        dataframe = pd.concat([dataframe, pd.get_dummies(dataframe['storeType'])], axis=1)
+        dataframe.drop('storeType', axis=1, inplace=True)
+        dataframe['isHoliday'] = dataframe['isHoliday'].astype(int)
 
-        df['weeklySalesAhead'] = df.shift(-45)['weeklySales']
-        df['weeklySalesLag'] = df.shift(45)['weeklySales']
-        df['weeklySalesDiff'] = (df['weeklySales'] - df['weeklySalesLag']) / df['weeklySalesLag']
-        df.dropna(0, inplace=True)
+        dataframe['weeklySalesAhead'] = dataframe.shift(-45)['weeklySales']
+        dataframe['weeklySalesLag'] = dataframe.shift(45)['weeklySales']
+        dataframe['weeklySalesDiff'] = (dataframe['weeklySales'] - dataframe['weeklySalesLag']) / dataframe['weeklySalesLag']
+        dataframe.dropna(0, inplace=True)
 
-        df = df.set_index(df.date)
-
-        df.drop('date', axis=1, inplace=True)
+        dataframe = dataframe.set_index(dataframe.date)
+        dataframe.drop('date', axis=1, inplace=True)
         # Split
         train_start = '2010-02-12'
         train_end = '2012-01-27'
         test_start = '2012-02-03'
-        train = df[train_start:train_end]
-        test = df[test_start:]
+        train = dataframe[train_start:train_end]
+        test = dataframe[test_start:]
 
         return train, test
