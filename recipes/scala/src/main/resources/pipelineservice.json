@@ -39,10 +39,6 @@
                 "value": "_acpmlexploratoryexternal"
             },
             {
-                "key":"batchId",
-                "value": "cef66f5531e44037a44071300ad95337"
-            },
-            {
                "key": "timeframe",
                "value": "600000000"
             }
@@ -66,10 +62,6 @@
             {
                 "key":"ACP_DSW_SCORING_RESULTS_XDM_SCHEMA",
                 "value":"https://ns.adobe.com/acpmlexploratoryexternal/schemas/f54e82c6625daba3c12b3e7a2590fa5c"
-            },
-            {
-                "key":"batchId",
-                "value": "cef66f5531e44037a44071300ad95337"
             },
             {
                 "key":"tenantId",

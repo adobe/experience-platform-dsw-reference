@@ -51,7 +51,6 @@ class Helper {
 
     val dataSetId: String = configProperties.get(taskId).getOrElse("")
     val apiKey: String = configProperties.get("apiKey").getOrElse("")
-    val batchId: String = configProperties.get("batchId").getOrElse("")
     val tenantId: String = configProperties.get("tenantId").getOrElse("")
     val timeframe: String = configProperties.get("timeframe").getOrElse("")
 
@@ -61,7 +60,6 @@ class Helper {
       .option(DataSetOptions.serviceToken, serviceToken)
       .option(DataSetOptions.userToken, userToken)
       .option(DataSetOptions.serviceApiKey, apiKey)
-      .option(DataSetOptions.batchId, batchId)
       .load(dataSetId)
 
     // Filter the data based on the config
@@ -81,8 +79,7 @@ class Helper {
     * @return                 - Dataframe which is ready for training
     */
 
-  def prepare_dataset(configProperties: ConfigProperties,dataframe: DataFrame):DataFrame
-  = {
+  def prepare_dataset(configProperties: ConfigProperties,dataframe: DataFrame):DataFrame = {
 
     require(configProperties != null)
     require(dataframe != null)

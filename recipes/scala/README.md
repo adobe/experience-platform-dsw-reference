@@ -86,8 +86,7 @@ Uploading a schema involves the following steps:
           "definitions": {
             "retail": {
               "properties": {
-                "{{tenantId}}": { - Replace this with the tenantId from from Get Tenant ID 
-                call
+                "{{_tenantId}}": { - Replace this with the tenantId from from Get Tenant ID call
                     "type":"object",
                     "properties": {
                        "date": {
@@ -263,7 +262,7 @@ Use this jar and go to platform UI and run training and scoring.
 Please look at the video `Video for Training, Scoring and Saving data`
 
 ### Video for Training, Scoring and Saving data
-[![Watch the video](../../docs/images/HomePage.png)](https://youtu.be/SmOD-LBISwU)
+[![Watch the video](../../docs/images/HomePage.png)](https://youtu.be/UMLamvUupk8)
 
 
 # Sample Config json
@@ -308,10 +307,6 @@ Please look at the video `Video for Training, Scoring and Saving data`
                         "value": "_acpmlexploratoryexternal"
                     },
                     {
-                        "key":"batchId",
-                        "value": "cef66f5531e44037a44071300ad95337"
-                    },
-                    {
                        "key": "timeframe",
                        "value": "600000000"
                     }
@@ -335,10 +330,6 @@ Please look at the video `Video for Training, Scoring and Saving data`
                     {
                         "key":"ACP_DSW_SCORING_RESULTS_XDM_SCHEMA",
                         "value":"https://ns.adobe.com/acpmlexploratoryexternal/schemas/f54e82c6625daba3c12b3e7a2590fa5c"
-                    },
-                    {
-                        "key":"batchId",
-                        "value": "cef66f5531e44037a44071300ad95337"
                     },
                     {
                         "key":"tenantId",
