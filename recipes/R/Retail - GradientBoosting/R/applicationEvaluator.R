@@ -46,6 +46,8 @@ applicationEvaluator <- setRefClass("applicationEvaluator",
       # Data Preparation/Feature Engineering
       #########################################
       timeframe <- configurationJSON$timeframe
+      utils <- Utils$new()
+      df = utils$mapFields(df)
       df <- df %>%
         mutate(store = as.numeric(store)) %>% 
         mutate(date = mdy(date), week = week(date), year = year(date)) %>%
