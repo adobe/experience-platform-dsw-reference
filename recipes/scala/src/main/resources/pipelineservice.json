@@ -37,6 +37,22 @@
             {
                "key": "timeframe",
                "value": "4000000"
+            },
+            {
+                "key": "evaluation.labelColumn",
+                "value": "weeklySalesAhead"
+            },
+            {
+                "key": "evaluation.scalingColumn",
+                "value": "weeklySalesScaled"
+            },
+            {
+                "key": "evaluation.predictionColumn",
+                "value": "weeklySalesPrediction"
+            },
+            {
+                "key": "evaluation.metrics",
+                "value": "MAPE,MAE,RMSE,MASE"
             }
         ]
     },
@@ -54,6 +70,10 @@
             {
                 "key": "timeframe",
                 "value": "4000000"
+            },
+            {
+                "key": "evaluation.predictionColumn",
+                "value": "weeklySalesPrediction"
             }
 
         ]
