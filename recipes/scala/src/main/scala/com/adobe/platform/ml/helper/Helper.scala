@@ -25,8 +25,9 @@ import com.adobe.platform.ml.sdk.DataLoader
 import org.apache.spark.ml.feature.StringIndexer
 import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.functions._
-import org.apache.spark.sql.types.TimestampType
+import org.apache.spark.sql.types.{TimestampType, StructType}
 import org.apache.spark.sql.{DataFrame, SparkSession}
+import org.apache.spark.sql.Column
 
 
 class Helper {
@@ -51,8 +52,6 @@ class Helper {
 
     val dataSetId: String = configProperties.get(taskId).getOrElse("")
     val apiKey: String = configProperties.get("apiKey").getOrElse("")
-    val tenantId: String = configProperties.get("tenantId").getOrElse("")
-    val timeframe: String = configProperties.get("timeframe").getOrElse("")
 
     // Load the dataset
     var df = sparkSession.read.format("com.adobe.platform.dataset")
@@ -61,14 +60,7 @@ class Helper {
       .option(DataSetOptions.userToken, userToken)
       .option(DataSetOptions.serviceApiKey, apiKey)
       .load(dataSetId)
-
-    // Filter the data based on the config
-    if(!timeframe.isEmpty) {
-      val timeForFiltering = LocalDateTime.now().minusMinutes(timeframe.toLong)
-        .toString.replace("T", " ")
-      df = df.filter(col(tenantId +".date").>=(timeForFiltering))
-    }
-
+    df.show()
     df
   }
 
@@ -84,16 +76,22 @@ class Helper {
     require(configProperties != null)
     require(dataframe != null)
 
-    val tenantId: String = configProperties.get("tenantId").getOrElse("")
+    val timeframe: String = configProperties.get("timeframe").getOrElse("")
 
     val sparkSession = dataframe.sparkSession
     import sparkSession.implicits._
 
-    // Rename the columns to strip out the tenantId
-    var df = dataframe.withColumn("date", col(tenantId +".date")).withColumn("store", col(tenantId +".store"))
-      .withColumn("storeType", col(tenantId + ".storeType")).withColumn("weeklySales", col(tenantId + ".weeklySales")).withColumn("isHoliday", col(tenantId + ".isHoliday"))
-    df = df.withColumn("storeSize", col(tenantId + ".storeSize")).withColumn("temperature", col(tenantId + ".temperature")).withColumn("regionalFuelPrice", col(tenantId + ".regionalFuelPrice")).withColumn("markdown", col(tenantId + ".markDown")).withColumn("cpi", col(tenantId +".cpi")).withColumn("unemployment", col(tenantId + ".unemployment" ))
-    df = df.drop(tenantId).drop("_id").drop("eventType").drop("timestamp")
+    var df = dataframe.select(flattenSchema(dataframe.schema):_*)
+    df = df.drop("_id").drop("eventType").drop("timestamp")
+    df.printSchema()
+    df.show()
+
+    // Filter the data based on the config
+    if(!timeframe.isEmpty) {
+      val timeForFiltering = LocalDateTime.now().minusMinutes(timeframe.toLong)
+        .toString.replace("T", " ")
+      df = df.filter($"date".>=(timeForFiltering))
+    } else df
 
     // Convert isHoliday to Int
     df = df.withColumn("isHoliday", $"isHoliday".cast("Int"))
@@ -122,7 +120,26 @@ class Helper {
     )
 
     df = df.drop("storeTypeIndex")
+
     df
+  }
+
+  /**
+    *
+    * @param schema - schema of Struct Type to be flattened
+    * @param prefix - prefix of String type
+    * @return       - Array of type Column after flattening
+    */
+
+  def flattenSchema(schema: StructType, prefix: String = null) : Array[Column] = {
+    schema.fields.flatMap(f => {
+      val colName = if (prefix == null) f.name else (prefix + "." + f.name)
+
+      f.dataType match {
+        case st: StructType => flattenSchema(st, colName)
+        case _ => Array(col(colName))
+      }
+    })
   }
 
 }

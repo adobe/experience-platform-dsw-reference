@@ -46,7 +46,7 @@ class ScoringDataSaver extends DataSaver {
     val orgId: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_ORG_ID", "").toString
     val apiKey:String = configProperties.get("apiKey").getOrElse("")
     val tenantId:String = configProperties.get("tenantId").getOrElse("")
-
+    val timestamp:String = "2019-01-01 00:00:00"
 
     val scoredDataSetId: String = configProperties.get("scoredDataSetId").getOrElse("")
     import sparkSession.implicits._
@@ -54,16 +54,11 @@ class ScoringDataSaver extends DataSaver {
     var df = dataFrame.withColumn("date", $"date".cast("String"))
 
     var scored_df  = df.withColumn(tenantId, struct(df("date"), df("store"), df("prediction")))
-    scored_df = scored_df.withColumn("timestamp", lit("1970-11-01 00:00:00").cast(TimestampType))
+    scored_df = scored_df.withColumn("timestamp", lit(timestamp).cast(TimestampType))
     scored_df = scored_df.withColumn("_id", lit("empty"))
     scored_df = scored_df.withColumn("eventType", lit("empty"))
 
-    scored_df = scored_df.drop("isHoliday", "date", "store", "storeType", "weeklySales", "storeSize", "temperature",
-      "regionalFuelPrice", "markdown", "cpi", "unemployment", "week", "year", "weeklySalesLag", "weeklySalesAhead",
-      "weeklySalesDiff", "A", "C", "B", "features", "prediction")
-
-
-    scored_df.write.format("com.adobe.platform.dataset")
+    scored_df.select(tenantId, "_id", "eventType", "timestamp").write.format("com.adobe.platform.dataset")
       .option(DataSetOptions.orgId, orgId)
       .option(DataSetOptions.serviceToken, serviceToken)
       .option(DataSetOptions.userToken, userToken)

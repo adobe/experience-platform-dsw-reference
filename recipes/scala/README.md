@@ -206,7 +206,8 @@ Upload the json from here:
 .9/DSWRetailSalesForXDM0.9.9.9.json`
 
 
-Create a dataset with "SchemaForRetailData" schema and the json file as the source.
+Create a dataset with "SchemaForRetailData" schema and the json file as the source. Replace the tenantId in the
+json datafile and use this as the data source.
 Please look at the `Video to create dataset and upload file` to platform UI.
 
 ### Video to create dataset and upload file
@@ -217,8 +218,8 @@ Please look at the `Video to create dataset and upload file` to platform UI.
 
 Upload the output schema (schema should have "prediction:Number, store:Integer, date:String"). 
 Please refer to the curl commands above to Create Class, Create Mixin, Create Schema for output data with naming them
- appropriately. In this example,
-the output class is named "ClassForRetailOutput", output mixin is named "MixinForRetailOuputData" and output schema is "SchemaForRetailOutputData"
+appropriately. In this example, the output class is named "ClassForRetailOutput", output mixin is named 
+"MixinForRetailOuputData" and output schema is "SchemaForRetailOutputData"
 The mixin should have the following properties:
 
         "properties": {
