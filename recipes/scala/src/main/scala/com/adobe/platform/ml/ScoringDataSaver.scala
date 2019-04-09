@@ -22,6 +22,8 @@ import com.adobe.platform.ml.config.ConfigProperties
 import com.adobe.platform.ml.impl.Constants
 import com.adobe.platform.ml.sdk.DataSaver
 import org.apache.spark.sql.DataFrame
+import org.apache.spark.sql.functions._
+import org.apache.spark.sql.types.TimestampType
 
 /**
   * Implementation of data saver which saves the output dataframe
@@ -45,10 +47,20 @@ class ScoringDataSaver extends DataSaver {
     val userToken: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_TOKEN", "").toString
     val orgId: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_ORG_ID", "").toString
     val apiKey:String = configProperties.get("apiKey").getOrElse("")
+    val tenantId:String = configProperties.get("tenantId").getOrElse("")
+    val timestamp:String = "2019-01-01 00:00:00"
 
     val scoredDataSetId: String = configProperties.get("scoredDataSetId").getOrElse("")
+    import sparkSession.implicits._
 
-    dataFrame.select(predictionColumn, "store", "date").write.format("com.adobe.platform.dataset")
+    var df = dataFrame.withColumn("date", $"date".cast("String"))
+
+    var scored_df  = df.withColumn(tenantId, struct(df("date"), df("store"), df(predictionColumn)))
+    scored_df = scored_df.withColumn("timestamp", lit(timestamp).cast(TimestampType))
+    scored_df = scored_df.withColumn("_id", lit("empty"))
+    scored_df = scored_df.withColumn("eventType", lit("empty"))
+
+    scored_df.select(tenantId, "_id", "eventType", "timestamp").write.format("com.adobe.platform.dataset")
       .option(DataSetOptions.orgId, orgId)
       .option(DataSetOptions.serviceToken, serviceToken)
       .option(DataSetOptions.userToken, userToken)

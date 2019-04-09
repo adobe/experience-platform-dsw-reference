@@ -32,7 +32,7 @@
 	<repositories>
 		<repository>
 			<id>staged-releases</id>
-			<url>https://oss.sonatype.org/content/repositories/comadobeplatform-1037</url>
+			<url>https://oss.sonatype.org/content/repositories/comadobeplatform-1040</url>
 		</repository>
 	</repositories> -->
 	
