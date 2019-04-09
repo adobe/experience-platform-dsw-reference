@@ -17,6 +17,7 @@
 
 from pyspark.sql.functions import lit
 from .helper import *
+import datetime
 
 
 def load(configProperties, spark):
@@ -30,6 +31,12 @@ def load(configProperties, spark):
     pd = prepare_dataset(pd)
 
     # Split the data
-    score = pd.filter(pd["tx_date"] > lit('2012-01-27'))
+    timeframe = str(configProperties.get("timeframe"))
+    if timeframe != 'None' :
+      filterByTime = str(datetime.datetime.now() - datetime.timedelta(minutes = int(timeframe)))
+      score = pd.filter(pd["tx_date"] >= lit(str(filterByTime)))
+      print("Number of rows after filtering : " + str(score.count()))
+    else :
+      score = pd.filter(pd["tx_date"] > lit('2012-01-27'))
 
     return score

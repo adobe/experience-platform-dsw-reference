@@ -14,69 +14,38 @@
 # is strictly forbidden unless prior written permission is obtained
 # from Adobe.
 #####################################################################
-from ml.runtime.python.Interfaces.AbstractEvaluator import AbstractEvaluator
+from ml.runtime.python.core.RegressionEvaluator import RegressionEvaluator
 from data_access_sdk_python.reader import DataSetReader
+from datetime import datetime, timedelta
 import numpy as np
 import pandas as pd
 
-class Evaluator(AbstractEvaluator):
+class Evaluator(RegressionEvaluator):
     def __init__(self):
        print ("Initiate")
 
-    def evaluate(self, data=[], model={}, configProperties={}):
-        print ("Evaluation evaluate triggered")
-        test = data.drop('weeklySalesAhead', axis=1)
-        y_pred = model.predict(test)
-        y_actual = data['weeklySalesAhead'].values
-        mape = np.mean(np.abs((y_actual - y_pred) / y_actual))
-        mae = np.mean(np.abs(y_actual - y_pred))
-        rmse = np.sqrt(np.mean((y_actual - y_pred) ** 2))
+    def split(self, configProperties={}, dataframe=None):
 
-        metric = [{"name": "MAPE", "value": mape, "valueType": "double"},
-                  {"name": "MAE", "value": mae, "valueType": "double"},
-                  {"name": "RMSE", "value": rmse, "valueType": "double"}]
+        dataframe.date = pd.to_datetime(dataframe.date)
+        dataframe['week'] = dataframe.date.dt.week
+        dataframe['year'] = dataframe.date.dt.year
 
-        return metric
+        dataframe = pd.concat([dataframe, pd.get_dummies(dataframe['storeType'])], axis=1)
+        dataframe.drop('storeType', axis=1, inplace=True)
+        dataframe['isHoliday'] = dataframe['isHoliday'].astype(int)
 
+        dataframe['weeklySalesAhead'] = dataframe.shift(-45)['weeklySales']
+        dataframe['weeklySalesLag'] = dataframe.shift(45)['weeklySales']
+        dataframe['weeklySalesDiff'] = (dataframe['weeklySales'] - dataframe['weeklySalesLag']) / dataframe['weeklySalesLag']
+        dataframe.dropna(0, inplace=True)
 
-
-    def split(self, configProperties={}):
-        #########################################
-        # Load Data
-        #########################################
-        prodreader = DataSetReader(client_id=configProperties['ML_FRAMEWORK_IMS_USER_CLIENT_ID'],
-                                   user_token=configProperties['ML_FRAMEWORK_IMS_TOKEN'],
-                                   service_token=configProperties['ML_FRAMEWORK_IMS_ML_TOKEN'])
-
-        df = prodreader.load(data_set_id=configProperties['trainingDataSetId'],
-                             ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'])
-
-        #########################################
-        # Data Preparation/Feature Engineering
-        #########################################
-        df.date = pd.to_datetime(df.date)
-        df['week'] = df.date.dt.week
-        df['year'] = df.date.dt.year
-
-        df = pd.concat([df, pd.get_dummies(df['storeType'])], axis=1)
-        df.drop('storeType', axis=1, inplace=True)
-        df['isHoliday'] = df['isHoliday'].astype(int)
-
-        df['weeklySalesAhead'] = df.shift(-45)['weeklySales']
-        df['weeklySalesLag'] = df.shift(45)['weeklySales']
-        df['weeklySalesDiff'] = (df['weeklySales'] - df['weeklySalesLag']) / df['weeklySalesLag']
-        df.dropna(0, inplace=True)
-
-        df = df.set_index(df.date)
-        df.drop('date', axis=1, inplace=True)
-
+        dataframe = dataframe.set_index(dataframe.date)
+        dataframe.drop('date', axis=1, inplace=True)
         # Split
         train_start = '2010-02-12'
         train_end = '2012-01-27'
         test_start = '2012-02-03'
-        train = df[train_start:train_end]
-        test = df[test_start:]
+        train = dataframe[train_start:train_end]
+        test = dataframe[test_start:]
 
         return train, test
-
-

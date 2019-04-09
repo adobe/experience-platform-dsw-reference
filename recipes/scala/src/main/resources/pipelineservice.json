@@ -30,10 +30,34 @@
                 "key": "ACP_DSW_FEATURE_UPDATE_SUPPORT",
                 "value": false
             },
-
             {
                 "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
-                "value": "/_customer/default/DSWRetailSales"
+                "value": "https://ns.adobe.com/acpmlexploratoryexternal/schemas/4fb4c8779c692fb7643c19e6009a8542"
+            },
+            {
+                "key":"tenantId",
+                "value": "_acpmlexploratoryexternal"
+            },
+            {
+               "key": "timeframe",
+               "value": "600000000"
+
+            },
+            {
+                "key": "evaluation.labelColumn",
+                "value": "weeklySalesAhead"
+            },
+            {
+                "key": "evaluation.scalingColumn",
+                "value": "weeklySalesScaled"
+            },
+            {
+                "key": "evaluation.predictionColumn",
+                "value": "prediction"
+            },
+            {
+                "key": "evaluation.metrics",
+                "value": "MAPE,MAE,RMSE,MASE"
             }
         ]
     },
@@ -46,8 +70,25 @@
             },
             {
                 "key": "scoredDataSetId",
-                "value": "5c1bd652cf294b00001b3650"
+                "value": "5ca3c1f12a7d4114b357da4d"
+            },
+            {
+                "key": "timeframe",
+                "value": "600000000"
+            },
+            {
+                "key":"ACP_DSW_SCORING_RESULTS_XDM_SCHEMA",
+                "value":"https://ns.adobe.com/acpmlexploratoryexternal/schemas/f54e82c6625daba3c12b3e7a2590fa5c"
+            },
+            {
+                "key":"tenantId",
+                "value": "_acpmlexploratoryexternal"
+            },
+            {
+                "key": "evaluation.predictionColumn",
+                "value": "prediction"
             }
+
         ]
     }
 ]

@@ -18,6 +18,7 @@
 package com.adobe.platform.ml
 
 import com.adobe.platform.ml.config.ConfigProperties
+import com.adobe.platform.ml.impl.Constants
 import com.adobe.platform.ml.sdk.PipelineFactory
 import org.apache.spark.ml.Pipeline
 import org.apache.spark.ml.feature.VectorAssembler
@@ -49,26 +50,25 @@ class RetailPipeline extends PipelineFactory {
 
       val featureList = inputFeatures.split(",").toList
 
-      val itemsToRemove = List("weeklySalesAhead", "date", "storeType")
+      val itemsToRemove = List(Constants.LABEL_COL, "date", "storeType")
 
       val newFeatureList = featureList diff itemsToRemove
 
       val cols: Array[String] = newFeatureList.toArray
 
-      val labelColumn = "weeklySalesAhead"
-
+      val labelColumn = configProperties.get(Constants.LABEL_COL).getOrElse(Constants.DEFAULT_LABEL)
+      val predictionColumn = configProperties.get(Constants.PREDICTION_COL).getOrElse(Constants.DEFAULT_PREDICTION)
       // Gradient-boosted tree estimator
       val gbt = new GBTRegressor()
         .setLabelCol(labelColumn)
         .setFeaturesCol("features")
-        .setPredictionCol("prediction")
+        .setPredictionCol(predictionColumn)
         .setMaxDepth(max_depth)
         .setMaxBins(n_estimators)
         .setStepSize(learning_rate)
 
       // Assemble the fields to a vector
       val assembler = new VectorAssembler().setInputCols(cols).setOutputCol("features")
-
       //Define the Array with the stages of the pipeline
       val stages = Array(assembler,gbt)
 

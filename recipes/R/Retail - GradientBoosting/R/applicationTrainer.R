@@ -65,6 +65,7 @@ applicationTrainer <- setRefClass("applicationTrainer",
       #########################################
       # Data Preparation/Feature Engineering
       #########################################
+      timeframe <- configurationJSON$timeframe
       df <- df %>%
         mutate(store = as.numeric(store)) %>% 
         mutate(date = mdy(date), week = week(date), year = year(date)) %>%
@@ -75,8 +76,13 @@ applicationTrainer <- setRefClass("applicationTrainer",
                weeklySalesLag = lag(weeklySales, 45),
                weeklySalesDiff = (weeklySales - weeklySalesLag) / weeklySalesLag) %>%
         drop_na() %>%
-        filter(date >= "2010-02-12" & date <= "2012-01-27") %>% 
+        filter(if(!is.null(timeframe)) {
+        date >= as.Date(Sys.time()-as.numeric(timeframe)*60) & date <= as.Date(Sys.time())
+        } else {
+        date >= "2010-02-12" & date <= "2012-01-27"  
+        }) %>%
         select(-date)
+        print(nrow(df))
       
       
       #########################################
