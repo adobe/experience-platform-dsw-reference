@@ -41,6 +41,23 @@
             {
                "key": "timeframe",
                "value": "600000000"
+
+            },
+            {
+                "key": "evaluation.labelColumn",
+                "value": "weeklySalesAhead"
+            },
+            {
+                "key": "evaluation.scalingColumn",
+                "value": "weeklySalesScaled"
+            },
+            {
+                "key": "evaluation.predictionColumn",
+                "value": "prediction"
+            },
+            {
+                "key": "evaluation.metrics",
+                "value": "MAPE,MAE,RMSE,MASE"
             }
         ]
     },
@@ -66,6 +83,10 @@
             {
                 "key":"tenantId",
                 "value": "_acpmlexploratoryexternal"
+            },
+            {
+                "key": "evaluation.predictionColumn",
+                "value": "prediction"
             }
 
         ]

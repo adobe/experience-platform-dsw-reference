@@ -77,6 +77,8 @@ class Helper {
     require(dataframe != null)
 
     val timeframe: String = configProperties.get("timeframe").getOrElse("")
+    val labelColumn: String = configProperties.get("evaluation.labelColumn").getOrElse("label")
+    val scalingColumn: String = configProperties.get("evaluation.scalingColumn").getOrElse("scalingColumn")
 
     val sparkSession = dataframe.sparkSession
     import sparkSession.implicits._
@@ -102,7 +104,8 @@ class Helper {
     // Compute the weeklySalesAhead, weeklySalesLag, weeklySalesDiff
     val window = Window.partitionBy("store").orderBy("date")
     df = df.withColumn("weeklySalesLag", lag("weeklySales", 1).over(window)).filter(!isnull($"weeklySalesLag"))
-    df = df.withColumn("weeklySalesAhead", lag("weeklySales", -1).over(window)).filter(!isnull($"weeklySalesAhead"))
+    df = df.withColumn(labelColumn, lag("weeklySales", -1).over(window)).filter(!isnull(col(labelColumn)))
+    df = df.withColumn(scalingColumn, lag(labelColumn, -1).over(window)).filter(!isnull(col(scalingColumn)))
     df = df.withColumn("weeklySalesDiff", ($"weeklySales" - $"weeklySalesLag")/$"weeklySalesLag")
 
     // Convert the categorical data of storeType

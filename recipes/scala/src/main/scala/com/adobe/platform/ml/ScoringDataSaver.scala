@@ -19,6 +19,7 @@ package com.adobe.platform.ml
 
 import com.adobe.platform.dataset.DataSetOptions
 import com.adobe.platform.ml.config.ConfigProperties
+import com.adobe.platform.ml.impl.Constants
 import com.adobe.platform.ml.sdk.DataSaver
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.functions._
@@ -39,6 +40,7 @@ class ScoringDataSaver extends DataSaver {
     require(configProperties != null)
     require(dataFrame != null)
 
+    val predictionColumn = configProperties.get(Constants.PREDICTION_COL).getOrElse(Constants.DEFAULT_PREDICTION)
     val sparkSession = dataFrame.sparkSession
 
     val serviceToken: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_ML_TOKEN", "").toString
@@ -53,7 +55,7 @@ class ScoringDataSaver extends DataSaver {
 
     var df = dataFrame.withColumn("date", $"date".cast("String"))
 
-    var scored_df  = df.withColumn(tenantId, struct(df("date"), df("store"), df("prediction")))
+    var scored_df  = df.withColumn(tenantId, struct(df("date"), df("store"), df(predictionColumn)))
     scored_df = scored_df.withColumn("timestamp", lit(timestamp).cast(TimestampType))
     scored_df = scored_df.withColumn("_id", lit("empty"))
     scored_df = scored_df.withColumn("eventType", lit("empty"))
