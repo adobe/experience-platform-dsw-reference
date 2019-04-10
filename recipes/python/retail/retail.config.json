@@ -7,6 +7,21 @@
         "value": "0.1"
       },
       {
+        "key": "evaluation.metrics",
+        "value": "MAPE,MAE,RMSE",
+        "secret": false
+      },
+      {
+        "key": "evaluation.labelColumn",
+        "value": "weeklySalesAhead",
+        "secret": false
+      },
+      {
+        "key": "evaluation.trainRatio",
+        "value": "0.7",
+        "secret": false
+                        }
+      {
         "key": "n_estimators",
         "value": "100"
       },
@@ -29,7 +44,11 @@
       {
         "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
         "value": "/_customer/default/DSWRetailSales"
-      }
+      },
+      {
+        "key": "tenantId",
+        "value": "<tenant_id>"
+     }
   	]
   },
   {
@@ -38,6 +57,10 @@
             {
                 "key": "output_dataset_id",
                 "value": "<output_dataset_id>"
+            },
+            {
+                "key": "tenantId",
+               "value": "<tenant_id>"
             }
         ]
   }
