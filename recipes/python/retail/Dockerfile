@@ -22,7 +22,7 @@ RUN /usr/bin/python3.5 -m pip install -U numpy
 RUN /usr/bin/python3.5 -m pip install -U pandas
 RUN /usr/bin/python3.5 -m pip install -U sklearn
 RUN /usr/bin/python3.5 -m pip install -U scipy
-RUN /usr/bin/python3.5 -m pip install -U fastparquet
+RUN /usr/bin/python3.5 -m pip install -U fastparquet==0.2.1
 
 COPY dist/retail*.egg /application.egg
 

@@ -20,6 +20,8 @@ import pandas as pd
 from data_access_sdk_python.reader import DataSetReader
 from datetime import datetime, timedelta
 from retail.evaluator import Evaluator
+from retail.utils import Utils
+
 
 
 def load(configProperties):
@@ -43,6 +45,10 @@ def load(configProperties):
     else:
         dataframe = prodreader.load(data_set_id=training_data_set_id,
                              ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'])
+
+    if '_id' in dataframe.columns:
+        util = Utils()
+        dataframe = util.mapFields(configProperties, dataframe)
 
     evaluator = Evaluator()
     (train_data, _) = evaluator.split(configProperties, dataframe)

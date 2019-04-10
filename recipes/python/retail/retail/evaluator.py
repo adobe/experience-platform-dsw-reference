@@ -19,12 +19,17 @@ from data_access_sdk_python.reader import DataSetReader
 from datetime import datetime, timedelta
 import numpy as np
 import pandas as pd
+from retail.utils import Utils
 
 class Evaluator(RegressionEvaluator):
     def __init__(self):
        print ("Initiate")
 
     def split(self, configProperties={}, dataframe=None):
+
+        if '_id' in dataframe.columns:
+          util = Utils()
+          dataframe = util.mapFields(configProperties, dataframe)
 
         dataframe.date = pd.to_datetime(dataframe.date)
         dataframe['week'] = dataframe.date.dt.week

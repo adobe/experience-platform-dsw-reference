@@ -19,6 +19,7 @@ import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta
 from data_access_sdk_python.reader import DataSetReader
+from retail.utils import Utils
 
 def load(configProperties):
 
@@ -40,6 +41,12 @@ def load(configProperties):
         df = prodreader.load(data_set_id=scoring_data_set_id, ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'], date_after=date_after, date_before=date_before)
     else:
         df = prodreader.load(data_set_id=scoring_data_set_id, ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'])
+
+
+    if '_id' in df.columns:
+        util = Utils()
+        df = util.mapFields(configProperties, df)
+
 
     #########################################
     # Data Preparation/Feature Engineering
