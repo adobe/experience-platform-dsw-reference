@@ -62,7 +62,7 @@ applicationScorer <- setRefClass("applicationScorer",
       timeframe <- configurationJSON$timeframe
       if(any(names(df) == '_id')) {
         utils <- Utils$new()
-        df = utils$mapFields(df)
+        df = utils$removeTenantIdFromColumnNames(df)
       }
       df <- df %>%
         mutate(store = as.numeric(store)) %>%

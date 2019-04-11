@@ -18,9 +18,9 @@ Utils <- setRefClass(
     mapFields = function(df) {
 
       # Rename columns
-      df <- setNames(df, c("id","eventType","timestamp", "cpi","date", "isHoliday","markdown",
-                           "regionalFuelPrice", "store","storeSize","storeType","temperature",
-                           "unemployment","weeklySales"))
+      df <- removeTenantIdFromColumnNames(df, c("id","eventType","timestamp", "cpi","date", "isHoliday","markdown",
+                                                "regionalFuelPrice", "store","storeSize","storeType","temperature",
+                                                "unemployment","weeklySales"))
 
       #Drop id,eventType and timestamp
       df <- subset(df, select= -c(id,eventType,timestamp))
