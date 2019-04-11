@@ -15,12 +15,12 @@
 Utils <- setRefClass(
   Class = "Utils",
   methods = list(
-    mapFields = function(df) {
+    removeTenantIdFromColumnNames = function(df) {
 
       # Rename columns
-      df <- removeTenantIdFromColumnNames(df, c("id","eventType","timestamp", "cpi","date", "isHoliday","markdown",
-                                                "regionalFuelPrice", "store","storeSize","storeType","temperature",
-                                                "unemployment","weeklySales"))
+      df <- setNames(df, c("id","eventType","timestamp", "cpi","date", "isHoliday","markdown",
+                           "regionalFuelPrice", "store","storeSize","storeType","temperature",
+                           "unemployment","weeklySales"))
 
       #Drop id,eventType and timestamp
       df <- subset(df, select= -c(id,eventType,timestamp))
