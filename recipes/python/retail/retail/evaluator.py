@@ -33,6 +33,7 @@ class Evaluator(RegressionEvaluator):
             #Drop id, eventType and timestamp
             dataframe.drop(['_id', 'eventType', 'timestamp'], axis=1, inplace=True)
 
+
         dataframe.date = pd.to_datetime(dataframe.date)
         dataframe['week'] = dataframe.date.dt.week
         dataframe['year'] = dataframe.date.dt.year
