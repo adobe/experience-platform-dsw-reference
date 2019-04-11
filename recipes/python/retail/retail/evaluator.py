@@ -28,8 +28,10 @@ class Evaluator(RegressionEvaluator):
     def split(self, configProperties={}, dataframe=None):
 
         if '_id' in dataframe.columns:
-          util = Utils()
-          dataframe = util.mapFields(configProperties, dataframe)
+            #Rename columns to strip tenantId
+            dataframe = dataframe.rename(columns = lambda x : str(x)[str(x).find('.')+1:])
+            #Drop id, eventType and timestamp
+            dataframe.drop(['_id', 'eventType', 'timestamp'], axis=1, inplace=True)
 
         dataframe.date = pd.to_datetime(dataframe.date)
         dataframe['week'] = dataframe.date.dt.week
