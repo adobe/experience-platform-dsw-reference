@@ -48,7 +48,7 @@ def load(configProperties):
 
     if '_id' in dataframe.columns:
         util = Utils()
-        dataframe = util.mapFields(configProperties, dataframe)
+        dataframe = util.renameColumns(configProperties, dataframe)
 
     evaluator = Evaluator()
     (train_data, _) = evaluator.split(configProperties, dataframe)

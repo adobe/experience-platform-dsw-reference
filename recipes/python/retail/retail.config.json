@@ -20,7 +20,7 @@
         "key": "evaluation.trainRatio",
         "value": "0.7",
         "secret": false
-      }
+      },
       {
         "key": "n_estimators",
         "value": "100"

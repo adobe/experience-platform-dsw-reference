@@ -19,14 +19,10 @@
 class Utils:
 
 
-    def mapFields(self, configProperties={}, dataframe=None):
+    def renameColumns(self, configProperties={}, dataframe=None):
 
-        tenantId = configProperties.get("tenantId")
-        # Rename columns
-        dataframe = dataframe.rename({tenantId+'.cpi':'cpi', tenantId+'.date':'date', tenantId+'.isHoliday':'isHoliday', tenantId+'.markdown':'markdown',
-                                      tenantId+'.regionalFuelPrice':'regionalFuelPrice', tenantId+'.store':'store', tenantId+'.storeSize':'storeSize',
-                                      tenantId+'.storeType':'storeType', tenantId+'.temperature':'temperature', tenantId+'.unemployment':'unemployment',
-                                      tenantId+'.weeklySales':'weeklySales'}, axis='columns')
+        #Rename columns to strip tenantId
+        dataframe = dataframe.rename(columns = lambda x : str(x)[str(x).find('.')+1:])
 
         #Drop id, eventType and timestamp
         dataframe.drop(['_id', 'eventType', 'timestamp'], axis=1, inplace=True)
