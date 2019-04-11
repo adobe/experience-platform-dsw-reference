@@ -20,7 +20,6 @@ import pandas as pd
 from data_access_sdk_python.reader import DataSetReader
 from datetime import datetime, timedelta
 from retail.evaluator import Evaluator
-from retail.utils import Utils
 
 
 
@@ -47,8 +46,8 @@ def load(configProperties):
                              ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'])
 
     if '_id' in dataframe.columns:
-        util = Utils()
-        dataframe = util.renameColumns(dataframe)
+        #Rename columns to strip tenantId
+        dataframe = dataframe.rename(columns = lambda x : str(x)[str(x).find('.')+1:])
         #Drop id, eventType and timestamp
         dataframe.drop(['_id', 'eventType', 'timestamp'], axis=1, inplace=True)
 

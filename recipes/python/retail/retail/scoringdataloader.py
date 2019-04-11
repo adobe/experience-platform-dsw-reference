@@ -19,7 +19,6 @@ import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta
 from data_access_sdk_python.reader import DataSetReader
-from retail.utils import Utils
 
 def load(configProperties):
 
@@ -44,8 +43,8 @@ def load(configProperties):
 
 
     if '_id' in dataframe.columns:
-        util = Utils()
-        dataframe = util.renameColumns(dataframe)
+        #Rename columns to strip tenantId
+        dataframe = dataframe.rename(columns = lambda x : str(x)[str(x).find('.')+1:])
         #Drop id, eventType and timestamp
         dataframe.drop(['_id', 'eventType', 'timestamp'], axis=1, inplace=True)
 
