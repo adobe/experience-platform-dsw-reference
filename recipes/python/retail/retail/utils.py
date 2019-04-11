@@ -19,7 +19,7 @@
 class Utils:
 
 
-    def renameColumns(self, configProperties={}, dataframe=None):
+    def renameColumns(self, dataframe=None):
 
         #Rename columns to strip tenantId
         dataframe = dataframe.rename(columns = lambda x : str(x)[str(x).find('.')+1:])

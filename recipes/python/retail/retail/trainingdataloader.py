@@ -48,7 +48,7 @@ def load(configProperties):
 
     if '_id' in dataframe.columns:
         util = Utils()
-        dataframe = util.renameColumns(configProperties, dataframe)
+        dataframe = util.renameColumns(dataframe)
         #Drop id, eventType and timestamp
         dataframe.drop(['_id', 'eventType', 'timestamp'], axis=1, inplace=True)
 
