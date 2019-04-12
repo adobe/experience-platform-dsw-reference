@@ -18,10 +18,10 @@
 FROM adobe/acp-dsw-ml-runtime-python:0.24.2
 
 #INSTALL modules needed by application
-RUN /usr/bin/python3.5 -m pip install -U numpy
-RUN /usr/bin/python3.5 -m pip install -U pandas
+RUN /usr/bin/python3.5 -m pip install -U numpy==1.16.2
+RUN /usr/bin/python3.5 -m pip install -U pandas==0.24.2
 RUN /usr/bin/python3.5 -m pip install -U sklearn
-RUN /usr/bin/python3.5 -m pip install -U scipy
+RUN /usr/bin/python3.5 -m pip install -U scipy==1.2.1
 RUN /usr/bin/python3.5 -m pip install -U fastparquet==0.2.1
 
 COPY dist/retail*.egg /application.egg

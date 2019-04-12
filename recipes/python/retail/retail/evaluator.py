@@ -19,7 +19,6 @@ from data_access_sdk_python.reader import DataSetReader
 from datetime import datetime, timedelta
 import numpy as np
 import pandas as pd
-from retail.utils import Utils
 
 class Evaluator(RegressionEvaluator):
     def __init__(self):
