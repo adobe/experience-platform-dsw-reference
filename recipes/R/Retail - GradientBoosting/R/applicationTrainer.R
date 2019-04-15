@@ -66,9 +66,13 @@ applicationTrainer <- setRefClass("applicationTrainer",
       # Data Preparation/Feature Engineering
       #########################################
       timeframe <- configurationJSON$timeframe
-      if(any(names(df) == '_id')) {
-        utils <- Utils$new()
-        df = utils$removeTenantIdFromColumnNames(df)
+      tenantId <- configurationJSON$tenantId
+      if(!is.null(tenantId)){
+        if(any(names(df) == '_id')) {
+          #Drop id, eventType, timestamp and rename columns
+          df <- df[,-c(1,2,3)]
+          names(df) <- substring(names(df), nchar(tenantId)+2)
+        }
       }
       df <- df %>%
         mutate(store = as.numeric(store)) %>% 
