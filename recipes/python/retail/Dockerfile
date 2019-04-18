@@ -15,7 +15,13 @@
 # from Adobe.
 #####################################################################
 
-FROM adobe/acp-dsw-ml-runtime-python:0.24.2
+FROM adobe/acp-dsw-ml-runtime-python:0.26.2
+
+WORKDIR /root/retail
+
+COPY . .
+
+RUN python setup.py clean --all install
 
 #INSTALL modules needed by application
 RUN /usr/bin/python3.5 -m pip install -U numpy
@@ -24,7 +30,6 @@ RUN /usr/bin/python3.5 -m pip install -U sklearn
 RUN /usr/bin/python3.5 -m pip install -U scipy
 RUN /usr/bin/python3.5 -m pip install -U fastparquet
 
-COPY dist/retail*.egg /application.egg
+RUN cp dist/retail*.egg /application.egg
 
 ENV PYTHONPATH=$PYTHONPATH:/application.egg
-
