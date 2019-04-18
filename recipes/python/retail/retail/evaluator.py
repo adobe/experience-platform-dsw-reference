@@ -44,16 +44,16 @@ class Evaluator(AbstractEvaluator):
         # Split
         train_start = '2010-02-12'
         train_end = '2012-01-27'
-        test_start = '2012-02-03'
+        val_start = '2012-02-03'
         train = dataframe[train_start:train_end]
-        test = dataframe[test_start:]
+        val = dataframe[val_start:]
 
-        return train, test
+        return train, val
 
     def evaluate(self, data=[], model={}, configProperties={}):
         print ("Evaluation evaluate triggered")
-        test = data.drop('weeklySalesAhead', axis=1)
-        y_pred = model.predict(test)
+        val = data.drop('weeklySalesAhead', axis=1)
+        y_pred = model.predict(val)
         y_actual = data['weeklySalesAhead'].values
         mape = np.mean(np.abs((y_actual - y_pred) / y_actual))
         mae = np.mean(np.abs(y_actual - y_pred))
