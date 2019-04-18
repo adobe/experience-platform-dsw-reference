@@ -43,5 +43,21 @@ def load(configProperties):
         dataframe = prodreader.load(data_set_id=configProperties['trainingDataSetId'],
                              ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'])
 
+    dataframe.date = pd.to_datetime(dataframe.date)
+    dataframe['week'] = dataframe.date.dt.week
+    dataframe['year'] = dataframe.date.dt.year
+
+    dataframe = pd.concat([dataframe, pd.get_dummies(dataframe['storeType'])], axis=1)
+    dataframe.drop('storeType', axis=1, inplace=True)
+    dataframe['isHoliday'] = dataframe['isHoliday'].astype(int)
+
+    dataframe['weeklySalesAhead'] = dataframe.shift(-45)['weeklySales']
+    dataframe['weeklySalesLag'] = dataframe.shift(45)['weeklySales']
+    dataframe['weeklySalesDiff'] = (dataframe['weeklySales'] - dataframe['weeklySalesLag']) / dataframe['weeklySalesLag']
+    dataframe.dropna(0, inplace=True)
+
+    dataframe = dataframe.set_index(dataframe.date)
+    dataframe.drop('date', axis=1, inplace=True)
+
     print("Training Data Load Finish")
     return dataframe

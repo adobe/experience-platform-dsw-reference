@@ -16,7 +16,6 @@
 #####################################################################
 from ml.runtime.python.Interfaces.AbstractEvaluator import AbstractEvaluator
 from data_access_sdk_python.reader import DataSetReader
-from datetime import datetime, timedelta
 import numpy as np
 import pandas as pd
 
@@ -25,23 +24,6 @@ class Evaluator(AbstractEvaluator):
        print ("Initiate")
 
     def split(self, configProperties={}, dataframe=None):
-
-        dataframe.date = pd.to_datetime(dataframe.date)
-        dataframe['week'] = dataframe.date.dt.week
-        dataframe['year'] = dataframe.date.dt.year
-
-        dataframe = pd.concat([dataframe, pd.get_dummies(dataframe['storeType'])], axis=1)
-        dataframe.drop('storeType', axis=1, inplace=True)
-        dataframe['isHoliday'] = dataframe['isHoliday'].astype(int)
-
-        dataframe['weeklySalesAhead'] = dataframe.shift(-45)['weeklySales']
-        dataframe['weeklySalesLag'] = dataframe.shift(45)['weeklySales']
-        dataframe['weeklySalesDiff'] = (dataframe['weeklySales'] - dataframe['weeklySalesLag']) / dataframe['weeklySalesLag']
-        dataframe.dropna(0, inplace=True)
-
-        dataframe = dataframe.set_index(dataframe.date)
-        dataframe.drop('date', axis=1, inplace=True)
-        # Split
         train_start = '2010-02-12'
         train_end = '2012-01-27'
         val_start = '2012-02-03'
