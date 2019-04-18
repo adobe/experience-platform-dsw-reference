@@ -14,38 +14,35 @@
 # is strictly forbidden unless prior written permission is obtained
 # from Adobe.
 #####################################################################
-from ml.runtime.python.core.RegressionEvaluator import RegressionEvaluator
+from ml.runtime.python.Interfaces.AbstractEvaluator import AbstractEvaluator
 from data_access_sdk_python.reader import DataSetReader
-from datetime import datetime, timedelta
 import numpy as np
 import pandas as pd
 
-class Evaluator(RegressionEvaluator):
+class Evaluator(AbstractEvaluator):
     def __init__(self):
        print ("Initiate")
 
     def split(self, configProperties={}, dataframe=None):
-
-        dataframe.date = pd.to_datetime(dataframe.date)
-        dataframe['week'] = dataframe.date.dt.week
-        dataframe['year'] = dataframe.date.dt.year
-
-        dataframe = pd.concat([dataframe, pd.get_dummies(dataframe['storeType'])], axis=1)
-        dataframe.drop('storeType', axis=1, inplace=True)
-        dataframe['isHoliday'] = dataframe['isHoliday'].astype(int)
-
-        dataframe['weeklySalesAhead'] = dataframe.shift(-45)['weeklySales']
-        dataframe['weeklySalesLag'] = dataframe.shift(45)['weeklySales']
-        dataframe['weeklySalesDiff'] = (dataframe['weeklySales'] - dataframe['weeklySalesLag']) / dataframe['weeklySalesLag']
-        dataframe.dropna(0, inplace=True)
-
-        dataframe = dataframe.set_index(dataframe.date)
-        dataframe.drop('date', axis=1, inplace=True)
-        # Split
         train_start = '2010-02-12'
         train_end = '2012-01-27'
-        test_start = '2012-02-03'
+        val_start = '2012-02-03'
         train = dataframe[train_start:train_end]
-        test = dataframe[test_start:]
+        val = dataframe[val_start:]
 
-        return train, test
+        return train, val
+
+    def evaluate(self, data=[], model={}, configProperties={}):
+        print ("Evaluation evaluate triggered")
+        val = data.drop('weeklySalesAhead', axis=1)
+        y_pred = model.predict(val)
+        y_actual = data['weeklySalesAhead'].values
+        mape = np.mean(np.abs((y_actual - y_pred) / y_actual))
+        mae = np.mean(np.abs(y_actual - y_pred))
+        rmse = np.sqrt(np.mean((y_actual - y_pred) ** 2))
+
+        metric = [{"name": "MAPE", "value": mape, "valueType": "double"},
+                  {"name": "MAE", "value": mae, "valueType": "double"},
+                  {"name": "RMSE", "value": rmse, "valueType": "double"}]
+
+        return metric
