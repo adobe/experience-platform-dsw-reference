@@ -14,13 +14,13 @@
 # is strictly forbidden unless prior written permission is obtained
 # from Adobe.
 #####################################################################
-from ml.runtime.python.core.RegressionEvaluator import RegressionEvaluator
+from ml.runtime.python.Interfaces.AbstractEvaluator import AbstractEvaluator
 from data_access_sdk_python.reader import DataSetReader
 from datetime import datetime, timedelta
 import numpy as np
 import pandas as pd
 
-class Evaluator(RegressionEvaluator):
+class Evaluator(AbstractEvaluator):
     def __init__(self):
        print ("Initiate")
 
