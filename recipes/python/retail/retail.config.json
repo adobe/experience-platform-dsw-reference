@@ -7,21 +7,6 @@
         "value": "0.1"
       },
       {
-        "key": "evaluation.metrics",
-        "value": "MAPE,MAE,RMSE",
-        "secret": false
-      },
-      {
-        "key": "evaluation.labelColumn",
-        "value": "weeklySalesAhead",
-        "secret": false
-      },
-      {
-        "key": "evaluation.trainRatio",
-        "value": "0.7",
-        "secret": false
-      },
-      {
         "key": "n_estimators",
         "value": "100"
       },
@@ -43,7 +28,7 @@
       },
       {
         "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
-        "value": "/_customer/default/DSWRetailSales"
+        "value": "\"https://ns.adobe.com/acpmlexploratoryexternal/schemas/4fb4c8779c692fb7643c19e6009a8542"
       },
       {
         "key": "tenantId",
@@ -56,11 +41,15 @@
         "parameters": [
             {
                 "key": "output_dataset_id",
-                "value": "<output_dataset_id>"
+                "value": "5cb8ae71a4f36014b34aa287"
             },
             {
                 "key": "tenantId",
-               "value": "<tenant_id>"
+                "value": "<tenant_id>"
+            },
+            {
+               "key":"ACP_DSW_SCORING_RESULTS_XDM_SCHEMA",
+               "value":"https://ns.adobe.com/acpmlexploratoryexternal/schemas/f54e82c6625daba3c12b3e7a2590fa5c"
             }
         ]
   }

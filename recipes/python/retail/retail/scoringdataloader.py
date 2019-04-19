@@ -36,9 +36,9 @@ def load(configProperties):
     if (timeframe is not None):
         date_before = datetime.utcnow().date()
         date_after = date_before - timedelta(minutes=int(timeframe))
-        df = prodreader.load(data_set_id=configProperties['scoringDataSetId'], ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'], date_after=date_after, date_before=date_before)
+        dataframe = prodreader.load(data_set_id=configProperties['scoringDataSetId'], ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'], date_after=date_after, date_before=date_before)
     else:
-        df = prodreader.load(data_set_id=configProperties['scoringDataSetId'], ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'])
+        dataframe = prodreader.load(data_set_id=configProperties['scoringDataSetId'], ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'])
 
     #########################################
     # Data Preparation/Feature Engineering
