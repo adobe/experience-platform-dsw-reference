@@ -97,7 +97,11 @@ applicationScorer <- setRefClass("applicationScorer",
         mutate(prediction = pred,
                store = as.integer(store),
                date = as.character(date))
-      
+
+      tenantId = configurationJSON$tenantId
+      colnames(output_df) <- paste(tenantId, colnames(output_df), sep = ".")
+      output_df[c("_id","eventType","timestamp")] = ""
+      output_df$timestamp = "1970-11-01T00:00:00"
       
       #########################################
       # Write Results
@@ -118,7 +122,8 @@ applicationScorer <- setRefClass("applicationScorer",
       
       writer$write(data_set_id = configurationJSON$output_dataset_id,
                    dataframe = output_df,
-                   ims_org = configurationJSON$ML_FRAMEWORK_IMS_ORG_ID)
+                   ims_org = configurationJSON$ML_FRAMEWORK_IMS_ORG_ID,
+                   file_format='json')
       print("Write done")
       
       
