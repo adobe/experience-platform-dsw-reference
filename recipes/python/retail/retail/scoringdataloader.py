@@ -31,16 +31,18 @@ def load(configProperties):
                                user_token=configProperties['ML_FRAMEWORK_IMS_TOKEN'],
                                service_token=configProperties['ML_FRAMEWORK_IMS_ML_TOKEN'])
 
-    scoring_data_set_id = configProperties.get("scoringDataSetId")
     timeframe = configProperties.get("timeframe")
 
     if (timeframe is not None):
         date_before = datetime.utcnow().date()
         date_after = date_before - timedelta(minutes=int(timeframe))
-        dataframe = prodreader.load(data_set_id=scoring_data_set_id, ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'], date_after=date_after, date_before=date_before)
+        df = prodreader.load(data_set_id=configProperties['scoringDataSetId'], ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'], date_after=date_after, date_before=date_before)
     else:
-        dataframe = prodreader.load(data_set_id=scoring_data_set_id, ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'])
+        df = prodreader.load(data_set_id=configProperties['scoringDataSetId'], ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'])
 
+    #########################################
+    # Data Preparation/Feature Engineering
+    #########################################
 
     if '_id' in dataframe.columns:
         #Rename columns to strip tenantId
@@ -49,9 +51,6 @@ def load(configProperties):
         dataframe.drop(['_id', 'eventType', 'timestamp'], axis=1, inplace=True)
 
 
-    #########################################
-    # Data Preparation/Feature Engineering
-    #########################################
     dataframe.date = pd.to_datetime(dataframe.date)
     dataframe['week'] = dataframe.date.dt.week
     dataframe['year'] = dataframe.date.dt.year

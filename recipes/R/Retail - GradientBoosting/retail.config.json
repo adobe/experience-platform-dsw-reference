@@ -33,6 +33,10 @@
       {
         "key": "timeframe",
         "value": "4000000"
+      },
+      {
+        "key" : "tenantId",
+        "value" : "<tenant_id>"
       }
   	]
   },
@@ -46,6 +50,10 @@
             {
                 "key": "timeframe",
                 "value": "4000000"
+            },
+            {
+                "key": "tenantId",
+                "value": "<tenant_id>"
             }
         ]
   }
