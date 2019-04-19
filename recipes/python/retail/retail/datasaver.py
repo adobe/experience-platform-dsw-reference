@@ -43,7 +43,8 @@ def save(configProperties, prediction):
 
     writer.write(data_set_id=configProperties['output_dataset_id'],
                  dataframe=prediction,
-                 ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'])
+                 ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'],
+                 file_format='json')
 
     print("Write Done")
     print("Datasaver Finish")
