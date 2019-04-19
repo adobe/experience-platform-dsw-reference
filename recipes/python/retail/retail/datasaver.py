@@ -15,6 +15,7 @@
 # from Adobe.
 #####################################################################
 from data_access_sdk_python.writer import DataSetWriter
+import pandas as pd
 
 def save(configProperties, prediction):
     print("Datasaver Start")
@@ -30,6 +31,15 @@ def save(configProperties, prediction):
                            service_token=configProperties['ML_FRAMEWORK_IMS_ML_TOKEN'])
 
     print("Writer Configured")
+
+    tenantId = configProperties.get("tenantId")
+    prediction = prediction.add_prefix(tenantId+".")
+    prediction = prediction.join(pd.DataFrame(
+        {
+            '_id': "",
+            'timestamp': '1970-11-01T00:00:00',
+            'eventType': ""
+        },  index=prediction.index))
 
     writer.write(data_set_id=configProperties['output_dataset_id'],
                  dataframe=prediction,
