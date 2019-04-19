@@ -22,7 +22,6 @@ from datetime import datetime, timedelta
 from retail.evaluator import Evaluator
 
 
-
 def load(configProperties):
     print("Training Data Load Start")
 
@@ -50,9 +49,6 @@ def load(configProperties):
         dataframe = dataframe.rename(columns = lambda x : str(x)[str(x).find('.')+1:])
         #Drop id, eventType and timestamp
         dataframe.drop(['_id', 'eventType', 'timestamp'], axis=1, inplace=True)
-
-    evaluator = Evaluator()
-    (train_data, _) = evaluator.split(configProperties, dataframe)
 
     dataframe.date = pd.to_datetime(dataframe.date)
     dataframe['week'] = dataframe.date.dt.week

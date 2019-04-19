@@ -28,7 +28,7 @@
       },
       {
         "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
-        "value": "\"https://ns.adobe.com/acpmlexploratoryexternal/schemas/4fb4c8779c692fb7643c19e6009a8542"
+        "value": "https://ns.adobe.com/acpmlexploratoryexternal/schemas/4fb4c8779c692fb7643c19e6009a8542"
       },
       {
         "key": "tenantId",

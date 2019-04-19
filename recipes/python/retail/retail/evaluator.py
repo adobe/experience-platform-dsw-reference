@@ -24,7 +24,6 @@ class Evaluator(AbstractEvaluator):
        print ("Initiate")
 
     def split(self, configProperties={}, dataframe=None):
-
         train_start = '2010-02-12'
         train_end = '2012-01-27'
         val_start = '2012-02-03'
