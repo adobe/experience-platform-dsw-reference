@@ -24,6 +24,6 @@ setup(name='pysparkretailapp',
       install_requires=["pyspark>=2.3.0"],
       #we will use public Adobe github repo for sdk
       dependency_links=[
-            'git+ssh://git@git.corp.adobe.com/ml/model-authoring-sdk-pyspark.git@create-model-authoring-pyspark#egg=model_authoring_sdk'],
+            'git+ssh://git@git.corp.adobe.com/ml/model-authoring-sdk-pyspark.git@master#egg=model_authoring_sdk'],
       package_data={'pysparkretailapp': ['resources/*']}
       )

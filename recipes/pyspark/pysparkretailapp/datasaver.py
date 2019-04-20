@@ -17,20 +17,20 @@
 
 from sdk.data_saver import DataSaver
 
-
 class MyDatasetSaver(DataSaver):
+
     def save(self, configProperties, prediction):
-        sparkSession = prediction.sparkSession
+        sparkContext = prediction._sc
         if configProperties is None:
             raise ValueError("configProperties parameter is null")
         if prediction is None:
             raise ValueError("prediction parameter is null")
-        if sparkSession is None:
-            raise ValueError("sparkSession parameter is null")
+        if sparkContext is None:
+            raise ValueError("sparkContext parameter is null")
 
-        service_token = str(sparkSession.sparkContext.getConf().get("ML_FRAMEWORK_IMS_ML_TOKEN"))
-        user_token = str(sparkSession.sparkContext.getConf().get("ML_FRAMEWORK_IMS_TOKEN"))
-        org_id = str(sparkSession.sparkContext.getConf().get("ML_FRAMEWORK_IMS_ORG_ID"))
+        service_token = str(sparkContext.getConf().get("ML_FRAMEWORK_IMS_ML_TOKEN"))
+        user_token = str(sparkContext.getConf().get("ML_FRAMEWORK_IMS_TOKEN"))
+        org_id = str(sparkContext.getConf().get("ML_FRAMEWORK_IMS_ORG_ID"))
 
         scored_dataset_id = str(configProperties.get("scored_dataset_id"))
         api_key = str(configProperties.get("api_key"))
