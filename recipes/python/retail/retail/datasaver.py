@@ -37,7 +37,7 @@ def save(configProperties, prediction):
     prediction = prediction.join(pd.DataFrame(
         {
             '_id': "",
-            'timestamp': '1970-11-01T00:00:00',
+            'timestamp': '2019-01-01T00:00:00',
             'eventType': ""
         },  index=prediction.index))
 
