@@ -29,6 +29,14 @@
       {
         "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
         "value": "/_customer/default/DSWRetailSales"
+      },
+      {
+        "key": "evaluation.labelColumn",
+        "value": "weeklySalesAhead"
+      },
+      {
+        "key": "evaluation.metrics",
+        "value": "MAPE,MAE,RMSE,MASE"
       }
   	]
   },
