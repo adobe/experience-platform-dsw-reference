@@ -15,14 +15,15 @@
 # from Adobe.
 #####################################################################
 
-from pyspark.sql.functions import col, avg, sqrt, abs, pow
+from pyspark.sql.functions import col, avg, sqrt, abs, pow, lit
 
 
 def split(configProperties, dataframe):
-    # Split the data
-    splitData = dataframe.randomSplit([0.8, 0.2])
-    train = splitData[0]
-    test = splitData[1]
+
+    # Order by date and split the data
+    df = dataframe.orderBy("date").withColumn("date", col("date").cast("String"))
+    train = df.filter(df["date"] <= lit('2012-01-27 00:00:00'))
+    test = df.filter(df["date"] > lit('2012-01-27 00:00:00'))
     return train, test
 
 
