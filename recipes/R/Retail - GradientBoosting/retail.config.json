@@ -31,6 +31,10 @@
         "value": "0.7"
       },
       {
+        "key": "evaluation.seed",
+        "value": "100"
+      },
+      {
         "key": "algorithm",
         "value": "Regression"
       },

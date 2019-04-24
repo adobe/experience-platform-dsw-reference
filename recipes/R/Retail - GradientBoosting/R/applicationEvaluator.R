@@ -86,7 +86,7 @@ applicationEvaluator <- setRefClass("applicationEvaluator",
       }
       trainRatio = 0.8
       if(!is.null(configurationJSON$evaluation.trainRatio)){
-        train_ratio = as.numeric(configurationJSON$evaluation.trainRatio)
+        trainRatio = as.numeric(configurationJSON$evaluation.trainRatio)
       }
       set.seed(seed)
       sample <- sample.int(n = nrow(df), size = floor(trainRatio*nrow(df)), replace = F)
