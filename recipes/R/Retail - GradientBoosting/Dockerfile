@@ -1,8 +1,9 @@
-FROM adobe/acp-dsw-ml-runtime-r:0.13.1
+FROM adobe/acp-dsw-ml-runtime-r:0.15.0
 
 RUN install2.r gbm
 RUN install2.r lubridate
 RUN install2.r tidyverse
+RUN install2.r evaluators.r.tar.gz
 
 
 WORKDIR /root/sample/code

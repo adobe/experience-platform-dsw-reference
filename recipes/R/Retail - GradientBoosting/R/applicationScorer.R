@@ -75,8 +75,9 @@ applicationScorer <- setRefClass("applicationScorer",
         spread(storeType, new, fill = 0) %>%
         mutate(isHoliday = as.integer(isHoliday)) %>%
         mutate(weeklySalesAhead = lead(weeklySales, 45),
-           weeklySalesLag = lag(weeklySales, 45),
-           weeklySalesDiff = (weeklySales - weeklySalesLag) / weeklySalesLag) %>%
+               weeklySalesLag = lag(weeklySales, 45),
+               weeklySalesScaled = lead(weeklySalesAhead, 45),
+               weeklySalesDiff = (weeklySales - weeklySalesLag) / weeklySalesLag) %>%
         drop_na() 
       
       test_df <- df %>%
@@ -105,7 +106,7 @@ applicationScorer <- setRefClass("applicationScorer",
         mutate(prediction = pred,
                store = as.integer(store),
                date = as.character(date))
-      
+
       
       #########################################
       # Write Results
