@@ -15,6 +15,26 @@
         "value": "3"
       },
       {
+        "key": "evaluation.metrics",
+        "value": "MAPE,MAE,RMSE,MASE"
+      },
+      {
+        "key": "evaluation.labelColumn",
+        "value": "weeklySalesAhead"
+      },
+      {
+        "key": "evaluation.scalingColumn",
+        "value": "weeklySalesScaled"
+      },
+      {
+        "key": "evaluation.trainRatio",
+        "value": "0.7"
+      },
+      {
+        "key": "algorithm",
+        "value": "Regression"
+      },
+      {
         "key": "ACP_DSW_INPUT_FEATURES",
         "value": "date,store,storeType,storeSize,temperature,regionalFuelPrice,markdown,cpi,unemployment,isHoliday"
       },
