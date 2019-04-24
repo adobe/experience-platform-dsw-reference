@@ -101,7 +101,7 @@ applicationScorer <- setRefClass("applicationScorer",
       tenantId = configurationJSON$tenantId
       colnames(output_df) <- paste(tenantId, colnames(output_df), sep = ".")
       output_df[c("_id","eventType","timestamp")] = ""
-      output_df$timestamp = "1970-11-01T00:00:00"
+      output_df$timestamp = "2019-01-01T00:00:00"
       
       #########################################
       # Write Results
