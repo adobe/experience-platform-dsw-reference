@@ -33,6 +33,14 @@
       {
         "key": "tenantId",
         "value": "<tenant_id>"
+     },
+     {
+       "key": "evaluation.labelColumn",
+       "value": "weeklySalesAhead"
+     },
+     {
+       "key": "evaluation.metrics",
+       "value": "MAPE,MAE,RMSE,MASE"
      }
   	]
   },
