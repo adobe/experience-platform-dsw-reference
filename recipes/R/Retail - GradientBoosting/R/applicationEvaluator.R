@@ -71,9 +71,9 @@ applicationEvaluator <- setRefClass("applicationEvaluator",
                weeklySalesDiff = (weeklySales - weeklySalesLag) / weeklySalesLag) %>%
         drop_na() %>%
         filter(if(!is.null(timeframe)) {
-          date >= as.Date(Sys.time()-as.numeric(timeframe)*60) & date <= as.Date(Sys.time())
+        date >= as.Date(Sys.time()-as.numeric(timeframe)*60) & date <= as.Date(Sys.time())
         } else {
-          date >= "2012-02-03"
+        date >= "2012-02-03"
         }) %>%
         select(-date)
 
