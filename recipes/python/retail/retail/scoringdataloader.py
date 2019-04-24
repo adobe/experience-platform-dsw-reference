@@ -36,29 +36,37 @@ def load(configProperties):
     if (timeframe is not None):
         date_before = datetime.utcnow().date()
         date_after = date_before - timedelta(minutes=int(timeframe))
-        df = prodreader.load(data_set_id=configProperties['scoringDataSetId'], ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'], date_after=date_after, date_before=date_before)
+        dataframe = prodreader.load(data_set_id=configProperties['scoringDataSetId'], ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'], date_after=date_after, date_before=date_before)
     else:
-        df = prodreader.load(data_set_id=configProperties['scoringDataSetId'], ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'])
+        dataframe = prodreader.load(data_set_id=configProperties['scoringDataSetId'], ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'])
 
     #########################################
     # Data Preparation/Feature Engineering
     #########################################
-    df.date = pd.to_datetime(df.date)
-    df['week'] = df.date.dt.week
-    df['year'] = df.date.dt.year
 
-    df = pd.concat([df, pd.get_dummies(df['storeType'])], axis=1)
-    df.drop('storeType', axis=1, inplace=True)
-    df['isHoliday'] = df['isHoliday'].astype(int)
+    if '_id' in dataframe.columns:
+        #Rename columns to strip tenantId
+        dataframe = dataframe.rename(columns = lambda x : str(x)[str(x).find('.')+1:])
+        #Drop id, eventType and timestamp
+        dataframe.drop(['_id', 'eventType', 'timestamp'], axis=1, inplace=True)
 
-    df['weeklySalesAhead'] = df.shift(-45)['weeklySales']
-    df['weeklySalesLag'] = df.shift(45)['weeklySales']
-    df['weeklySalesDiff'] = (df['weeklySales'] - df['weeklySalesLag']) / df['weeklySalesLag']
-    df.dropna(0, inplace=True)
 
-    df = df.set_index(df.date)
-    df.drop('date', axis=1, inplace=True)
+    dataframe.date = pd.to_datetime(dataframe.date)
+    dataframe['week'] = dataframe.date.dt.week
+    dataframe['year'] = dataframe.date.dt.year
+
+    dataframe = pd.concat([dataframe, pd.get_dummies(dataframe['storeType'])], axis=1)
+    dataframe.drop('storeType', axis=1, inplace=True)
+    dataframe['isHoliday'] = dataframe['isHoliday'].astype(int)
+
+    dataframe['weeklySalesAhead'] = dataframe.shift(-45)['weeklySales']
+    dataframe['weeklySalesLag'] = dataframe.shift(45)['weeklySales']
+    dataframe['weeklySalesDiff'] = (dataframe['weeklySales'] - dataframe['weeklySalesLag']) / dataframe['weeklySalesLag']
+    dataframe.dropna(0, inplace=True)
+
+    dataframe = dataframe.set_index(dataframe.date)
+    dataframe.drop('date', axis=1, inplace=True)
 
     print("Scoring Data Load Finish")
 
-    return df
+    return dataframe

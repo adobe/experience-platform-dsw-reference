@@ -43,6 +43,13 @@ def load(configProperties):
         dataframe = prodreader.load(data_set_id=configProperties['trainingDataSetId'],
                              ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'])
 
+
+    if '_id' in dataframe.columns:
+        #Rename columns to strip tenantId
+        dataframe = dataframe.rename(columns = lambda x : str(x)[str(x).find('.')+1:])
+        #Drop id, eventType and timestamp
+        dataframe.drop(['_id', 'eventType', 'timestamp'], axis=1, inplace=True)
+
     dataframe.date = pd.to_datetime(dataframe.date)
     dataframe['week'] = dataframe.date.dt.week
     dataframe['year'] = dataframe.date.dt.year
@@ -58,6 +65,7 @@ def load(configProperties):
 
     dataframe = dataframe.set_index(dataframe.date)
     dataframe.drop('date', axis=1, inplace=True)
+
 
     print("Training Data Load Finish")
     return dataframe
