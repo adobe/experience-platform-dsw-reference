@@ -37,7 +37,27 @@
       },
       {
         "key": "timeframe",
-        "value": "4000000"
+        "value": "600000000"
+      },
+      {
+        "key": "evaluation.labelColumn",
+        "value": "weeklySalesAhead"
+      },
+      {
+        "key": "evaluation.scalingColumn",
+        "value": "weeklySalesScaled"
+      },
+      {
+        "key": "evaluation.predictionColumn",
+        "value": "prediction"
+      },
+      {
+        "key": "evaluation.trainRatio",
+        "value": "0.8"
+      },
+      {
+        "key": "evaluation.metrics",
+        "value": "MAPE,MAE,RMSE,MASE"
       }
     ]
   },
@@ -54,7 +74,11 @@
       },
       {
         "key": "timeframe",
-        "value": "4000000"
+        "value": "600000000"
+      },
+      {
+        "key": "evaluation.predictionColumn",
+        "value": "prediction"
       }
     ]
   }

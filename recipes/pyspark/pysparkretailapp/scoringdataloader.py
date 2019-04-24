@@ -19,24 +19,27 @@ from pyspark.sql.functions import lit
 from .helper import *
 import datetime
 
+from sdk.data_loader import DataLoader
 
-def load(configProperties, spark):
 
-    if configProperties is None:
-        raise ValueError("configProperties parameter is null")
-    if spark is None:
-        raise ValueError("spark parameter is null")
+class ScoringDataLoader(DataLoader):
 
-    pd = load_dataset(configProperties, spark, "scoringDataSetId")
-    pd = prepare_dataset(pd)
+    def load(self, configProperties, spark):
+        if configProperties is None:
+            raise ValueError("configProperties parameter is null")
+        if spark is None:
+            raise ValueError("spark parameter is null")
 
-    # Split the data
-    timeframe = str(configProperties.get("timeframe"))
-    if timeframe != 'None' :
-      filterByTime = str(datetime.datetime.now() - datetime.timedelta(minutes = int(timeframe)))
-      score = pd.filter(pd["tx_date"] >= lit(str(filterByTime)))
-      print("Number of rows after filtering : " + str(score.count()))
-    else :
-      score = pd.filter(pd["tx_date"] > lit('2012-01-27'))
+        pd = load_dataset(configProperties, spark, "scoringDataSetId")
+        pd = prepare_dataset(pd)
 
-    return score
+        # Split the data
+        timeframe = str(configProperties.get("timeframe"))
+        if timeframe != 'None' :
+            filterByTime = str(datetime.datetime.now() - datetime.timedelta(minutes = int(timeframe)))
+            score = pd.filter(pd["tx_date"] >= lit(str(filterByTime)))
+            print("Number of rows after filtering : " + str(score.count()))
+        else :
+            score = pd.filter(pd["tx_date"] > lit('2012-01-27'))
+
+        return score
