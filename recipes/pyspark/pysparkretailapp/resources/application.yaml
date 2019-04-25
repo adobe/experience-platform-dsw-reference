@@ -16,6 +16,7 @@ scoring.dataSaver: MyDatasetSaver
 evaluator: Evaluator
 evaluateModel: True
 
+
 #Type of the model which is being trained
 #TODO: Yet to define enums/constants for model type.
 #ModelType:

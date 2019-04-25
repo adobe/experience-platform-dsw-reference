@@ -14,12 +14,12 @@
 # is strictly forbidden unless prior written permission is obtained
 # from Adobe.
 #####################################################################
-from ml.runtime.python.Interfaces.AbstractEvaluator import AbstractEvaluator
+from ml.runtime.python.core.RegressionEvaluator import RegressionEvaluator
 from data_access_sdk_python.reader import DataSetReader
 import numpy as np
 import pandas as pd
 
-class Evaluator(AbstractEvaluator):
+class Evaluator(RegressionEvaluator):
     def __init__(self):
        print ("Initiate")
 
@@ -31,18 +31,3 @@ class Evaluator(AbstractEvaluator):
         val = dataframe[val_start:]
 
         return train, val
-
-    def evaluate(self, data=[], model={}, configProperties={}):
-        print ("Evaluation evaluate triggered")
-        val = data.drop('weeklySalesAhead', axis=1)
-        y_pred = model.predict(val)
-        y_actual = data['weeklySalesAhead'].values
-        mape = np.mean(np.abs((y_actual - y_pred) / y_actual))
-        mae = np.mean(np.abs(y_actual - y_pred))
-        rmse = np.sqrt(np.mean((y_actual - y_pred) ** 2))
-
-        metric = [{"name": "MAPE", "value": mape, "valueType": "double"},
-                  {"name": "MAE", "value": mae, "valueType": "double"},
-                  {"name": "RMSE", "value": rmse, "valueType": "double"}]
-
-        return metric
