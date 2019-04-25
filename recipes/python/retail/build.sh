@@ -15,13 +15,6 @@
 # from Adobe.
 #####################################################################
 
-#Build sample python app
-echo "Building .egg binary for project"
-sudo python setup.py clean --all install
-
-echo ""
-echo ""
-
 echo "Please enter the version number for your recipe's docker image"
 read version
 
