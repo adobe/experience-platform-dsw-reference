@@ -59,42 +59,6 @@ applicationEvaluator <- setRefClass("applicationEvaluator",
           names(df) <- substring(names(df), nchar(tenantId)+2)
         }
       }
-      # df <- df %>%
-      #   mutate(store = as.numeric(store)) %>%
-      #   mutate(date = mdy(date), week = week(date), year = year(date)) %>%
-      #   mutate(new = 1) %>%
-      #   spread(storeType, new, fill = 0) %>%
-      #   mutate(isHoliday = as.integer(isHoliday)) %>%
-      #   mutate(weeklySalesAhead = lead(weeklySales, 45),
-      #          weeklySalesLag = lag(weeklySales, 45),
-      #          weeklySalesScaled = lead(weeklySalesAhead, 45),
-      #          weeklySalesDiff = (weeklySales - weeklySalesLag) / weeklySalesLag) %>%
-      #   drop_na() %>%
-      #   filter(if(!is.null(timeframe)) {
-      #   date >= as.Date(Sys.time()-as.numeric(timeframe)*60) & date <= as.Date(Sys.time())
-      #   } else {
-      #   date >= "2012-02-03"
-      #   }) %>%
-      #   select(-date)
-      # 
-      # #########################################
-      # # Split Data
-      # #########################################
-      # seed = 101
-      # if(!is.null(configurationJSON$evaluation.seed)){
-      #   seed = as.numeric(configurationJSON$evaluation.seed)
-      # }
-      # trainRatio = 0.8
-      # if(!is.null(configurationJSON$evaluation.trainRatio)){
-      #   trainRatio = as.numeric(configurationJSON$evaluation.trainRatio)
-      # }
-      # set.seed(seed)
-      # sample <- sample.int(n = nrow(df), size = floor(trainRatio*nrow(df)), replace = F)
-      # train_df <- df[sample, ]
-      # test_df  <- df[-sample, ]
-      # 
-      # return (list(train = train_df, test = test_df))
-      
       df <- df %>%
         mutate(store = as.numeric(store)) %>% 
         mutate(date = mdy(date), week = week(date), year = year(date)) %>%
