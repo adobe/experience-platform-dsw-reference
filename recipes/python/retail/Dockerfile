@@ -15,7 +15,7 @@
 # from Adobe.
 #####################################################################
 
-FROM adobe/acp-dsw-ml-runtime-python:0.26.2
+FROM adobe/acp-dsw-ml-runtime-python:0.27.0
 
 
 #INSTALL modules needed by application
