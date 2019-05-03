@@ -17,12 +17,8 @@
 
 from setuptools import setup
 
-with open('requirements.txt') as f:
-    required = f.read().splitlines()
-
 setup(name='pysparkretailapp',
       version='0.1.0',
       packages=['pysparkretailapp'],
-      install_requires=required,
       package_data={'pysparkretailapp': ['resources/*']}
       )

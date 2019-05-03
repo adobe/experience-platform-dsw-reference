@@ -14,10 +14,12 @@
 # is strictly forbidden unless prior written permission is obtained
 # from Adobe.
 #####################################################################
+import sys
+sys.path.append("/usr/bin/anaconda/envs/py35/lib/python3.5/site-packages/")
 
-from .training_dataloader import TrainingDataLoader
-from .scoring_dataloader import ScoringDataLoader
-from .pipeline import TrainPipeline
-from .datasaver import MyDatasetSaver
+from .trainingdataloader import load
+from .pipeline import apply
+from .scoringdataloader import load
+from .datasaver import save
 from .helper import *
 from .evaluator import *
