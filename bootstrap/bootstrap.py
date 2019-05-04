@@ -1,17 +1,42 @@
-import sys
+'''
+ * ADOBE CONFIDENTIAL
+ * ___________________
+ *
+ *  Copyright 2019 Adobe Systems Incorporated
+ *  All Rights Reserved.
+ *
+ * NOTICE:  All information contained herein is, and remains
+ * the property of Adobe Systems Incorporated and its suppliers,
+ * if any.  The intellectual and technical concepts contained
+ * herein are proprietary to Adobe Systems Incorporated and its
+ * suppliers and are protected by all applicable intellectual property
+ * laws, including trade secret and copyright laws.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Adobe Systems Incorporated.
+'''
 
-from DataIngester import *
-from SchemaIngester import *
-from Helper import *
-from GetToken import *
+import sys
+import requests
+from helper import setup_logger
+
+from data_ingester import get_dataset_id, get_batch_id, upload_file, replace_tenant_id, close_batch
+from schema_ingester import get_tenant_id, get_class_id, get_mixin_id, get_schema_id
+
+from get_token import get_access_token
 
 if sys.version_info[0] == 2:
     from ConfigParser import RawConfigParser
 if sys.version_info[0] >= 3:
     from configparser import RawConfigParser
 
+LOGGER = setup_logger(__name__)
+
 
 def ingest():
+    """
+    :return: None
+    """
     # Read the configs
     config = RawConfigParser()
     config_file_path = r'userconfig.config'
@@ -39,6 +64,7 @@ def ingest():
     # Get the IMS Token
     ims_token = "Bearer " + get_access_token(ims_host, ims_endpoint_jwt, org_id, tech_acct, api_key,
                                              client_secret, priv_key)
+
 
     # Get the titles for the class, mixin, schema and dataset
     class_title = config.get('Titles for Schema and Dataset', 'class_title')
@@ -76,16 +102,16 @@ def ingest():
         close_batch(create_batch_url, headers, batch_id)
 
     except requests.exceptions.HTTPError as httperr:
-        logger.info('HTTPError Error: %s' % httperr)
+        LOGGER.error('HTTPError Error: %s', httperr)
 
     except requests.exceptions.ConnectionError as connerr:
-        logger.info('ConnectionError Error: %s' % connerr)
+        LOGGER.error('ConnectionError Error: %s', connerr)
 
     except requests.exceptions.Timeout as touterr:
-        logger.info('Timeout Error: %s' % touterr)
+        LOGGER.error('Timeout Error: %s', touterr)
 
     except requests.exceptions.RequestException as rerr:
-        logger.info('Request Exception Error: %s' % rerr)
+        LOGGER.error('Request Exception Error: %s', rerr)
 
 
 if __name__ == "__main__":

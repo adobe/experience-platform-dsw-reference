@@ -1,3 +1,21 @@
+'''
+ * ADOBE CONFIDENTIAL
+ * ___________________
+ *
+ *  Copyright 2018 Adobe Systems Incorporated
+ *  All Rights Reserved.
+ *
+ * NOTICE:  All information contained herein is, and remains
+ * the property of Adobe Systems Incorporated and its suppliers,
+ * if any.  The intellectual and technical concepts contained
+ * herein are proprietary to Adobe Systems Incorporated and its
+ * suppliers and are protected by all applicable intellectual property
+ * laws, including trade secret and copyright laws.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Adobe Systems Incorporated.
+'''
+
 import logging
 import requests
 
@@ -12,17 +30,17 @@ def setup_logger(name):
     logger.setLevel(logging.DEBUG)
 
     # create console handler and set level to debug
-    ch = logging.StreamHandler()
-    ch.setLevel(logging.DEBUG)
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.DEBUG)
 
     # create formatter
     formatter = logging.Formatter('%(asctime)s %(levelname)s %(name)s: %(message)s')
 
-    # add formatter to ch
-    ch.setFormatter(formatter)
+    # add formatter to console_handler
+    console_handler.setFormatter(formatter)
 
-    # add ch to logger
-    logger.addHandler(ch)
+    # add console_handler to logger
+    logger.addHandler(console_handler)
 
     return logger
 
@@ -41,10 +59,4 @@ def http_request(method, url, headers, data=None):
         http_error_msg = u'%s HTTP request failed: %s for url: %s' % (response.status_code, response.text, url)
         raise requests.exceptions.HTTPError(http_error_msg)
     return response.text
-
-
-
-
-
-
 
