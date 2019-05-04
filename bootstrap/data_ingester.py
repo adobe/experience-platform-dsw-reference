@@ -2,7 +2,7 @@
  * ADOBE CONFIDENTIAL
  * ___________________
  *
- *  Copyright 2018 Adobe Systems Incorporated
+ *  Copyright 2019 Adobe Systems Incorporated
  *  All Rights Reserved.
  *
  * NOTICE:  All information contained herein is, and remains
@@ -62,9 +62,9 @@ def get_batch_id(create_batch_url, headers, dataset_id):
 
     """
     Get the batchId by making a POST request to "/data/foundation/import/batches"
-    :param create_batch_url:
-    :param headers:
-    :param dataset_id:
+    :param create_batch_url: url
+    :param headers: headers
+    :param dataset_id: dataset id
     :return: batch id
     """
     data_for_create_batch = {"datasetId": dataset_id}
@@ -80,29 +80,11 @@ def get_batch_id(create_batch_url, headers, dataset_id):
 def upload_file(create_batch_url, headers, file_with_tenant_id, dataset_id, batch_id):
     """
     Upload the data file to a batch of the dataset
-    :param create_batch_url:
-    :param headers:
-    :param file_with_tenant_id:
-    :param dataset_id:
-    :param batch_id:
-    """
-    headers["Content-type"] = "application/octet-stream"
-    headers["Connection"] = "keep-alive"
-    contents = open(FILE_PATH + file_with_tenant_id, "r").read()
-    upload_url = create_batch_url + "/" + batch_id + "/datasets/" + dataset_id + "/files/" + file_with_tenant_id
-    LOGGER.debug("Upload url is %s", upload_url)
-    http_request("put", upload_url, headers, contents)
-    LOGGER.debug("Upload file success")
-
-
-def upload_file_hardcoded(create_batch_url, headers, file_with_tenant_id, dataset_id, batch_id):
-    """
-    Upload the data file to a batch of the dataset
-    :param create_batch_url:
-    :param headers:
-    :param file_with_tenant_id:
-    :param dataset_id:
-    :param batch_id:
+    :param create_batch_url: url
+    :param headers: headers
+    :param file_with_tenant_id: file name
+    :param dataset_id: dataset id
+    :param batch_id: batch id
     """
     headers["Content-type"] = "application/octet-stream"
     headers["Connection"] = "keep-alive"
@@ -131,9 +113,9 @@ def replace_tenant_id(file_with_tenant_id, tenant_id):
 def close_batch(create_batch_url, headers, batch_id):
     """
     Close the batch by making a POST request to "/data/foundation/import/batches"
-    :param create_batch_url:
-    :param headers:
-    :param batch_id:
+    :param create_batch_url: url
+    :param headers: headers
+    :param batch_id: batch id
     """
     close_batch__url = create_batch_url + "/" + batch_id + "?action=COMPLETE"
     http_request("post", close_batch__url, headers)

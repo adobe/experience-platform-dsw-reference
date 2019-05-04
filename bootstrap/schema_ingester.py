@@ -2,7 +2,7 @@
  * ADOBE CONFIDENTIAL
  * ___________________
  *
- *  Copyright 2018 Adobe Systems Incorporated
+ *  Copyright 2019 Adobe Systems Incorporated
  *  All Rights Reserved.
  *
  * NOTICE:  All information contained herein is, and remains
@@ -26,8 +26,8 @@ CONTENT_TYPE = "application/json"
 def get_tenant_id(tenant_id_url, headers):
     """
     Get TenantId by making a GET call to "/data/foundation/schemaregistry/stats"
-    :param - url
-    :param - headers
+    :param tenant_id_url - url
+    :param headers - headers
     :return - tenant id
 
     """
