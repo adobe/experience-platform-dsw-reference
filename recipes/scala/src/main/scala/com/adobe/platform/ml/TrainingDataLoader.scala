@@ -39,6 +39,12 @@ class TrainingDataLoader extends DataLoader {
     require(configProperties != null)
     require(sparkSession != null)
 
+    print("From load  spark session is")
+    print(sparkSession.sparkContext.getConf.getAll)
+
+    print("From load config properties")
+    print(configProperties)
+
     val helper:Helper = new Helper()
     var df = helper.load_dataset(configProperties, sparkSession, "trainingDataSetId")
     df = helper.prepare_dataset(configProperties, df)
