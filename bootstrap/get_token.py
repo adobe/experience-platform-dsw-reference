@@ -96,7 +96,7 @@ def get_access_token(ims_host, ims_endpoint_jwt, org_id, tech_acct, api_key,
 
 def token_expiration_millis():
     """
-    :return: token expiration in milli seconds
+    :return: token expiration in milliseconds
     """
     dt = datetime.datetime.now()
     dt_str = dt.strftime('%s.%%06d') % dt.microsecond

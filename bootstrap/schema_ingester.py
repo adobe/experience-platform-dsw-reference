@@ -191,7 +191,7 @@ def get_schema_id(create_schema_url, headers, schema_title, class_id, mixin_id):
             }
         ]
     }
-    headers["Content-type"] = "application/json"
+    headers["Content-type"] = CONTENT_TYPE
     res_text = http_request("post", create_schema_url, headers, json.dumps(data_for_create_schema))
     schema_id = json.loads(res_text)["$id"]
     LOGGER.debug("schema_id = %s", schema_id)
