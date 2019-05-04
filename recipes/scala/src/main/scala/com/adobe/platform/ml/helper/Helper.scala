@@ -44,20 +44,11 @@ class Helper {
 
     require(configProperties != null)
     require(sparkSession != null)
-    print("In load_dataset")
-
-    print(sparkSession.sparkContext.getConf.getAll)
 
     // Read the configs
     val serviceToken: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_ML_TOKEN", "").toString
     val userToken: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_TOKEN", "").toString
     val orgId: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_ORG_ID", "").toString
-
-    print("Service Token is ")
-    print(serviceToken)
-
-    print("User Token is ")
-    print(userToken)
 
     val dataSetId: String = configProperties.get(taskId).getOrElse("")
     val apiKey: String = configProperties.get("apiKey").getOrElse("")
