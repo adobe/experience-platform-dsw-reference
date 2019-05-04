@@ -17,7 +17,7 @@
 '''
 
 import json
-from helper import setup_logger, http_request
+from utils import setup_logger, http_request
 
 LOGGER = setup_logger(__name__)
 CONTENT_TYPE = "application/json"

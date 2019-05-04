@@ -18,7 +18,7 @@
 
 import sys
 import requests
-from helper import setup_logger
+from utils import setup_logger
 
 from data_ingester import get_dataset_id, get_batch_id, upload_file, replace_tenant_id, close_batch
 from schema_ingester import get_tenant_id, get_class_id, get_mixin_id, get_schema_id

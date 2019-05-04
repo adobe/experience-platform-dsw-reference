@@ -21,7 +21,7 @@ import json
 import datetime
 import jwt
 
-from helper import setup_logger, http_request
+from utils import setup_logger, http_request
 
 if sys.version_info[0] == 2:
     from urllib import urlencode
