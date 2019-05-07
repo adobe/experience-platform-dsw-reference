@@ -6,6 +6,7 @@ Enterprise:
   api_key: af80375bec544eb493ed271373b12191
   org_id: 20656D0F5B9975B20A495E23@AdobeOrg
   tech_acct: F98D7E725CCA6F770A495FD9@techacct.adobe.com
+  client_secret: client_secret
   priv_key_filename: private.key
 
 Platform:
