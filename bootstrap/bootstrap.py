@@ -16,8 +16,9 @@
  * from Adobe Systems Incorporated.
 '''
 
-import sys
+
 import requests
+import yaml
 from utils import setup_logger
 
 from data_ingester import get_dataset_id, get_batch_id, upload_file, replace_tenant_id, close_batch
@@ -25,10 +26,6 @@ from schema_ingester import get_tenant_id, get_class_id, get_mixin_id, get_schem
 
 from get_token import get_access_token
 
-if sys.version_info[0] == 2:
-    from ConfigParser import RawConfigParser
-if sys.version_info[0] >= 3:
-    from configparser import RawConfigParser
 
 LOGGER = setup_logger(__name__)
 
@@ -38,20 +35,19 @@ def ingest():
     :return: None
     """
     # Read the configs
-    config = RawConfigParser()
-    config_file_path = r'userconfig.config'
-    config.read(config_file_path)
+    with open("config.yaml", 'r') as ymlfile:
+        cfg = yaml.safe_load(ymlfile)
 
-    # server parameters
-    ims_host = config.get("server", "ims_host")
-    ims_endpoint_jwt = config.get("server", "ims_endpoint_jwt")
+    # Server parameters
+    ims_host = cfg["Server"]["ims_host"]
+    ims_endpoint_jwt = cfg["Server"]["ims_endpoint_jwt"]
 
-    # enterprise parameters used to construct JWT
-    api_key = config.get("enterprise", "api_key")
-    org_id = config.get("enterprise", "org_id")
-    client_secret = config.get("enterprise", "client_secret")
-    tech_acct = config.get("enterprise", "tech_acct")
-    priv_key_filename = config.get("enterprise", "priv_key_filename")
+    # Enterprise parameters used to construct JWT
+    api_key = cfg["Enterprise"]["api_key"]
+    org_id = cfg["Enterprise"]["org_id"]
+    client_secret = cfg["Enterprise"]["client_secret"]
+    tech_acct = cfg["Enterprise"][ "tech_acct"]
+    priv_key_filename = cfg["Enterprise"]["priv_key_filename"]
 
     # read private key from file
     priv_key_file = open(priv_key_filename, "r")
@@ -59,7 +55,7 @@ def ingest():
     priv_key_file.close()
 
     # Get the platform url
-    platform_gateway_url = config.get('Platform', 'platform_gateway')
+    platform_gateway_url = cfg['Platform']['platform_gateway']
 
     # Get the IMS Token
     ims_token = "Bearer " + get_access_token(ims_host, ims_endpoint_jwt, org_id, tech_acct, api_key,
@@ -67,11 +63,11 @@ def ingest():
 
 
     # Get the titles for the class, mixin, schema and dataset
-    class_title = config.get('Titles for Schema and Dataset', 'class_title')
-    mixin_title = config.get('Titles for Schema and Dataset', 'mixin_title')
-    schema_title = config.get('Titles for Schema and Dataset', 'schema_title')
-    dataset_title = config.get('Titles for Schema and Dataset', 'dataset_title')
-    file_with_tenant_id = config.get('Titles for Schema and Dataset', 'file_with_tenant_id')
+    class_title = cfg['Titles for Schema and Dataset']['class_title']
+    mixin_title = cfg['Titles for Schema and Dataset']['mixin_title']
+    schema_title = cfg['Titles for Schema and Dataset']['schema_title']
+    dataset_title = cfg['Titles for Schema and Dataset']['dataset_title']
+    file_with_tenant_id = cfg['Titles for Schema and Dataset']['file_with_tenant_id']
 
     # Construct the urls
     schema_registry_uri = "/data/foundation/schemaregistry/"
@@ -89,12 +85,15 @@ def ingest():
         "x-gw-ims-org-id": org_id
     }
 
+    data_for_class = cfg["Data for creating class"]
+    data_for_mixin = cfg["Data for creating mixin"]
+    data_for_schema = cfg["Data for creating schema"]
+
     try:
         tenant_id = get_tenant_id(tenant_id_url, headers)
-        class_id = get_class_id(create_class_url, headers, class_title)
-        mixin_id = get_mixin_id(create_mixin_url, headers, mixin_title, class_id, tenant_id)
-        schema_id = get_schema_id(create_schema_url, headers, schema_title, class_id, mixin_id)
-       
+        class_id = get_class_id(create_class_url, headers, class_title, data_for_class)
+        mixin_id = get_mixin_id(create_mixin_url, headers, mixin_title, data_for_mixin, class_id, tenant_id)
+        schema_id = get_schema_id(create_schema_url, headers, schema_title, class_id, mixin_id, data_for_schema)
         dataset_id = get_dataset_id(create_dataset_url, headers, dataset_title, schema_id)
         batch_id = get_batch_id(create_batch_url, headers, dataset_id)
         replace_tenant_id(file_with_tenant_id, tenant_id)
