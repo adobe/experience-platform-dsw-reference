@@ -5,7 +5,6 @@ Server:
 Enterprise:
   api_key: af80375bec544eb493ed271373b12191
   org_id: 20656D0F5B9975B20A495E23@AdobeOrg
-  client_secret: 
   tech_acct: F98D7E725CCA6F770A495FD9@techacct.adobe.com
   priv_key_filename: private.key
 
@@ -13,13 +12,13 @@ Platform:
   platform_gateway: https://platform.adobe.io
 
 Titles for Schema and Dataset:
-  class_title: Class_Test_14
-  mixin_title: Mixin_Test_24
-  schema_title: Schema_11
-  dataset_title: Dataset_9
+  class_title: class_title
+  mixin_title: mixin_title
+  schema_title: schema_title
+  dataset_title: dataset_title
   file_with_tenant_id: RetailDataWithTenantId.json
 
-Data for creating class:
+class_data:
   "type": "object"
   "title": "class_title"
   "auditable": True
@@ -27,7 +26,7 @@ Data for creating class:
   "description": "class_title"
   "allOf": [{"$ref": "https://ns.adobe.com/xdm/data/time-series"}]
 
-Data for creating mixin:
+mixin_data:
   "type": "object"
   "title": "mixin_title"
   "description": "mixin_title"
@@ -57,7 +56,7 @@ Data for creating mixin:
   "allOf": [{"$ref": "#/definitions/retail"}]
 
 
-Data for creating schema:
+schema_data:
   "type": "object"
   "title": "schema_title"
   "description": "schema_title"

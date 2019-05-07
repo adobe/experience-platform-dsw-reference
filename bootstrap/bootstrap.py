@@ -85,9 +85,9 @@ def ingest():
         "x-gw-ims-org-id": org_id
     }
 
-    data_for_class = cfg["Data for creating class"]
-    data_for_mixin = cfg["Data for creating mixin"]
-    data_for_schema = cfg["Data for creating schema"]
+    data_for_class = cfg["class_data"]
+    data_for_mixin = cfg["mixin_data"]
+    data_for_schema = cfg["schema_data"]
 
     try:
         tenant_id = get_tenant_id(tenant_id_url, headers)
