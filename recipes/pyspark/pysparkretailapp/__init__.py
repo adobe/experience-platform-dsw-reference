@@ -17,9 +17,9 @@
 import sys
 sys.path.append("/usr/bin/anaconda/envs/py35/lib/python3.5/site-packages/")
 
-from .trainingdataloader import load
-from .pipeline import apply
-from .scoringdataloader import load
-from .datasaver import save
+from .training_data_loader import TrainingDataLoader
+from .scoring_data_loader import ScoringDataLoader
+from .train_pipeline import TrainPipeline
+from .data_saver import MyDatasetSaver
 from .helper import *
 from .evaluator import *
