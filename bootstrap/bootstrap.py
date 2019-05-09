@@ -63,11 +63,16 @@ def ingest():
 
 
     # Get the titles for the class, mixin, schema and dataset
-    class_title = cfg['Titles for Schema and Dataset']['class_title']
-    mixin_title = cfg['Titles for Schema and Dataset']['mixin_title']
-    schema_title = cfg['Titles for Schema and Dataset']['schema_title']
-    dataset_title = cfg['Titles for Schema and Dataset']['dataset_title']
+    input_class_title = cfg['Titles for Schema and Dataset']['input_class_title']
+    input_mixin_title = cfg['Titles for Schema and Dataset']['input_mixin_title']
+    input_schema_title = cfg['Titles for Schema and Dataset']['input_schema_title']
+    input_dataset_title = cfg['Titles for Schema and Dataset']['input_dataset_title']
+    original_file = cfg['Titles for Schema and Dataset']['file_replace_tenant_id']
     file_with_tenant_id = cfg['Titles for Schema and Dataset']['file_with_tenant_id']
+    is_ouput_schema_different = cfg['Titles for Schema and Dataset']['is_ouput_schema_different']
+    output_mixin_title = cfg['Titles for Schema and Dataset']['output_mixin_title']
+    output_schema_title = cfg['Titles for Schema and Dataset']['output_schema_title']
+    output_dataset_title = cfg['Titles for Schema and Dataset']['output_dataset_title']
 
     # Construct the urls
     schema_registry_uri = "/data/foundation/schemaregistry/"
@@ -86,19 +91,28 @@ def ingest():
     }
 
     data_for_class = cfg["class_data"]
-    data_for_mixin = cfg["mixin_data"]
+    data_for_mixin = cfg["input_mixin_data"]
     data_for_schema = cfg["schema_data"]
+    data_for_dataset = cfg["dataset_data"]
+    data_for_batch = cfg["batch_data"]
+    data_for_output_mixin = cfg["output_mixin_data"]
 
     try:
         tenant_id = get_tenant_id(tenant_id_url, headers)
-        class_id = get_class_id(create_class_url, headers, class_title, data_for_class)
-        mixin_id = get_mixin_id(create_mixin_url, headers, mixin_title, data_for_mixin, class_id, tenant_id)
-        schema_id = get_schema_id(create_schema_url, headers, schema_title, class_id, mixin_id, data_for_schema)
-        dataset_id = get_dataset_id(create_dataset_url, headers, dataset_title, schema_id)
-        batch_id = get_batch_id(create_batch_url, headers, dataset_id)
-        replace_tenant_id(file_with_tenant_id, tenant_id)
-        upload_file(create_batch_url, headers, file_with_tenant_id, dataset_id, batch_id)
+        class_id = get_class_id(create_class_url, headers, input_class_title, data_for_class)
+        input_mixin_id = get_mixin_id(create_mixin_url, headers, input_mixin_title, data_for_mixin, class_id, tenant_id)
+        input_schema_id = get_schema_id(create_schema_url, headers, input_schema_title, class_id, input_mixin_id, data_for_schema)
+        input_dataset_id = get_dataset_id(create_dataset_url, headers, input_dataset_title, input_schema_id, data_for_dataset)
+        batch_id = get_batch_id(create_batch_url, headers, input_dataset_id, data_for_batch)
+        replace_tenant_id(original_file, file_with_tenant_id, tenant_id)
+        upload_file(create_batch_url, headers, file_with_tenant_id, input_dataset_id, batch_id)
         close_batch(create_batch_url, headers, batch_id)
+        if is_ouput_schema_different:
+            output_mixin_id = get_mixin_id(create_mixin_url, headers, output_mixin_title, data_for_output_mixin,
+                                           class_id, tenant_id)
+            output_schema_id = get_schema_id(create_schema_url, headers, output_schema_title, class_id, output_mixin_id,
+                                         data_for_schema)
+            get_dataset_id(create_dataset_url, headers, output_dataset_title, output_schema_id, data_for_dataset)
 
     except requests.exceptions.HTTPError as httperr:
         LOGGER.error('HTTPError Error: %s', httperr)
