@@ -1,16 +1,16 @@
 #Name of the class which contains pipeline. It should implements PipelineFactory.scala
-pipeline.class: pipeline
+pipeline.class: TrainPipeline
 
 #Name of the class which contains implementation to get the training data.
-training.dataLoader: trainingdataloader
+training.dataLoader: TrainingDataLoader
 #use platformdataloader to load from platform
 #training.dataLoader: platformdataloader
 
 #Name of the class which contains implementation to get the scoring data.
-scoring.dataLoader: scoringdataloader
+scoring.dataLoader: ScoringDataLoader
 
 #Name of the class which contains implementation to save the scoring data.
-scoring.dataSaver: datasaver
+scoring.dataSaver: MyDatasetSaver
 
 #Name of the class which contains implementation for evaluation metrics.
 evaluator : evaluator
