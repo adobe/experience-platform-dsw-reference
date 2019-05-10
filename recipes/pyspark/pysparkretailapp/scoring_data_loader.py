@@ -31,15 +31,6 @@ class ScoringDataLoader(DataLoader):
             raise ValueError("spark parameter is null")
 
         pd = load_dataset(configProperties, spark, "scoringDataSetId")
-        pd = prepare_dataset(pd)
+        pd = prepare_dataset(configProperties, pd)
 
-        # Split the data
-        timeframe = str(configProperties.get("timeframe"))
-        if timeframe != 'None' :
-            filterByTime = str(datetime.datetime.now() - datetime.timedelta(minutes = int(timeframe)))
-            score = pd.filter(pd["tx_date"] >= lit(str(filterByTime)))
-            print("Number of rows after filtering : " + str(score.count()))
-        else :
-            score = pd.filter(pd["tx_date"] > lit('2012-01-27'))
-
-        return score
+        return pd
