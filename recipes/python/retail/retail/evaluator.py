@@ -14,7 +14,7 @@
 # is strictly forbidden unless prior written permission is obtained
 # from Adobe.
 #####################################################################
-from ml.runtime.python.core.RegressionEvaluator import RegressionEvaluator
+from ml.runtime.python.core.regressionEvaluator import RegressionEvaluator
 from data_access_sdk_python.reader import DataSetReader
 import numpy as np
 import pandas as pd
@@ -23,7 +23,7 @@ class Evaluator(RegressionEvaluator):
     def __init__(self):
        print ("Initiate")
 
-    def split(self, configProperties={}, dataframe=None):
+    def split(self, config={}, dataframe=None):
         train_start = '2010-02-12'
         train_end = '2012-01-27'
         val_start = '2012-02-03'
