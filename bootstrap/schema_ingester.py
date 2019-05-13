@@ -76,9 +76,8 @@ def get_mixin_id(create_mixin_url, headers, mixin_title, data, class_id, tenant_
     data['meta:intendedToExtend'][0] = class_id
     # Set the tenant id
     data["definitions"]["retail"]["properties"][str(tenant_id)] = \
-        data["definitions"]["retail"]["properties"]["_acpmlexploratoryexternal"]
-    if str(tenant_id) != "_acpmlexploratoryexternal":
-        del data["definitions"]["retail"]["properties"]["_acpmlexploratoryexternal"]
+        data["definitions"]["retail"]["properties"]["tenant_id"]
+    del data["definitions"]["retail"]["properties"]["tenant_id"]
 
     headers["Content-type"] = CONTENT_TYPE
     res_text = http_request("post", create_mixin_url, headers, json.dumps(data))

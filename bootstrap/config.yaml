@@ -6,23 +6,24 @@ Enterprise:
   api_key: af80375bec544eb493ed271373b12191
   org_id: 20656D0F5B9975B20A495E23@AdobeOrg
   tech_acct: F98D7E725CCA6F770A495FD9@techacct.adobe.com
-  client_secret: client_secret
-  priv_key_filename: private.key
+  client_secret: <client_secret>
+  priv_key_filename: private_for_test_external.key
 
 Platform:
   platform_gateway: https://platform.adobe.io
+  ims_token:
 
 Titles for Schema and Dataset:
-  input_class_title: input_class_title
-  input_mixin_title: input_mixin_title
-  input_schema_title: input_schema_title
-  input_dataset_title: input_dataset_title
+  input_class_title: Class For Retail
+  input_mixin_title: Mixin For Retail Input
+  input_schema_title: Schema For Retail Input
+  input_dataset_title: Dataset For Retail Input
   file_replace_tenant_id: DSWRetailSalesForXDM0.9.9.9.json
   file_with_tenant_id: RetailDataWithTenantId.json
   is_ouput_schema_different: True
-  output_mixin_title: output_mixin_title
-  output_schema_title: output_schema_title
-  output_dataset_title: output_dataset_title
+  output_mixin_title: Mixin For Retail Output
+  output_schema_title: Schema For Retail Output
+  output_dataset_title: Dataset For Retail Output
 
 class_data:
   "type": "object"
@@ -40,7 +41,7 @@ input_mixin_data:
   "definitions": {
     "retail": {
       "properties": {
-        "_acpmlexploratoryexternal": {
+        "tenant_id": {
             "type":"object",
             "properties": {
               "date": {"title": "date", "type": "string","description": "date"},
@@ -70,7 +71,7 @@ output_mixin_data:
   "definitions": {
     "retail": {
       "properties": {
-        "_acpmlexploratoryexternal": {
+        "tenant_id": {
             "type":"object",
             "properties": {
               "date": {"title": "date", "type": "string","description": "date"},

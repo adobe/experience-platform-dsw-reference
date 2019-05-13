@@ -38,29 +38,30 @@ def ingest():
     with open("config.yaml", 'r') as ymlfile:
         cfg = yaml.safe_load(ymlfile)
 
-    # Server parameters
-    ims_host = cfg["Server"]["ims_host"]
-    ims_endpoint_jwt = cfg["Server"]["ims_endpoint_jwt"]
-
-    # Enterprise parameters used to construct JWT
-    api_key = cfg["Enterprise"]["api_key"]
-    org_id = cfg["Enterprise"]["org_id"]
-    client_secret = cfg["Enterprise"]["client_secret"]
-    tech_acct = cfg["Enterprise"][ "tech_acct"]
-    priv_key_filename = cfg["Enterprise"]["priv_key_filename"]
-
-    # read private key from file
-    priv_key_file = open(priv_key_filename, "r")
-    priv_key = priv_key_file.read()
-    priv_key_file.close()
-
     # Get the platform url
     platform_gateway_url = cfg['Platform']['platform_gateway']
 
-    # Get the IMS Token
-    ims_token = "Bearer " + get_access_token(ims_host, ims_endpoint_jwt, org_id, tech_acct, api_key,
-                                             client_secret, priv_key)
+    api_key = cfg["Enterprise"]["api_key"]
+    org_id = cfg["Enterprise"]["org_id"]
 
+    ims_token = cfg['Platform']['ims_token']
+
+    if ims_token is None:
+        # Server parameters
+        ims_host = cfg["Server"]["ims_host"]
+        ims_endpoint_jwt = cfg["Server"]["ims_endpoint_jwt"]
+
+        # Enterprise parameters used to construct JWT
+        client_secret = cfg["Enterprise"]["client_secret"]
+        tech_acct = cfg["Enterprise"]["tech_acct"]
+        priv_key_filename = cfg["Enterprise"]["priv_key_filename"]
+
+        # read private key from file
+        priv_key_file = open(priv_key_filename, "r")
+        priv_key = priv_key_file.read()
+        priv_key_file.close()
+        ims_token = "Bearer " + get_access_token(ims_host, ims_endpoint_jwt, org_id, tech_acct, api_key,
+                                                 client_secret, priv_key)
 
     # Get the titles for the class, mixin, schema and dataset
     input_class_title = cfg['Titles for Schema and Dataset']['input_class_title']
