@@ -14,6 +14,8 @@
 # is strictly forbidden unless prior written permission is obtained
 # from Adobe.
 #####################################################################
+import sys
+sys.path.append("/usr/bin/anaconda/envs/py35/lib/python3.5/site-packages/")
 
 from .training_data_loader import TrainingDataLoader
 from .scoring_data_loader import ScoringDataLoader
