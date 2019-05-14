@@ -20,6 +20,7 @@
 import requests
 import yaml
 from utils import setup_logger
+from dictor import dictor
 
 from data_ingester import get_dataset_id, get_batch_id, upload_file, replace_tenant_id, close_batch
 from schema_ingester import get_tenant_id, get_class_id, get_mixin_id, get_schema_id
@@ -28,6 +29,16 @@ from get_token import get_access_token
 
 
 LOGGER = setup_logger(__name__)
+TITLES = "Titles"
+SERVER = "Server"
+ENTERPRISE = "Enterprise"
+PLATFORM = "Platform"
+CLASS_DATA = "class_data"
+INPUT_MIXIN_DATA = "input_mixin_data"
+SCHEMA_DATA = "schema_data"
+DATASET_DATA = "dataset_data"
+BATCH_DATA = "batch_data"
+OUTPUT_MIXIN_DATA = "output_mixin_data"
 
 
 def ingest():
@@ -39,22 +50,20 @@ def ingest():
         cfg = yaml.safe_load(ymlfile)
 
     # Get the platform url
-    platform_gateway_url = cfg['Platform']['platform_gateway']
+    platform_gateway_url = dictor(cfg, PLATFORM + ".platform_gateway", checknone=True)
+    api_key = dictor(cfg, ENTERPRISE + ".api_key", checknone=True)
+    org_id = dictor(cfg, ENTERPRISE + ".org_id", checknone=True)
+    ims_token = dictor(cfg, PLATFORM + ".ims_token", checknone=True)
 
-    api_key = cfg["Enterprise"]["api_key"]
-    org_id = cfg["Enterprise"]["org_id"]
-
-    ims_token = cfg['Platform']['ims_token']
-
-    if ims_token is None:
+    if ims_token == 'None':
         # Server parameters
-        ims_host = cfg["Server"]["ims_host"]
-        ims_endpoint_jwt = cfg["Server"]["ims_endpoint_jwt"]
+        ims_host = dictor(cfg, SERVER + ".ims_host", checknone=True)
+        ims_endpoint_jwt = dictor(cfg, SERVER + ".ims_endpoint_jwt", checknone=True)
 
         # Enterprise parameters used to construct JWT
-        client_secret = cfg["Enterprise"]["client_secret"]
-        tech_acct = cfg["Enterprise"]["tech_acct"]
-        priv_key_filename = cfg["Enterprise"]["priv_key_filename"]
+        client_secret = dictor(cfg, ENTERPRISE + ".client_secret", checknone=True)
+        tech_acct = dictor(cfg, ENTERPRISE + ".tech_acct", checknone=True)
+        priv_key_filename = dictor(cfg,  ENTERPRISE + ".priv_key_filename", checknone=True)
 
         # read private key from file
         priv_key_file = open(priv_key_filename, "r")
@@ -64,16 +73,16 @@ def ingest():
                                                  client_secret, priv_key)
 
     # Get the titles for the class, mixin, schema and dataset
-    input_class_title = cfg['Titles for Schema and Dataset']['input_class_title']
-    input_mixin_title = cfg['Titles for Schema and Dataset']['input_mixin_title']
-    input_schema_title = cfg['Titles for Schema and Dataset']['input_schema_title']
-    input_dataset_title = cfg['Titles for Schema and Dataset']['input_dataset_title']
-    original_file = cfg['Titles for Schema and Dataset']['file_replace_tenant_id']
-    file_with_tenant_id = cfg['Titles for Schema and Dataset']['file_with_tenant_id']
-    is_ouput_schema_different = cfg['Titles for Schema and Dataset']['is_ouput_schema_different']
-    output_mixin_title = cfg['Titles for Schema and Dataset']['output_mixin_title']
-    output_schema_title = cfg['Titles for Schema and Dataset']['output_schema_title']
-    output_dataset_title = cfg['Titles for Schema and Dataset']['output_dataset_title']
+    input_class_title = dictor(cfg, TITLES + ".input_class_title", checknone=True)
+    input_mixin_title = dictor(cfg, TITLES + ".input_mixin_title", checknone=True)
+    input_schema_title = dictor(cfg, TITLES + ".input_schema_title", checknone=True)
+    input_dataset_title = dictor(cfg, TITLES + ".input_dataset_title", checknone=True)
+    original_file = dictor(cfg, TITLES + ".file_replace_tenant_id", checknone=True)
+    file_with_tenant_id = dictor(cfg, TITLES + ".file_with_tenant_id", checknone=True)
+    is_ouput_schema_different = dictor(cfg,  TITLES + ".is_ouput_schema_different", checknone=True)
+    output_mixin_title = dictor(cfg, TITLES + ".output_mixin_title", checknone=True)
+    output_schema_title = dictor(cfg, TITLES + ".output_schema_title", checknone=True)
+    output_dataset_title = dictor(cfg, TITLES + ".output_dataset_title", checknone=True)
 
     # Construct the urls
     schema_registry_uri = "/data/foundation/schemaregistry/"
@@ -91,12 +100,12 @@ def ingest():
         "x-gw-ims-org-id": org_id
     }
 
-    data_for_class = cfg["class_data"]
-    data_for_mixin = cfg["input_mixin_data"]
-    data_for_schema = cfg["schema_data"]
-    data_for_dataset = cfg["dataset_data"]
-    data_for_batch = cfg["batch_data"]
-    data_for_output_mixin = cfg["output_mixin_data"]
+    data_for_class = dictor(cfg, CLASS_DATA, checknone=True)
+    data_for_mixin = dictor(cfg, INPUT_MIXIN_DATA, checknone=True)
+    data_for_schema = dictor(cfg, SCHEMA_DATA, checknone=True)
+    data_for_dataset = dictor(cfg, DATASET_DATA, checknone=True)
+    data_for_batch = dictor(cfg, BATCH_DATA, checknone=True)
+    data_for_output_mixin = dictor(cfg, OUTPUT_MIXIN_DATA, checknone=True)
 
     try:
         tenant_id = get_tenant_id(tenant_id_url, headers)

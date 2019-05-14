@@ -7,13 +7,13 @@ Enterprise:
   org_id: 20656D0F5B9975B20A495E23@AdobeOrg
   tech_acct: F98D7E725CCA6F770A495FD9@techacct.adobe.com
   client_secret: <client_secret>
-  priv_key_filename: private_for_test_external.key
+  priv_key_filename: private.key
 
 Platform:
   platform_gateway: https://platform.adobe.io
-  ims_token:
+  ims_token: None
 
-Titles for Schema and Dataset:
+Titles:
   input_class_title: Class For Retail
   input_mixin_title: Mixin For Retail Input
   input_schema_title: Schema For Retail Input
