@@ -1,0 +1,66 @@
+Server:
+  ims_host: ims-na1.adobelogin.com
+  ims_endpoint_jwt: /ims/exchange/jwt
+
+Enterprise:
+  api_key: af80375bec544eb493ed271373b12191
+  org_id: 20656D0F5B9975B20A495E23@AdobeOrg
+  tech_acct: F98D7E725CCA6F770A495FD9@techacct.adobe.com
+  client_secret: client_secret
+  priv_key_filename: private.key
+
+Platform:
+  platform_gateway: https://platform.adobe.io
+
+Titles for Schema and Dataset:
+  class_title: class_title
+  mixin_title: mixin_title
+  schema_title: schema_title
+  dataset_title: dataset_title
+  file_with_tenant_id: RetailDataWithTenantId.json
+
+class_data:
+  "type": "object"
+  "title": "class_title"
+  "auditable": True
+  "meta:extends": ["https://ns.adobe.com/xdm/data/time-series"]
+  "description": "class_title"
+  "allOf": [{"$ref": "https://ns.adobe.com/xdm/data/time-series"}]
+
+mixin_data:
+  "type": "object"
+  "title": "mixin_title"
+  "description": "mixin_title"
+  "meta:intendedToExtend": [{"class_id"}]
+  "definitions": {
+    "retail": {
+      "properties": {
+        "tenant_id": {
+            "type":"object",
+            "properties": {
+              "date": {"title": "date", "type": "string","description": "date"},
+              "store": {"title": "store","type": "integer","description": "store"},
+              "storeType": {"title": "storeType","type": "string","description": "storeType"},
+               "weeklySales": {"title": "weeklySales","type": "number","description": "weeklySales"},
+               "storeSize": {"title": "storeSize","type": "integer","description": "storeSize"},
+               "temperature": {"title": "temperature","type": "number","description": "temperature"},
+                "regionalFuelPrice": {"title": "regionalFuelPrice","type": "number","description": "regionalFuelPrice"},
+                "markdown": {"title": "markdown","type": "number","description": "markdown"},
+                "cpi": {"title": "cpi","type": "number","description": "cpi"},
+                "unemployment": {"title": "unemployment","type": "number","description": "unemployment"},
+                "isHoliday": {"title": "isHoliday","type": "boolean","description": "isHoliday"}
+            }
+        }
+      }
+    }
+  }
+  "allOf": [{"$ref": "#/definitions/retail"}]
+
+
+schema_data:
+  "type": "object"
+  "title": "schema_title"
+  "description": "schema_title"
+  "auditable": True
+  "meta:extends": [ "mixin_id", "class_id" ]
+  "allOf": [{"$ref": "mixin_id"},{"$ref": "class_id"}]

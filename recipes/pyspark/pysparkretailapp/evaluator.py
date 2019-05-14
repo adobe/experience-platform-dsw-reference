@@ -15,12 +15,12 @@
 # from Adobe.
 #####################################################################
 
-from pyspark.sql.functions import col, avg, sqrt, abs, pow, lit
+from pyspark.sql.functions import col, lit
 from sdk.evaluation.regression import RegressionEvaluator
 
 class Evaluator(RegressionEvaluator):
     def __init__(self):
-       print ("Initiate")
+       print("Initiate")
 
     def split(configProperties, dataframe):
  

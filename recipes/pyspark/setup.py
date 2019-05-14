@@ -17,12 +17,15 @@
 
 from setuptools import setup
 
+with open('requirements.txt') as f:
+    required = f.read().splitlines()
+
 setup(name='pysparkretailapp',
       version='0.1.0',
       packages=['pysparkretailapp'],
-      install_requires=["pyspark>=2.3.0"],
+      install_requires=required,
       #we will use public Adobe github repo for sdk
       dependency_links=[
           'git+ssh://git@git.corp.adobe.com/ml/model-authoring-sdk-pyspark.git@master#egg=model_authoring_sdk'],
       package_data={'pysparkretailapp': ['resources/*']}
-      )
+    )
