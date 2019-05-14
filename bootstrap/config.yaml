@@ -16,12 +16,14 @@ Platform:
 Titles:
   input_class_title: Class For Retail
   input_mixin_title: Mixin For Retail Input
+  input_mixin_definition_title: Retail_Input
   input_schema_title: Schema For Retail Input
   input_dataset_title: Dataset For Retail Input
   file_replace_tenant_id: DSWRetailSalesForXDM0.9.9.9.json
   file_with_tenant_id: RetailDataWithTenantId.json
   is_ouput_schema_different: True
   output_mixin_title: Mixin For Retail Output
+  output_mixin_definition_title: Retail_Output
   output_schema_title: Schema For Retail Output
   output_dataset_title: Dataset For Retail Output
 

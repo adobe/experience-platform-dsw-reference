@@ -75,12 +75,14 @@ def ingest():
     # Get the titles for the class, mixin, schema and dataset
     input_class_title = dictor(cfg, TITLES + ".input_class_title", checknone=True)
     input_mixin_title = dictor(cfg, TITLES + ".input_mixin_title", checknone=True)
+    input_mixin_definition_title = dictor(cfg, TITLES + ".input_mixin_definition_title", checknone=True)
     input_schema_title = dictor(cfg, TITLES + ".input_schema_title", checknone=True)
     input_dataset_title = dictor(cfg, TITLES + ".input_dataset_title", checknone=True)
     original_file = dictor(cfg, TITLES + ".file_replace_tenant_id", checknone=True)
     file_with_tenant_id = dictor(cfg, TITLES + ".file_with_tenant_id", checknone=True)
     is_ouput_schema_different = dictor(cfg,  TITLES + ".is_ouput_schema_different", checknone=True)
     output_mixin_title = dictor(cfg, TITLES + ".output_mixin_title", checknone=True)
+    output_mixin_definition_title = dictor(cfg, TITLES + ".output_mixin_definition_title", checknone=True)
     output_schema_title = dictor(cfg, TITLES + ".output_schema_title", checknone=True)
     output_dataset_title = dictor(cfg, TITLES + ".output_dataset_title", checknone=True)
 
@@ -110,7 +112,8 @@ def ingest():
     try:
         tenant_id = get_tenant_id(tenant_id_url, headers)
         class_id = get_class_id(create_class_url, headers, input_class_title, data_for_class)
-        input_mixin_id = get_mixin_id(create_mixin_url, headers, input_mixin_title, data_for_mixin, class_id, tenant_id)
+        input_mixin_id = get_mixin_id(create_mixin_url, headers, input_mixin_title, data_for_mixin, class_id,
+                                      tenant_id, input_mixin_definition_title)
         input_schema_id = get_schema_id(create_schema_url, headers, input_schema_title, class_id, input_mixin_id, data_for_schema)
         input_dataset_id = get_dataset_id(create_dataset_url, headers, input_dataset_title, input_schema_id, data_for_dataset)
         batch_id = get_batch_id(create_batch_url, headers, input_dataset_id, data_for_batch)
@@ -119,7 +122,7 @@ def ingest():
         close_batch(create_batch_url, headers, batch_id)
         if is_ouput_schema_different:
             output_mixin_id = get_mixin_id(create_mixin_url, headers, output_mixin_title, data_for_output_mixin,
-                                           class_id, tenant_id)
+                                           class_id, tenant_id, output_mixin_definition_title)
             output_schema_id = get_schema_id(create_schema_url, headers, output_schema_title, class_id, output_mixin_id,
                                          data_for_schema)
             get_dataset_id(create_dataset_url, headers, output_dataset_title, output_schema_id, data_for_dataset)
