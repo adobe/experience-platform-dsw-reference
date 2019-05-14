@@ -20,6 +20,9 @@ from sdk.evaluation.regression import RegressionEvaluator
 
 class Evaluator(RegressionEvaluator):
 
+    def __init__(self):
+        print("Initiate")
+
     def split(self, configProperties, dataframe):
         # Order by date and split the data
         df = dataframe.orderBy("date").withColumn("date", col("date").cast("String"))
