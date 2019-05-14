@@ -19,11 +19,8 @@ from pyspark.sql.functions import col, lit
 from sdk.evaluation.regression import RegressionEvaluator
 
 class Evaluator(RegressionEvaluator):
-    def __init__(self):
-       print("Initiate")
 
-    def split(configProperties, dataframe):
- 
+    def split(self, configProperties, dataframe):
         # Order by date and split the data
         df = dataframe.orderBy("date").withColumn("date", col("date").cast("String"))
         train = df.filter(df["date"] <= lit('2012-01-27 00:00:00'))
