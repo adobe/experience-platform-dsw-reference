@@ -21,6 +21,7 @@ from pyspark.sql.functions import col
 from pyspark.sql.types import IntegerType
 from pyspark.sql.functions import unix_timestamp, from_unixtime, to_date, lit, lag, udf, date_format
 from pyspark.sql import Window
+import datetime
 
 
 def load_dataset(configProperties, spark, taskId):
@@ -45,10 +46,25 @@ def load_dataset(configProperties, spark, taskId):
     return pd
 
 
-def prepare_dataset(dataset):
+def prepare_dataset(configProperties, dataset):
+
+    tenant_id = str(configProperties.get("tenant_id"))
+
+    #Flatten the data
+    if tenant_id in dataset.columns:
+        pd = dataset.select(col(tenant_id + ".*"))
+
+    # Filter the data
+    timeframe = str(configProperties.get("timeframe"))
+    if timeframe != 'None':
+        filterByTime = str(datetime.datetime.now() - datetime.timedelta(minutes=int(timeframe)))
+        pd = pd.filter(pd["date"] >= lit(str(filterByTime)))
+        print("Number of rows after filtering : " + str(pd.count()))
+    else:
+        pd
 
     # Convert isHoliday boolean value to Int
-    pd = dataset.withColumn("isHoliday", col("isHoliday").cast(IntegerType()))
+    pd = pd.withColumn("isHoliday", col("isHoliday").cast(IntegerType()))
 
     # Get the week and year from date
     pd = pd.withColumn("week", date_format(to_date("date", "MM/dd/yy"), "w").cast(IntegerType()))
@@ -69,3 +85,4 @@ def prepare_dataset(dataset):
 
     pd = pd.na.drop()
     return pd
+

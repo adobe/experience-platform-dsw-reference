@@ -15,10 +15,7 @@
 # from Adobe.
 #####################################################################
 
-from pyspark.sql.functions import lit
 from .helper import *
-import datetime
-
 from sdk.data_loader import DataLoader
 
 
@@ -30,15 +27,6 @@ class TrainingDataLoader(DataLoader):
             raise ValueError("spark parameter is null")
 
         pd = load_dataset(configProperties, spark, "trainingDataSetId")
-        pd = prepare_dataset(pd)
+        pd = prepare_dataset(configProperties, pd)
 
-        # Split the data
-        timeframe = str(configProperties.get("timeframe"))
-        if timeframe != 'None' :
-            filterByTime = str(datetime.datetime.now() - datetime.timedelta(minutes = int(timeframe)))
-            train = pd.filter(pd["tx_date"] >= lit(str(filterByTime)))
-            print("Number of rows after filtering : " + str(train.count()))
-        else :
-            train = pd.filter(pd["tx_date"] <= lit('2012-01-27'))
-
-        return train
+        return pd

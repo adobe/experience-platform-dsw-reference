@@ -33,7 +33,11 @@
 
       {
         "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
-        "value": "/_customer/default/DSWRetailSales"
+        "value": "https://ns.adobe.com/acpmlexploratoryexternal/schemas/4fb4c8779c692fb7643c19e6009a8542"
+      },
+      {
+        "key":"tenant_id",
+        "value": "_acpmlexploratoryexternal"
       },
       {
         "key": "timeframe",
@@ -49,12 +53,16 @@
         "value": "acp_machineLearning_customer"
       },
       {
-        "key": "scored_dataset_id",
-        "value": "5c4bb577cfec4a152d19b228"
+        "key":"tenant_id",
+        "value": "_acpmlexploratoryexternal"
       },
       {
         "key": "timeframe",
         "value": "600000000"
+      },
+      {
+        "key":"ACP_DSW_SCORING_RESULTS_XDM_SCHEMA",
+        "value":"https://ns.adobe.com/acpmlexploratoryexternal/schemas/45ae8fbf6eec0376c7ef0a8e1f08024b"
       }
     ]
   }
