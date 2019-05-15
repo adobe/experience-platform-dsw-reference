@@ -15,10 +15,7 @@
 # from Adobe.
 #####################################################################
 
-from pyspark.sql.functions import lit
 from .helper import *
-import datetime
-
 from sdk.data_loader import DataLoader
 
 

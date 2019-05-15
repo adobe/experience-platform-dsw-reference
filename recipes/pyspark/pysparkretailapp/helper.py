@@ -51,7 +51,8 @@ def prepare_dataset(configProperties, dataset):
     tenant_id = str(configProperties.get("tenant_id"))
 
     #Flatten the data
-    pd = dataset.select(col(tenant_id + ".*"))
+    if tenant_id in dataset.columns:
+        pd = dataset.select(col(tenant_id + ".*"))
 
     # Filter the data
     timeframe = str(configProperties.get("timeframe"))
