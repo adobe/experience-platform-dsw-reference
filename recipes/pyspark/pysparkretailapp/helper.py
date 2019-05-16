@@ -29,9 +29,9 @@ def load_dataset(configProperties, spark, taskId):
     service_token = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_ML_TOKEN"))
     user_token = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_TOKEN"))
     org_id = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_ORG_ID"))
+    api_key = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_CLIENT_ID"))
 
     dataset_id = str(configProperties.get(taskId))
-    api_key = str(configProperties.get("api_key"))
 
     for arg in ['service_token', 'user_token', 'org_id', 'dataset_id', 'api_key']:
         if eval(arg) == 'None':
@@ -85,4 +85,3 @@ def prepare_dataset(configProperties, dataset):
 
     pd = pd.na.drop()
     return pd
-

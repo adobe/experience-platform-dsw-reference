@@ -28,7 +28,11 @@
             },
             {
                 "key":"tenantId",
-                "value": "_acpmlexploratoryexternal"
+                "value": "_<tenant_id>"
+            },
+            {
+              "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
+              "value": "<leave as is if going through UI workflow. Replace with Schema ID if creating recipe via API>"
             },
             {
                "key": "timeframe",
@@ -62,13 +66,16 @@
             },
             {
                 "key":"tenantId",
-                "value": "_acpmlexploratoryexternal"
+                "value": "_<tenant_id>"
             },
             {
                 "key": "evaluation.predictionColumn",
                 "value": "prediction"
+            },
+            {
+              "key":"ACP_DSW_SCORING_RESULTS_XDM_SCHEMA",
+              "value":"<leave as is if going through UI workflow. Replace with Schema ID if creating recipe via API>"
             }
-
         ]
     }
 ]

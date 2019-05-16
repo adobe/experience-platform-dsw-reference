@@ -28,7 +28,11 @@
       },
       {
         "key": "tenantId",
-        "value": "<tenant_id>"
+        "value": "_<tenant_id>"
+     },
+     {
+       "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
+       "value": "<leave as is if going through UI workflow. Replace with Schema ID if creating recipe via API>"
      },
      {
        "key": "evaluation.labelColumn",
@@ -45,7 +49,11 @@
         "parameters": [
             {
                 "key": "tenantId",
-                "value": "<tenant_id>"
+                "value": "_<tenant_id>"
+            },
+            {
+              "key":"ACP_DSW_SCORING_RESULTS_XDM_SCHEMA",
+              "value":"<leave as is if going through UI workflow. Replace with Schema ID if creating recipe via API>"
             }
         ]
   }
