@@ -19,20 +19,12 @@
                 "value": "date,store,storeType,storeSize,temperature,regionalFuelPrice,markdown,cpi,unemployment,isHoliday"
             },
             {
-                "key": "apiKey",
-                "value": "acp_machineLearning_customer"
-            },
-            {
                 "key": "ACP_DSW_TARGET_FEATURES",
                 "value": "weeklySales"
             },
             {
                 "key": "ACP_DSW_FEATURE_UPDATE_SUPPORT",
                 "value": false
-            },
-            {
-                "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
-                "value": "https://ns.adobe.com/acpmlexploratoryexternal/schemas/4fb4c8779c692fb7643c19e6009a8542"
             },
             {
                 "key":"tenantId",
@@ -65,20 +57,8 @@
         "name": "score",
         "parameters": [
             {
-                "key": "apiKey",
-                "value": "acp_machineLearning_customer"
-            },
-            {
-                "key": "scoredDataSetId",
-                "value": "5ca3c1f12a7d4114b357da4d"
-            },
-            {
                 "key": "timeframe",
                 "value": "600000000"
-            },
-            {
-                "key":"ACP_DSW_SCORING_RESULTS_XDM_SCHEMA",
-                "value":"https://ns.adobe.com/acpmlexploratoryexternal/schemas/f54e82c6625daba3c12b3e7a2590fa5c"
             },
             {
                 "key":"tenantId",
