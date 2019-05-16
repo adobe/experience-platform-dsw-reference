@@ -70,7 +70,7 @@
             },
             {
                 "key": "scoredDataSetId",
-                "value": "5ca3c1f12a7d4114b357da4d"
+                "value": "5cb8ae71a4f36014b34aa287"
             },
             {
                 "key": "timeframe",
@@ -78,7 +78,7 @@
             },
             {
                 "key":"ACP_DSW_SCORING_RESULTS_XDM_SCHEMA",
-                "value":"https://ns.adobe.com/acpmlexploratoryexternal/schemas/f54e82c6625daba3c12b3e7a2590fa5c"
+                "value":"https://ns.adobe.com/acpmlexploratoryexternal/schemas/45ae8fbf6eec0376c7ef0a8e1f08024b"
             },
             {
                 "key":"tenantId",
