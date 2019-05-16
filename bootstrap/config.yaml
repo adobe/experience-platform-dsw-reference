@@ -6,18 +6,26 @@ Enterprise:
   api_key: af80375bec544eb493ed271373b12191
   org_id: 20656D0F5B9975B20A495E23@AdobeOrg
   tech_acct: F98D7E725CCA6F770A495FD9@techacct.adobe.com
-  client_secret: client_secret
+  client_secret: <client_secret>
   priv_key_filename: private.key
 
 Platform:
   platform_gateway: https://platform.adobe.io
+  ims_token: None
 
-Titles for Schema and Dataset:
-  class_title: class_title
-  mixin_title: mixin_title
-  schema_title: schema_title
-  dataset_title: dataset_title
+Titles:
+  input_class_title: Class For Retail
+  input_mixin_title: Mixin For Retail Input
+  input_mixin_definition_title: Retail_Input
+  input_schema_title: Schema For Retail Input
+  input_dataset_title: Dataset For Retail Input
+  file_replace_tenant_id: DSWRetailSalesForXDM0.9.9.9.json
   file_with_tenant_id: RetailDataWithTenantId.json
+  is_ouput_schema_different: True
+  output_mixin_title: Mixin For Retail Output
+  output_mixin_definition_title: Retail_Output
+  output_schema_title: Schema For Retail Output
+  output_dataset_title: Dataset For Retail Output
 
 class_data:
   "type": "object"
@@ -27,7 +35,7 @@ class_data:
   "description": "class_title"
   "allOf": [{"$ref": "https://ns.adobe.com/xdm/data/time-series"}]
 
-mixin_data:
+input_mixin_data:
   "type": "object"
   "title": "mixin_title"
   "description": "mixin_title"
@@ -57,6 +65,28 @@ mixin_data:
   "allOf": [{"$ref": "#/definitions/retail"}]
 
 
+output_mixin_data:
+  "type": "object"
+  "title": "mixin_title"
+  "description": "mixin_title"
+  "meta:intendedToExtend": [{"class_id"}]
+  "definitions": {
+    "retail": {
+      "properties": {
+        "tenant_id": {
+            "type":"object",
+            "properties": {
+              "date": {"title": "date", "type": "string","description": "date"},
+              "store": {"title": "store","type": "integer","description": "store"},
+              "prediction": {"title": "prediction","type": "number","description": "prediction"},
+            }
+        }
+      }
+    }
+  }
+  "allOf": [{"$ref": "#/definitions/retail"}]
+
+
 schema_data:
   "type": "object"
   "title": "schema_title"
@@ -64,3 +94,21 @@ schema_data:
   "auditable": True
   "meta:extends": [ "mixin_id", "class_id" ]
   "allOf": [{"$ref": "mixin_id"},{"$ref": "class_id"}]
+
+dataset_data:
+  "schemaRef": {
+      "id": "schema_id",
+      "contentType": "application/vnd.adobe.xed+json; version=1"
+  }
+  "name": "dataset_title"
+  "description": "dataset_title"
+  "fileDescription": {
+      "persisted": True,
+      "containerFormat": "parquet",
+      "format": "parquet"
+  }
+  "aspect": "production"
+
+batch_data:
+  "datasetId": "dataset_id"
+  "inputFormat": {"format": "json"}
