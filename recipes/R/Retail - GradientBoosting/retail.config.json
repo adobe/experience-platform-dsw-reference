@@ -68,7 +68,7 @@
         "name": "score",
         "parameters": [
             {
-                "key": "output_dataset_id",
+                "key": "scoringResultsDataSetId",
                 "value": "5cb8ae71a4f36014b34aa287"
             },
             {
