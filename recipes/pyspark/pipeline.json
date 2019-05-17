@@ -19,10 +19,6 @@
         "value": "date,store,storeType,storeSize,temperature,regionalFuelPrice,markdown,cpi,unemployment,isHoliday"
       },
       {
-        "key": "api_key",
-        "value": "acp_machineLearning_customer"
-      },
-      {
         "key": "ACP_DSW_TARGET_FEATURES",
         "value": "weeklySales"
       },
@@ -33,11 +29,11 @@
 
       {
         "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
-        "value": "https://ns.adobe.com/acpmlexploratoryexternal/schemas/4fb4c8779c692fb7643c19e6009a8542"
+        "value": "<leave as is if going through UI workflow. Replace with Schema ID if creating recipe via API>"
       },
       {
         "key":"tenant_id",
-        "value": "_acpmlexploratoryexternal"
+        "value": "_<tenant_id>"
       },
       {
         "key": "timeframe",
@@ -49,12 +45,8 @@
     "name": "score",
     "parameters": [
       {
-        "key": "api_key",
-        "value": "acp_machineLearning_customer"
-      },
-      {
         "key":"tenant_id",
-        "value": "_acpmlexploratoryexternal"
+        "value": "_<tenant_id>"
       },
       {
         "key": "timeframe",
@@ -62,7 +54,7 @@
       },
       {
         "key":"ACP_DSW_SCORING_RESULTS_XDM_SCHEMA",
-        "value":"https://ns.adobe.com/acpmlexploratoryexternal/schemas/45ae8fbf6eec0376c7ef0a8e1f08024b"
+        "value":"<leave as is if going through UI workflow. Replace with Schema ID if creating recipe via API>"
       }
     ]
   }

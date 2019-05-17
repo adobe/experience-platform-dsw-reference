@@ -34,9 +34,9 @@ class MyDatasetSaver(DataSaver):
         service_token = str(sparkContext.getConf().get("ML_FRAMEWORK_IMS_ML_TOKEN"))
         user_token = str(sparkContext.getConf().get("ML_FRAMEWORK_IMS_TOKEN"))
         org_id = str(sparkContext.getConf().get("ML_FRAMEWORK_IMS_ORG_ID"))
+        api_key = str(sparkContext.getConf().get("ML_FRAMEWORK_IMS_CLIENT_ID"))
 
         scored_dataset_id = str(configProperties.get("scoringResultsDataSetId"))
-        api_key = str(configProperties.get("api_key"))
         tenant_id = str(configProperties.get("tenant_id"))
         timestamp = "2019-01-01 00:00:00"
 
