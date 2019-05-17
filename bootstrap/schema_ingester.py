@@ -31,6 +31,7 @@ def get_tenant_id(tenant_id_url, headers):
     :return - tenant id
 
     """
+
     res_text = http_request("get", tenant_id_url, headers)
     tenant_id = "_" + json.loads(res_text)["tenantId"]
     LOGGER.debug("tenant_id = %s", tenant_id)
@@ -46,6 +47,7 @@ def get_class_id(create_class_url, headers, class_title, data):
     :param data: post request data
     :return: class url
     """
+
     # Set the class title and description
     data['title'] = class_title   
     data['description'] = class_title
@@ -57,7 +59,7 @@ def get_class_id(create_class_url, headers, class_title, data):
     return class_id
 
 
-def get_mixin_id(create_mixin_url, headers, mixin_title, data, class_id, tenant_id):
+def get_mixin_id(create_mixin_url, headers, mixin_title, data, class_id, tenant_id, mixin_definition_title):
     """
     Get the mixinId by making a POST REQUEST to "/data/foundation/schemaregistry/tenant/mixins"
 
@@ -69,15 +71,21 @@ def get_mixin_id(create_mixin_url, headers, mixin_title, data, class_id, tenant_
     :param tenant_id: tenant id in the org
     :return: mixin url
     """
+
     # Set the title and description
     data['title'] = mixin_title
     data['description'] = mixin_title
     # Set the class id
     data['meta:intendedToExtend'][0] = class_id
     # Set the tenant id
-    data["definitions"]["retail"]["properties"][str(tenant_id)] = data["definitions"]["retail"]["properties"][
-        "tenant_id"]
-    del data["definitions"]["retail"]["properties"]["tenant_id"]
+    for key in data["definitions"].keys():
+        data["definitions"][mixin_definition_title] = data["definitions"][key]
+        for nested_key in data["definitions"][key]["properties"].keys():
+            data["definitions"][key]["properties"][tenant_id] = data["definitions"][key]["properties"][nested_key]
+            del data["definitions"][key]["properties"][nested_key]
+            del data["definitions"][key]
+    # Set the reference url
+    data["allOf"][0]["$ref"] = "#/definitions/" + mixin_definition_title
 
     headers["Content-type"] = CONTENT_TYPE
     res_text = http_request("post", create_mixin_url, headers, json.dumps(data))

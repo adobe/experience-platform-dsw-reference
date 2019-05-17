@@ -49,9 +49,9 @@ class Helper {
     val serviceToken: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_ML_TOKEN", "").toString
     val userToken: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_TOKEN", "").toString
     val orgId: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_ORG_ID", "").toString
+    val apiKey: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_CLIENT_ID", "").toString
 
     val dataSetId: String = configProperties.get(taskId).getOrElse("")
-    val apiKey: String = configProperties.get("apiKey").getOrElse("")
 
     // Load the dataset
     var df = sparkSession.read.format("com.adobe.platform.dataset")
