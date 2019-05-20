@@ -19,13 +19,13 @@ Following are the steps the script runs through to setup the input and output da
 13. Create Output Dataset with the schema
 
 # Setup
-We would need an access token to access the APIS. This can be obtained from either an Adobe IO integration or from the 
+We would need an access token to access the APIs. This can be obtained from either an Adobe IO integration or from the 
 application cookies. 
 ### Adobe IO Integration workflow
 Refer to the following documentation to create an Adobe IO integration:
-`https://adobeio-prod.adobemsbasic.com/authentication/auth-methods.html#!AdobeDocs/adobeio-auth/master/AuthenticationOverview/ServiceAccountIntegration.md`
+(https://adobeio-prod.adobemsbasic.com/authentication/auth-methods.html#!AdobeDocs/adobeio-auth/master/AuthenticationOverview/ServiceAccountIntegration.md)
 
-Input the values in the Enterprise of the config.yaml from the Adobe IO integration:
+Input the values in the Enterprise section of the config.yaml from the Adobe IO integration:
 
     Enterprise:
        api_key: []
@@ -35,9 +35,12 @@ Input the values in the Enterprise of the config.yaml from the Adobe IO integrat
        priv_key_filename: [] 
        
 ### Application cookies workflow
-Login to platform UI - `https://platform.adobe.com`. Open the Javascript console and get the `ims-user-token` value 
-from the Application cookies.
-Input this value to `ims_token: []`
+Login to Adobe Experience Platform UI - (https://platform.adobe.com). Open the JavaScript console and get the 
+`ims-user-token` value from the Application cookies.
+
+Input this value in ims_token in Platform section of the config.yaml
+
+`ims_token: Bearer []`
 
 ### Input the values for the Titles:
 
