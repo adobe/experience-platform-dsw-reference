@@ -38,7 +38,7 @@ Input the values in the Enterprise section of the config.yaml from the Adobe IO 
 Login to Adobe Experience Platform UI - (https://platform.adobe.com). Open the JavaScript console and get the 
 `ims-user-token` value from the Application cookies.
 
-Input this value in ims_token in Platform section of the config.yaml
+Input this value in ims_token in the Platform section of the config.yaml
 
 `ims_token: Bearer []`
 
