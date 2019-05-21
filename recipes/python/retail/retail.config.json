@@ -27,12 +27,16 @@
         "value": false
       },
       {
+        "key": "trainingDataSetId",
+        "value": "5cdb2c483426ca14547fb113"
+      },
+      {
         "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
-        "value": "https://ns.adobe.com/acpmlexploratoryexternal/schemas/4fb4c8779c692fb7643c19e6009a8542"
+        "value": "https://ns.adobe.com/int_acpmltestexternal/schemas/f7ac2aa9fa8590e16aa81ccd09b0679d"
       },
       {
         "key": "tenantId",
-        "value": "<tenant_id>"
+        "value": "int_acpmltestexternal"
      },
      {
        "key": "evaluation.labelColumn",
@@ -48,16 +52,20 @@
         "name": "score",
         "parameters": [
             {
+                "key": "scoringDataSetId",
+                "value": "5cdb2c483426ca14547fb113"
+            },
+            {
                 "key": "output_dataset_id",
-                "value": "5cb8ae71a4f36014b34aa287"
+                "value": "5cdb39f99a1240145505bc54"
             },
             {
                 "key": "tenantId",
-                "value": "<tenant_id>"
+                "value": "int_acpmltestexternal"
             },
             {
                "key":"ACP_DSW_SCORING_RESULTS_XDM_SCHEMA",
-               "value":"https://ns.adobe.com/acpmlexploratoryexternal/schemas/f54e82c6625daba3c12b3e7a2590fa5c"
+               "value":"https://ns.adobe.com/int_acpmltestexternal/schemas/84076a64624ff77ab840a445821800ed"
             }
         ]
   }
