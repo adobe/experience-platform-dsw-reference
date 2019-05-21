@@ -15,7 +15,7 @@
 # from Adobe.
 #####################################################################
 
-FROM adobe/acp-dsw-ml-runtime-r:0.15.0
+FROM adobe/acp-dsw-ml-runtime-r:0.17.0
 
 RUN install2.r gbm
 RUN install2.r lubridate
