@@ -13,7 +13,7 @@ scoring.dataLoader: ScoringDataLoader
 scoring.dataSaver: MyDatasetSaver
 
 #Name of the class which contains implementation for evaluation metrics.
-evaluator : evaluator
+evaluator: Evaluator
 evaluateModel: True
 
 

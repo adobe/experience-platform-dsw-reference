@@ -25,4 +25,4 @@ setup(name='pysparkretailapp',
       packages=['pysparkretailapp'],
       install_requires=required,
       package_data={'pysparkretailapp': ['resources/*']}
-      )
+    )

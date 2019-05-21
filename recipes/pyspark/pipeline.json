@@ -38,6 +38,26 @@
       {
         "key": "timeframe",
         "value": "600000000"
+      },
+      {
+        "key": "evaluation.labelColumn",
+        "value": "weeklySalesAhead"
+      },
+      {
+        "key": "evaluation.scalingColumn",
+        "value": "weeklySalesScaled"
+      },
+      {
+        "key": "evaluation.predictionColumn",
+        "value": "prediction"
+      },
+      {
+        "key": "evaluation.trainRatio",
+        "value": "0.8"
+      },
+      {
+        "key": "evaluation.metrics",
+        "value": "MAPE,MAE,RMSE,MASE"
       }
     ]
   },
@@ -55,6 +75,10 @@
       {
         "key":"ACP_DSW_SCORING_RESULTS_XDM_SCHEMA",
         "value":"<leave as is if going through UI workflow. Replace with Schema ID if creating recipe via API>"
+      },
+      {
+        "key": "evaluation.predictionColumn",
+        "value": "prediction"
       }
     ]
   }
