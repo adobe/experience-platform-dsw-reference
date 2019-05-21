@@ -22,4 +22,4 @@ from .scoring_data_loader import ScoringDataLoader
 from .train_pipeline import TrainPipeline
 from .data_saver import MyDatasetSaver
 from .helper import *
-from .evaluator import *
+from .evaluator import Evaluator
