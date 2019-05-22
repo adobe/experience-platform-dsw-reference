@@ -42,7 +42,7 @@
        "key": "evaluation.metrics",
        "value": "MAPE,MAE,RMSE,MASE"
      }
-  	]
+    ]
   },
   {
         "name": "score",
