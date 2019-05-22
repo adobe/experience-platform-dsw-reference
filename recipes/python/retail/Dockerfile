@@ -30,6 +30,6 @@ COPY . .
 
 RUN python setup.py clean --all install
 
-COPY dist/retail*.egg /application.egg
+RUN cp dist/retail*.egg /application.egg
 
 ENV PYTHONPATH=$PYTHONPATH:/application.egg
