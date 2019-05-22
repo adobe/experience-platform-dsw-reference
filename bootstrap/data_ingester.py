@@ -25,32 +25,27 @@ FILE_PATH = "../datasets/retail/XDM0.9.9.9/"
 CONTENT_TYPE = "application/json"
 
 
-def get_dataset_id(create_dataset_url, headers, dataset_title, schema_id):
+def get_dataset_id(create_dataset_url, headers, dataset_title, schema_id, data):
     """
     Get the datasetId by making a POST Request to "/data/foundation/catalog/datasets?requestDataSource=true"
     :param create_dataset_url: url
     :param headers: headers
     :param dataset_title: dataset title
     :param schema_id: schema url
+    :param data: post request data
     :return: dataset id
     """
-    data_for_create_dataset = {
-        "schemaRef": {
-            "id": schema_id,
-            "contentType": "application/vnd.adobe.xed+json; version=1"
-        },
-        "name": dataset_title,
-        "description": dataset_title,
-        "fileDescription": {
-            "persisted": True,
-            "containerFormat": "parquet",
-            "format": "json"
-        },
-        "aspect": "production"
-    }
+
+    # Set the title and description
+    data['name'] = dataset_title
+    data['description'] = dataset_title
+
+    # Set the schema id
+    data["schemaRef"]["id"] = schema_id
+
     headers["Accept"] = CONTENT_TYPE
     headers["Content-Type"] = CONTENT_TYPE
-    res_text = http_request("post", create_dataset_url, headers, json.dumps(data_for_create_dataset))
+    res_text = http_request("post", create_dataset_url, headers, json.dumps(data))
     dataset_response = str(json.loads(res_text))
     LOGGER.debug("dataset_response is %s", dataset_response)
     dataset_id = dataset_response.split("@/dataSets/")[1].split("'")[0]
@@ -58,20 +53,21 @@ def get_dataset_id(create_dataset_url, headers, dataset_title, schema_id):
     return dataset_id
 
 
-def get_batch_id(create_batch_url, headers, dataset_id):
+def get_batch_id(create_batch_url, headers, dataset_id, data):
 
     """
     Get the batchId by making a POST request to "/data/foundation/import/batches"
     :param create_batch_url: url
     :param headers: headers
     :param dataset_id: dataset id
+    :param data: post request data
     :return: batch id
     """
-    data_for_create_batch = {"datasetId": dataset_id}
+    data["datasetId"] = dataset_id
     headers["Accept"] = CONTENT_TYPE
     headers["Content-Type"] = CONTENT_TYPE
     LOGGER.debug("Create batch url is %s", create_batch_url)
-    res_text = http_request("post", create_batch_url, headers, json.dumps(data_for_create_batch))
+    res_text = http_request("post", create_batch_url, headers, json.dumps(data))
     batch_id = json.loads(res_text)["id"]
     LOGGER.debug("batch_id = %s",  batch_id)
     return batch_id
@@ -95,14 +91,15 @@ def upload_file(create_batch_url, headers, file_with_tenant_id, dataset_id, batc
     LOGGER.debug("Upload file success")
 
 
-def replace_tenant_id(file_with_tenant_id, tenant_id):
+def replace_tenant_id(original_file, file_with_tenant_id, tenant_id):
     """
     Util for a string replace of the tenantId
+    :param original_file: Name of the original file whose tenant id needs to be replaced
     :param file_with_tenant_id: Name of the json file with the tenant id
     :param tenant_id: tenant id to be replaced
     """
 
-    original_file = open(FILE_PATH + "DSWRetailSalesForXDM0.9.9.9.json", 'r')
+    original_file = open(FILE_PATH + original_file, 'r')
     new_file = open(FILE_PATH + file_with_tenant_id, 'w')
     for line in original_file:
         new_file.write(line.replace('_acpmlexploratoryexternal', tenant_id))

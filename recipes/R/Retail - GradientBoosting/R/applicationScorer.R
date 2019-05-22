@@ -130,7 +130,7 @@ applicationScorer <- setRefClass("applicationScorer",
                                                             service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
       print("Writer configured")
       
-      writer$write(data_set_id = configurationJSON$output_dataset_id,
+      writer$write(data_set_id = configurationJSON$scoringResultsDataSetId,
                    dataframe = output_df,
                    ims_org = configurationJSON$ML_FRAMEWORK_IMS_ORG_ID,
                    file_format='json')

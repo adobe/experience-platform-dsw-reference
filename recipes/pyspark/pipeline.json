@@ -19,10 +19,6 @@
         "value": "date,store,storeType,storeSize,temperature,regionalFuelPrice,markdown,cpi,unemployment,isHoliday"
       },
       {
-        "key": "api_key",
-        "value": "acp_machineLearning_customer"
-      },
-      {
         "key": "ACP_DSW_TARGET_FEATURES",
         "value": "weeklySales"
       },
@@ -33,11 +29,35 @@
 
       {
         "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
-        "value": "/_customer/default/DSWRetailSales"
+        "value": "<leave as is if going through UI workflow. Replace with Schema ID if creating recipe via API>"
+      },
+      {
+        "key":"tenant_id",
+        "value": "_<tenant_id>"
       },
       {
         "key": "timeframe",
         "value": "600000000"
+      },
+      {
+        "key": "evaluation.labelColumn",
+        "value": "weeklySalesAhead"
+      },
+      {
+        "key": "evaluation.scalingColumn",
+        "value": "weeklySalesScaled"
+      },
+      {
+        "key": "evaluation.predictionColumn",
+        "value": "prediction"
+      },
+      {
+        "key": "evaluation.trainRatio",
+        "value": "0.8"
+      },
+      {
+        "key": "evaluation.metrics",
+        "value": "MAPE,MAE,RMSE,MASE"
       }
     ]
   },
@@ -45,16 +65,20 @@
     "name": "score",
     "parameters": [
       {
-        "key": "api_key",
-        "value": "acp_machineLearning_customer"
-      },
-      {
-        "key": "scored_dataset_id",
-        "value": "5c4bb577cfec4a152d19b228"
+        "key":"tenant_id",
+        "value": "_<tenant_id>"
       },
       {
         "key": "timeframe",
         "value": "600000000"
+      },
+      {
+        "key":"ACP_DSW_SCORING_RESULTS_XDM_SCHEMA",
+        "value":"<leave as is if going through UI workflow. Replace with Schema ID if creating recipe via API>"
+      },
+      {
+        "key": "evaluation.predictionColumn",
+        "value": "prediction"
       }
     ]
   }

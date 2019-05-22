@@ -16,6 +16,9 @@
 #####################################################################
 
 from sdk.data_saver import DataSaver
+from pyspark.sql.types import StringType, TimestampType
+from pyspark.sql.functions import col, lit, struct
+
 
 class MyDatasetSaver(DataSaver):
 
@@ -31,15 +34,23 @@ class MyDatasetSaver(DataSaver):
         service_token = str(sparkContext.getConf().get("ML_FRAMEWORK_IMS_ML_TOKEN"))
         user_token = str(sparkContext.getConf().get("ML_FRAMEWORK_IMS_TOKEN"))
         org_id = str(sparkContext.getConf().get("ML_FRAMEWORK_IMS_ORG_ID"))
+        api_key = str(sparkContext.getConf().get("ML_FRAMEWORK_IMS_CLIENT_ID"))
 
-        scored_dataset_id = str(configProperties.get("scored_dataset_id"))
-        api_key = str(configProperties.get("api_key"))
+        scored_dataset_id = str(configProperties.get("scoringResultsDataSetId"))
+        tenant_id = str(configProperties.get("tenant_id"))
+        timestamp = "2019-01-01 00:00:00"
 
-        for arg in ['service_token', 'user_token', 'org_id', 'scored_dataset_id', 'api_key']:
+        for arg in ['service_token', 'user_token', 'org_id', 'scored_dataset_id', 'api_key', 'tenant_id']:
             if eval(arg) == 'None':
                 raise ValueError("%s is empty" % arg)
 
-        prediction.select("prediction", "store", "date").write.format("com.adobe.platform.dataset") \
+        scored_df = prediction.withColumn("date", col("date").cast(StringType()))
+        scored_df = scored_df.withColumn(tenant_id, struct(col("date"), col("store"), col("prediction")))
+        scored_df = scored_df.withColumn("timestamp", lit(timestamp).cast(TimestampType()))
+        scored_df = scored_df.withColumn("_id", lit("empty"))
+        scored_df = scored_df.withColumn("eventType", lit("empty"))
+
+        scored_df.select(tenant_id, "_id", "eventType", "timestamp").write.format("com.adobe.platform.dataset") \
             .option('orgId', org_id) \
             .option('serviceToken', service_token) \
             .option('userToken', user_token) \

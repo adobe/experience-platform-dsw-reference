@@ -27,16 +27,12 @@
         "value": false
       },
       {
-        "key": "trainingDataSetId",
-        "value": "5cdb2c483426ca14547fb113"
-      },
-      {
-        "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
-        "value": "https://ns.adobe.com/int_acpmltestexternal/schemas/f7ac2aa9fa8590e16aa81ccd09b0679d"
-      },
-      {
         "key": "tenantId",
-        "value": "int_acpmltestexternal"
+        "value": "_<tenant_id>"
+     },
+     {
+       "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
+       "value": "<leave as is if going through UI workflow. Replace with Schema ID if creating recipe via API>"
      },
      {
        "key": "evaluation.labelColumn",
@@ -46,26 +42,18 @@
        "key": "evaluation.metrics",
        "value": "MAPE,MAE,RMSE,MASE"
      }
-  	]
+    ]
   },
   {
         "name": "score",
         "parameters": [
             {
-                "key": "scoringDataSetId",
-                "value": "5cdb2c483426ca14547fb113"
-            },
-            {
-                "key": "output_dataset_id",
-                "value": "5cdb39f99a1240145505bc54"
-            },
-            {
                 "key": "tenantId",
-                "value": "int_acpmltestexternal"
+                "value": "_<tenant_id>"
             },
             {
-               "key":"ACP_DSW_SCORING_RESULTS_XDM_SCHEMA",
-               "value":"https://ns.adobe.com/int_acpmltestexternal/schemas/84076a64624ff77ab840a445821800ed"
+              "key":"ACP_DSW_SCORING_RESULTS_XDM_SCHEMA",
+              "value":"<leave as is if going through UI workflow. Replace with Schema ID if creating recipe via API>"
             }
         ]
   }
