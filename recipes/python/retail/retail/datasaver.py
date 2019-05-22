@@ -17,29 +17,29 @@
 from data_access_sdk_python.writer import DataSetWriter
 import pandas as pd
 
-def save(configProperties, prediction):
+def save(config_properties, prediction):
     print("Datasaver Start")
     print("Setting up Writer")
 
    
-    writer = DataSetWriter(client_id=configProperties['ML_FRAMEWORK_IMS_USER_CLIENT_ID'],
-                           user_token=configProperties['ML_FRAMEWORK_IMS_TOKEN'],
-                           service_token=configProperties['ML_FRAMEWORK_IMS_ML_TOKEN'])
+    writer = DataSetWriter(client_id=config_properties['ML_FRAMEWORK_IMS_USER_CLIENT_ID'],
+                           user_token=config_properties['ML_FRAMEWORK_IMS_TOKEN'],
+                           service_token=config_properties['ML_FRAMEWORK_IMS_ML_TOKEN'])
 
     print("Writer Configured")
 
-    tenantId = configProperties.get("tenantId")
-    prediction = prediction.add_prefix(tenantId+".")
+    tenant_id = config_properties.get("tenantId")
+    prediction = prediction.add_prefix(tenant_id+".")
     prediction = prediction.join(pd.DataFrame(
         {
             '_id': "",
             'timestamp': '2019-01-01T00:00:00',
             'eventType': ""
-        },  index=prediction.index))
+        }, index=prediction.index))
 
-    writer.write(data_set_id=configProperties['scoringResultsDataSetId'],
+    writer.write(data_set_id=config_properties['scoringResultsDataSetId'],
                  dataframe=prediction,
-                 ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'],
+                 ims_org=config_properties['ML_FRAMEWORK_IMS_TENANT_ID'],
                  file_format='json')
 
     print("Write Done")
