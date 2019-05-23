@@ -2,30 +2,31 @@ Server:
   ims_host: ims-na1.adobelogin.com
   ims_endpoint_jwt: /ims/exchange/jwt
 
+# All the Enterprise values can be obtained from the Adobe IO Integration
 Enterprise:
-  api_key: af80375bec544eb493ed271373b12191
-  org_id: 20656D0F5B9975B20A495E23@AdobeOrg
-  tech_acct: F98D7E725CCA6F770A495FD9@techacct.adobe.com
+  api_key: <api_key>
+  org_id: <org_id> # Sample value for reference - 20656D0F5B9975B20A495E23@AdobeOrg
+  tech_acct: <tech_acct> # Sample value for reference - F98D7E725CCA6F770A495FD9@techacct.adobe.com
   client_secret: <client_secret>
-  priv_key_filename: private.key
+  priv_key_filename: <private_key_filename>
 
 Platform:
   platform_gateway: https://platform.adobe.io
-  ims_token: None
+  ims_token: Bearer <ims_token>
 
 Titles:
-  input_class_title: Class For Retail
-  input_mixin_title: Mixin For Retail Input
-  input_mixin_definition_title: Retail_Input
-  input_schema_title: Schema For Retail Input
-  input_dataset_title: Dataset For Retail Input
+  input_class_title: <input_class_title>
+  input_mixin_title: <input_mixin_title>
+  input_mixin_definition_title: <input_mixin_definition_title>
+  input_schema_title: <input_schema_title>
+  input_dataset_title: <input_dataset_title>
   file_replace_tenant_id: DSWRetailSalesForXDM0.9.9.9.json
-  file_with_tenant_id: RetailDataWithTenantId.json
-  is_ouput_schema_different: True
-  output_mixin_title: Mixin For Retail Output
-  output_mixin_definition_title: Retail_Output
-  output_schema_title: Schema For Retail Output
-  output_dataset_title: Dataset For Retail Output
+  file_with_tenant_id: <output_filename_with_tenantid>
+  is_ouput_schema_different: < > # True or False
+  output_mixin_title: <output_mixin_title>
+  output_mixin_definition_title: <output_mixin_definition_title>
+  output_schema_title: <output_schema_title>
+  output_dataset_title: <output_dataset_title>
 
 class_data:
   "type": "object"
