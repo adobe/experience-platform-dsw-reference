@@ -22,7 +22,7 @@ Titles:
   input_dataset_title: <input_dataset_title>
   file_replace_tenant_id: DSWRetailSalesForXDM0.9.9.9.json
   file_with_tenant_id: <output_filename_with_tenantid>
-  is_ouput_schema_different: < > # True or False
+  is_output_schema_different: <is_output_schema_different> # True or False
   output_mixin_title: <output_mixin_title>
   output_mixin_definition_title: <output_mixin_definition_title>
   output_schema_title: <output_schema_title>
