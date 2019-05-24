@@ -12,7 +12,7 @@ Enterprise:
 
 Platform:
   platform_gateway: https://platform.adobe.io
-  ims_token: <ims_token> # ims_token should be prefixed with "Bearer "
+  ims_token: <ims_token>
 
 Titles:
   input_class_title: <input_class_title>

@@ -51,7 +51,7 @@ with open("config.yaml", 'r') as ymlfile:
     org_id = dictor(cfg, ENTERPRISE + ".org_id", checknone=True)
     ims_token = dictor(cfg, PLATFORM + ".ims_token", checknone=True)
 
-    if "Bearer" not in ims_token:
+    if ims_token == "<ims_token>":
         # Server parameters
         ims_host = dictor(cfg, SERVER + ".ims_host", checknone=True)
         ims_endpoint_jwt = dictor(cfg, SERVER + ".ims_endpoint_jwt", checknone=True)
@@ -67,6 +67,8 @@ with open("config.yaml", 'r') as ymlfile:
         priv_key_file.close()
         ims_token = "Bearer " + get_access_token(ims_host, ims_endpoint_jwt, org_id, tech_acct, api_key,
                                                  client_secret, priv_key)
+    if not ims_token.startswith("Bearer "):
+        ims_token = "Bearer " + ims_token
 
     # headers
     headers = {
