@@ -41,13 +41,9 @@ BATCH_DATA = "batch_data"
 OUTPUT_MIXIN_DATA = "output_mixin_data"
 
 
-def ingest():
-    """
-    :return: None
-    """
-    # Read the configs
-    with open("config.yaml", 'r') as ymlfile:
-        cfg = yaml.safe_load(ymlfile)
+# Read the configs
+with open("config.yaml", 'r') as ymlfile:
+    cfg = yaml.safe_load(ymlfile)
 
     # Get the platform url
     platform_gateway_url = dictor(cfg, PLATFORM + ".platform_gateway", checknone=True)
@@ -55,7 +51,7 @@ def ingest():
     org_id = dictor(cfg, ENTERPRISE + ".org_id", checknone=True)
     ims_token = dictor(cfg, PLATFORM + ".ims_token", checknone=True)
 
-    if ims_token == 'None':
+    if ims_token == "<ims_token>":
         # Server parameters
         ims_host = dictor(cfg, SERVER + ".ims_host", checknone=True)
         ims_endpoint_jwt = dictor(cfg, SERVER + ".ims_endpoint_jwt", checknone=True)
@@ -71,7 +67,21 @@ def ingest():
         priv_key_file.close()
         ims_token = "Bearer " + get_access_token(ims_host, ims_endpoint_jwt, org_id, tech_acct, api_key,
                                                  client_secret, priv_key)
+    if not ims_token.startswith("Bearer "):
+        ims_token = "Bearer " + ims_token
 
+    # headers
+    headers = {
+        "Authorization": ims_token,
+        "x-api-key": api_key,
+        "x-gw-ims-org-id": org_id
+    }
+
+
+def ingest():
+    """
+    :return: None
+    """
     # Get the titles for the class, mixin, schema and dataset
     input_class_title = dictor(cfg, TITLES + ".input_class_title", checknone=True)
     input_mixin_title = dictor(cfg, TITLES + ".input_mixin_title", checknone=True)
@@ -80,7 +90,7 @@ def ingest():
     input_dataset_title = dictor(cfg, TITLES + ".input_dataset_title", checknone=True)
     original_file = dictor(cfg, TITLES + ".file_replace_tenant_id", checknone=True)
     file_with_tenant_id = dictor(cfg, TITLES + ".file_with_tenant_id", checknone=True)
-    is_ouput_schema_different = dictor(cfg,  TITLES + ".is_ouput_schema_different", checknone=True)
+    is_output_schema_different = dictor(cfg,  TITLES + ".is_output_schema_different", checknone=True)
     output_mixin_title = dictor(cfg, TITLES + ".output_mixin_title", checknone=True)
     output_mixin_definition_title = dictor(cfg, TITLES + ".output_mixin_definition_title", checknone=True)
     output_schema_title = dictor(cfg, TITLES + ".output_schema_title", checknone=True)
@@ -94,13 +104,6 @@ def ingest():
     create_schema_url = platform_gateway_url + schema_registry_uri + "tenant/schemas"
     create_dataset_url = platform_gateway_url + "/data/foundation/catalog/datasets?requestDataSource=true"
     create_batch_url = platform_gateway_url + "/data/foundation/import/batches"
-
-    # headers
-    headers = {
-        "Authorization": ims_token,
-        "x-api-key": api_key,
-        "x-gw-ims-org-id": org_id
-    }
 
     data_for_class = dictor(cfg, CLASS_DATA, checknone=True)
     data_for_mixin = dictor(cfg, INPUT_MIXIN_DATA, checknone=True)
@@ -120,7 +123,7 @@ def ingest():
         replace_tenant_id(original_file, file_with_tenant_id, tenant_id)
         upload_file(create_batch_url, headers, file_with_tenant_id, input_dataset_id, batch_id)
         close_batch(create_batch_url, headers, batch_id)
-        if is_ouput_schema_different:
+        if is_output_schema_different:
             output_mixin_id = get_mixin_id(create_mixin_url, headers, output_mixin_title, data_for_output_mixin,
                                            class_id, tenant_id, output_mixin_definition_title)
             output_schema_id = get_schema_id(create_schema_url, headers, output_schema_title, class_id, output_mixin_id,
