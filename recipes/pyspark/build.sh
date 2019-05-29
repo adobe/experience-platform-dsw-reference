@@ -17,4 +17,4 @@
 
 #Build sample app
 echo "Building .egg binary"
-sudo python setup.py clean --all install
+sudo python3 setup.py clean --all install
