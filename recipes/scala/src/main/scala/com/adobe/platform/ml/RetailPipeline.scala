@@ -42,11 +42,13 @@ class RetailPipeline extends PipelineFactory {
 
       require(configProperties != null)
 
-      val inputFeatures: String = configProperties.get("ACP_DSW_INPUT_FEATURES").get.toString
-
+      var inputFeatures: String = configProperties.get("ACP_DSW_INPUT_FEATURES").get.toString
+      val tenantId:String = configProperties.get("tenantId").getOrElse("")
       val learning_rate : Float = configProperties.get("learning_rate").get.toFloat
       val n_estimators : Int = configProperties.get("n_estimators").get.toInt
       val max_depth : Int = configProperties.get("max_depth").get.toInt
+
+      inputFeatures = inputFeatures.replaceAll(tenantId + ".", "")
 
       val featureList = inputFeatures.split(",").toList
 
