@@ -48,7 +48,9 @@ class RetailPipeline extends PipelineFactory {
       val n_estimators : Int = configProperties.get("n_estimators").get.toInt
       val max_depth : Int = configProperties.get("max_depth").get.toInt
 
-      inputFeatures = inputFeatures.replaceAll(tenantId + ".", "")
+      if(inputFeatures.startsWith(tenantId)) {
+        inputFeatures = inputFeatures.replaceAll(tenantId + ".", "")
+      }
 
       val featureList = inputFeatures.split(",").toList
 
