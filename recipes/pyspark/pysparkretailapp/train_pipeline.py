@@ -29,7 +29,13 @@ class TrainPipeline(PipelineFactory):
         if configProperties is None:
             raise ValueError("configProperties parameter is null")
 
+        tenant_id = str(configProperties.get("tenant_id"))
         input_features = str(configProperties.get("ACP_DSW_INPUT_FEATURES"))
+
+        if input_features is None:
+            raise ValueError("input_features parameter is null")
+        if input_features.startswith(tenant_id):
+            input_features = input_features.replace(tenant_id + ".", "")
 
         learning_rate = float(configProperties.get("learning_rate"))
         n_estimators = int(configProperties.get("n_estimators"))
