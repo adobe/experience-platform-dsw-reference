@@ -16,24 +16,23 @@
       },
       {
         "key": "ACP_DSW_INPUT_FEATURES",
-        "value": "date,store,storeType,storeSize,temperature,regionalFuelPrice,markdown,cpi,unemployment,isHoliday"
+        "value": "<leave as is if going through UI workflow. Replace with path prefixed input features via API>"
       },
       {
         "key": "ACP_DSW_TARGET_FEATURES",
-        "value": "weeklySales"
+        "value": "<leave as is if going through UI workflow. Replace with path prefixed target features via API>"
       },
       {
         "key": "ACP_DSW_FEATURE_UPDATE_SUPPORT",
         "value": false
       },
-
-      {
-        "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
-        "value": "<leave as is if going through UI workflow. Replace with Schema ID if creating recipe via API>"
-      },
       {
         "key":"tenant_id",
         "value": "_<tenant_id>"
+      },
+      {
+        "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
+        "value": "<leave as is if going through UI workflow. Replace with Schema ID if creating recipe via API>"
       },
       {
         "key": "timeframe",
@@ -73,12 +72,12 @@
         "value": "600000000"
       },
       {
-        "key":"ACP_DSW_SCORING_RESULTS_XDM_SCHEMA",
-        "value":"<leave as is if going through UI workflow. Replace with Schema ID if creating recipe via API>"
-      },
-      {
         "key": "evaluation.predictionColumn",
         "value": "prediction"
+      },
+      {
+        "key":"ACP_DSW_SCORING_RESULTS_XDM_SCHEMA",
+        "value":"<leave as is if going through UI workflow. Replace with Schema ID if creating recipe via API>"
       }
     ]
   }

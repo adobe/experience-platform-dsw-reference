@@ -50,21 +50,20 @@ def prepare_dataset(configProperties, dataset):
 
     tenant_id = str(configProperties.get("tenant_id"))
 
-    #Flatten the data
+    # Flatten the data
     if tenant_id in dataset.columns:
-        pd = dataset.select(col(tenant_id + ".*"))
+        dataset = dataset.select(col(tenant_id + ".*"))
+        dataset.show()
 
     # Filter the data
     timeframe = str(configProperties.get("timeframe"))
     if timeframe != 'None':
         filterByTime = str(datetime.datetime.now() - datetime.timedelta(minutes=int(timeframe)))
-        pd = pd.filter(pd["date"] >= lit(str(filterByTime)))
-        print("Number of rows after filtering : " + str(pd.count()))
-    else:
-        pd
+        dataset = dataset.filter(dataset["date"] >= lit(str(filterByTime)))
+        print("Number of rows after filtering : " + str(dataset.count()))
 
     # Convert isHoliday boolean value to Int
-    pd = pd.withColumn("isHoliday", col("isHoliday").cast(IntegerType()))
+    pd = dataset.withColumn("isHoliday", col("isHoliday").cast(IntegerType()))
 
     # Get the week and year from date
     pd = pd.withColumn("week", date_format(to_date("date", "MM/dd/yy"), "w").cast(IntegerType()))
