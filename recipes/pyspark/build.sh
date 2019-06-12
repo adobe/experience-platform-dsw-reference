@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 #####################################################################
 # ADOBE CONFIDENTIAL
 # ___________________
@@ -17,4 +18,4 @@
 
 #Build sample app
 echo "Building .egg binary"
-sudo python3 setup.py clean --all install
+sudo -S python3 setup.py clean --all install
