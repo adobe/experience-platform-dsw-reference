@@ -42,7 +42,7 @@ def get_dataset_id(create_dataset_url, headers, dataset_title, schema_id, data):
     # Set the schema id
     data["schemaRef"]["id"] = schema_id
 
-    headers["content-type"] = CONTENT_TYPE
+    headers["Content-type"] = CONTENT_TYPE
     headers["Accept"] = CONTENT_TYPE
     res_text = http_request("post", create_dataset_url, headers, json.dumps(data))
     dataset_response = str(json.loads(res_text))
@@ -63,7 +63,7 @@ def get_batch_id(create_batch_url, headers, dataset_id, data):
     :return: batch id
     """
     data["datasetId"] = dataset_id
-    headers["content-type"] = CONTENT_TYPE
+    headers["Content-type"] = CONTENT_TYPE
     headers["Accept"] = CONTENT_TYPE
     LOGGER.debug("Create batch url is %s", create_batch_url)
     res_text = http_request("post", create_batch_url, headers, json.dumps(data))
@@ -83,9 +83,9 @@ def upload_file(create_batch_url, headers, file_with_tenant_id, dataset_id, batc
     """
 
     headers["Content-type"] = "application/octet-stream"
-    headers["Connection"]= "keep-alive"
+    headers["Connection"] = "keep-alive"
     contents = open(FILE_PATH + file_with_tenant_id, "rb").read()
-    upload_url = create_batch_url + "/" + batch_id + "/datasets/" + dataset_id + "/files/data/" +  file_with_tenant_id
+    upload_url = create_batch_url + "/" + batch_id + "/datasets/" + dataset_id + "/files/data/" + file_with_tenant_id
     LOGGER.debug("Upload url is %s", upload_url)
     http_request("put", upload_url, headers, contents)
     LOGGER.debug("Upload file success")
@@ -115,6 +115,3 @@ def close_batch(create_batch_url, headers, batch_id):
     """
     close_batch__url = create_batch_url + "/" + batch_id + "?action=COMPLETE"
     http_request("post", close_batch__url, headers)
-
-
-
