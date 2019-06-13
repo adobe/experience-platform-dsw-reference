@@ -42,8 +42,9 @@ def get_dataset_id(create_dataset_url, headers, dataset_title, schema_id, data):
     # Set the schema id
     data["schemaRef"]["id"] = schema_id
 
-    headers_for_dataset = get_headers(headers)
-    res_text = http_request("post", create_dataset_url, headers_for_dataset, json.dumps(data))
+    headers["content-type"] = CONTENT_TYPE
+    headers["Accept"] = CONTENT_TYPE
+    res_text = http_request("post", create_dataset_url, headers, json.dumps(data))
     dataset_response = str(json.loads(res_text))
     LOGGER.debug("dataset_response is %s", dataset_response)
     dataset_id = dataset_response.split("@/dataSets/")[1].split("'")[0]
@@ -62,9 +63,10 @@ def get_batch_id(create_batch_url, headers, dataset_id, data):
     :return: batch id
     """
     data["datasetId"] = dataset_id
-    headers_for_batch = get_headers(headers)
+    headers["content-type"] = CONTENT_TYPE
+    headers["Accept"] = CONTENT_TYPE
     LOGGER.debug("Create batch url is %s", create_batch_url)
-    res_text = http_request("post", create_batch_url, headers_for_batch, json.dumps(data))
+    res_text = http_request("post", create_batch_url, headers, json.dumps(data))
     batch_id = json.loads(res_text)["id"]
     LOGGER.debug("batch_id = %s",  batch_id)
     return batch_id
@@ -79,14 +81,13 @@ def upload_file(create_batch_url, headers, file_with_tenant_id, dataset_id, batc
     :param dataset_id: dataset id
     :param batch_id: batch id
     """
-    headers_upload_file = {}
-    headers_upload_file.update(headers)
-    headers_upload_file["Content-type"] = "application/octet-stream"
-    headers_upload_file["Connection"]= "keep-alive"
+
+    headers["Content-type"] = "application/octet-stream"
+    headers["Connection"]= "keep-alive"
     contents = open(FILE_PATH + file_with_tenant_id, "rb").read()
     upload_url = create_batch_url + "/" + batch_id + "/datasets/" + dataset_id + "/files/data/" +  file_with_tenant_id
     LOGGER.debug("Upload url is %s", upload_url)
-    http_request("put", upload_url, headers_upload_file, contents)
+    http_request("put", upload_url, headers, contents)
     LOGGER.debug("Upload file success")
 
 def replace_tenant_id(original_file, file_with_tenant_id, tenant_id):
@@ -116,9 +117,4 @@ def close_batch(create_batch_url, headers, batch_id):
     http_request("post", close_batch__url, headers)
 
 
-def get_headers(headers):
-    headers_updated = {}
-    headers_updated.update(headers)
-    headers_updated["content-type"] = CONTENT_TYPE
-    headers_updated["Accept"] = CONTENT_TYPE
-    return headers_updated
+

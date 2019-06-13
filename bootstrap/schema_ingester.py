@@ -23,8 +23,6 @@ LOGGER = setup_logger(__name__)
 CONTENT_TYPE = "application/json"
 
 
-
-
 def get_tenant_id(tenant_id_url, headers):
     """
     Get TenantId by making a GET call to "/data/foundation/schemaregistry/stats"
@@ -53,8 +51,8 @@ def get_class_id(create_class_url, headers, class_title, data):
     # Set the class title and description
     data['title'] = class_title   
     data['description'] = class_title
-    headers_for_class = get_headers(headers)
-    res_text = http_request("POST", create_class_url, headers_for_class, json.dumps(data))
+    headers["content-type"] = CONTENT_TYPE
+    res_text = http_request("POST", create_class_url, headers, json.dumps(data))
     class_id = json.loads(res_text)["$id"]
     LOGGER.debug("class_id = %s", class_id)
     return class_id
@@ -70,6 +68,7 @@ def get_mixin_id(create_mixin_url, headers, mixin_title, data, class_id, tenant_
     :param data: post request data
     :param class_id: class url
     :param tenant_id: tenant id in the org
+    :param mixin_definition_title: mixin_definition_title to set the url
     :return: mixin url
     """
 
@@ -88,8 +87,8 @@ def get_mixin_id(create_mixin_url, headers, mixin_title, data, class_id, tenant_
         del data["definitions"][key]
     # Set the reference url
     data["allOf"][0]["$ref"] = "#/definitions/" + mixin_definition_title
-    headers_for_mixin = get_headers(headers)
-    res_text = http_request("post", create_mixin_url, headers_for_mixin, json.dumps(data))
+    headers["content-type"] = CONTENT_TYPE
+    res_text = http_request("post", create_mixin_url, headers, json.dumps(data))
     mixin_id = json.loads(res_text)["$id"]
     LOGGER.debug("mixin_id = %s", mixin_id)
     return mixin_id
@@ -118,15 +117,9 @@ def get_schema_id(create_schema_url, headers, schema_title, class_id, mixin_id, 
     data['meta:extends'][1] = class_id
     data["allOf"][1]["$ref"] = class_id
 
-    headers_for_schema = get_headers(headers)
-    res_text = http_request("post", create_schema_url, headers_for_schema, json.dumps(data))
+    headers["content-type"] = CONTENT_TYPE
+    res_text = http_request("post", create_schema_url, headers, json.dumps(data))
     schema_id = json.loads(res_text)["$id"]
     LOGGER.debug("schema_id = %s", schema_id)
     return schema_id
 
-
-def get_headers(headers):
-    headers_updated = {}
-    headers_updated.update(headers)
-    headers_updated["content-type"] = CONTENT_TYPE
-    return headers_updated

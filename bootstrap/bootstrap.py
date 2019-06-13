@@ -20,6 +20,7 @@ import requests
 import yaml
 from utils import setup_logger
 from dictor import dictor
+import copy
 from data_ingester import get_dataset_id, get_batch_id, upload_file, replace_tenant_id, close_batch
 from schema_ingester import get_tenant_id, get_class_id, get_mixin_id, get_schema_id
 from get_token import get_access_token
@@ -122,29 +123,32 @@ def ingest(headers_for_ingestion):
 
     try:
 
-        tenant_id = get_tenant_id(tenant_id_url, headers_for_ingestion)
+        tenant_id = get_tenant_id(tenant_id_url, copy.deepcopy(headers_for_ingestion))
 
-        class_id = get_class_id(create_class_url, headers_for_ingestion, input_class_title, data_for_class)
+        class_id = get_class_id(create_class_url, copy.deepcopy(headers_for_ingestion), input_class_title, data_for_class)
 
-        input_mixin_id = get_mixin_id(create_mixin_url, headers_for_ingestion, input_mixin_title, data_for_mixin, class_id,
+        input_mixin_id = get_mixin_id(create_mixin_url, copy.deepcopy(headers_for_ingestion), input_mixin_title, data_for_mixin, class_id,
                                       tenant_id, input_mixin_definition_title)
 
-        input_schema_id = get_schema_id(create_schema_url, headers_for_ingestion, input_schema_title,
+        input_schema_id = get_schema_id(create_schema_url, copy.deepcopy(headers_for_ingestion), input_schema_title,
                                         class_id, input_mixin_id, data_for_schema)
-        input_dataset_id = get_dataset_id(create_dataset_url, headers_for_ingestion, input_dataset_title, input_schema_id, data_for_dataset)
 
-        batch_id = get_batch_id(create_batch_url, headers_for_ingestion, input_dataset_id, data_for_batch)
-        upload_file(create_batch_url, headers_for_ingestion, file_with_tenant_id, input_dataset_id, batch_id)
+        input_dataset_id = get_dataset_id(create_dataset_url, copy.deepcopy(headers_for_ingestion), input_dataset_title, input_schema_id, data_for_dataset)
+
+        batch_id = get_batch_id(create_batch_url, copy.deepcopy(headers_for_ingestion), input_dataset_id, data_for_batch)
 
         replace_tenant_id(original_file, file_with_tenant_id, tenant_id)
-        close_batch(create_batch_url, headers_for_ingestion, batch_id)
+
+        upload_file(create_batch_url, copy.deepcopy(headers_for_ingestion), file_with_tenant_id, input_dataset_id, batch_id)
+
+        close_batch(create_batch_url, copy.deepcopy(headers_for_ingestion), batch_id)
 
         if is_output_schema_different == "True":
-            output_mixin_id = get_mixin_id(create_mixin_url, headers_for_ingestion, output_mixin_title, data_for_output_mixin,
+            output_mixin_id = get_mixin_id(create_mixin_url, copy.deepcopy(headers_for_ingestion), output_mixin_title, data_for_output_mixin,
                                            class_id, tenant_id, output_mixin_definition_title)
-            output_schema_id = get_schema_id(create_schema_url, headers_for_ingestion, output_schema_title, class_id, output_mixin_id,
+            output_schema_id = get_schema_id(create_schema_url, copy.deepcopy(headers_for_ingestion), output_schema_title, class_id, output_mixin_id,
                                          data_for_schema)
-            get_dataset_id(create_dataset_url, headers_for_ingestion, output_dataset_title, output_schema_id, data_for_dataset)
+            get_dataset_id(create_dataset_url, copy.deepcopy(headers_for_ingestion), output_dataset_title, output_schema_id, data_for_dataset)
 
 
     except requests.exceptions.HTTPError as http_err:
