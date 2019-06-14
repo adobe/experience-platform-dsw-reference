@@ -19,7 +19,6 @@
 import json
 from utils import setup_logger, http_request
 
-
 LOGGER = setup_logger(__name__)
 FILE_PATH = "../datasets/retail/XDM0.9.9.9/"
 CONTENT_TYPE = "application/json"
@@ -43,8 +42,8 @@ def get_dataset_id(create_dataset_url, headers, dataset_title, schema_id, data):
     # Set the schema id
     data["schemaRef"]["id"] = schema_id
 
+    headers["Content-type"] = CONTENT_TYPE
     headers["Accept"] = CONTENT_TYPE
-    headers["Content-Type"] = CONTENT_TYPE
     res_text = http_request("post", create_dataset_url, headers, json.dumps(data))
     dataset_response = str(json.loads(res_text))
     LOGGER.debug("dataset_response is %s", dataset_response)
@@ -64,8 +63,8 @@ def get_batch_id(create_batch_url, headers, dataset_id, data):
     :return: batch id
     """
     data["datasetId"] = dataset_id
+    headers["Content-type"] = CONTENT_TYPE
     headers["Accept"] = CONTENT_TYPE
-    headers["Content-Type"] = CONTENT_TYPE
     LOGGER.debug("Create batch url is %s", create_batch_url)
     res_text = http_request("post", create_batch_url, headers, json.dumps(data))
     batch_id = json.loads(res_text)["id"]
@@ -82,14 +81,14 @@ def upload_file(create_batch_url, headers, file_with_tenant_id, dataset_id, batc
     :param dataset_id: dataset id
     :param batch_id: batch id
     """
+
     headers["Content-type"] = "application/octet-stream"
     headers["Connection"] = "keep-alive"
-    contents = open(FILE_PATH + file_with_tenant_id, "r").read()
-    upload_url = create_batch_url + "/" + batch_id + "/datasets/" + dataset_id + "/files/" + file_with_tenant_id
-    LOGGER.debug("Upload url is %s", upload_url)
+    contents = open(FILE_PATH + file_with_tenant_id, "rb").read()
+    upload_url = create_batch_url + "/" + batch_id + "/datasets/" + dataset_id + "/files/data/" + file_with_tenant_id
+    LOGGER.info("Upload url is %s", upload_url)
     http_request("put", upload_url, headers, contents)
-    LOGGER.debug("Upload file success")
-
+    LOGGER.info("Upload file success")
 
 def replace_tenant_id(original_file, file_with_tenant_id, tenant_id):
     """

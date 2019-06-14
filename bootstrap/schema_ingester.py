@@ -51,8 +51,7 @@ def get_class_id(create_class_url, headers, class_title, data):
     # Set the class title and description
     data['title'] = class_title   
     data['description'] = class_title
-
-    headers["content-type"] = CONTENT_TYPE
+    headers["Content-type"] = CONTENT_TYPE
     res_text = http_request("POST", create_class_url, headers, json.dumps(data))
     class_id = json.loads(res_text)["$id"]
     LOGGER.debug("class_id = %s", class_id)
@@ -69,6 +68,7 @@ def get_mixin_id(create_mixin_url, headers, mixin_title, data, class_id, tenant_
     :param data: post request data
     :param class_id: class url
     :param tenant_id: tenant id in the org
+    :param mixin_definition_title: mixin definition title to set the url
     :return: mixin url
     """
 
@@ -77,16 +77,16 @@ def get_mixin_id(create_mixin_url, headers, mixin_title, data, class_id, tenant_
     data['description'] = mixin_title
     # Set the class id
     data['meta:intendedToExtend'][0] = class_id
+
     # Set the tenant id
-    for key in data["definitions"].keys():
+    for key in list(data["definitions"]):
         data["definitions"][mixin_definition_title] = data["definitions"][key]
-        for nested_key in data["definitions"][key]["properties"].keys():
+        for nested_key in list(data["definitions"][key]["properties"]):
             data["definitions"][key]["properties"][tenant_id] = data["definitions"][key]["properties"][nested_key]
             del data["definitions"][key]["properties"][nested_key]
-            del data["definitions"][key]
+        del data["definitions"][key]
     # Set the reference url
     data["allOf"][0]["$ref"] = "#/definitions/" + mixin_definition_title
-
     headers["Content-type"] = CONTENT_TYPE
     res_text = http_request("post", create_mixin_url, headers, json.dumps(data))
     mixin_id = json.loads(res_text)["$id"]
@@ -122,3 +122,4 @@ def get_schema_id(create_schema_url, headers, schema_title, class_id, mixin_id, 
     schema_id = json.loads(res_text)["$id"]
     LOGGER.debug("schema_id = %s", schema_id)
     return schema_id
+
