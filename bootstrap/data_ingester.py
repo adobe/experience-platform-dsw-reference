@@ -86,9 +86,9 @@ def upload_file(create_batch_url, headers, file_with_tenant_id, dataset_id, batc
     headers["Connection"] = "keep-alive"
     contents = open(FILE_PATH + file_with_tenant_id, "rb").read()
     upload_url = create_batch_url + "/" + batch_id + "/datasets/" + dataset_id + "/files/data/" + file_with_tenant_id
-    LOGGER.debug("Upload url is %s", upload_url)
+    LOGGER.info("Upload url is %s", upload_url)
     http_request("put", upload_url, headers, contents)
-    LOGGER.debug("Upload file success")
+    LOGGER.info("Upload file success")
 
 def replace_tenant_id(original_file, file_with_tenant_id, tenant_id):
     """

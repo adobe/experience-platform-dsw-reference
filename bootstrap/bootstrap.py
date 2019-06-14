@@ -41,7 +41,7 @@ OUTPUT_MIXIN_DATA = "output_mixin_data"
 
 
 # Read the configs
-with open("config_backup.yaml", 'r') as ymlfile:
+with open("config.yaml", 'r') as ymlfile:
     cfg = yaml.safe_load(ymlfile)
 
 

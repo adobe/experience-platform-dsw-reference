@@ -43,4 +43,4 @@ def build_recipe_artifacts(kernel_type):
         if subprocess.call(['./login.sh']) == 0:
             subprocess.call(['./build.sh'])
     else:
-        LOGGER.error("Invalid kernel type")
+        LOGGER.error("Invalid kernel type %s. Valid types are Python, PySpark, Spark and R", kernel_type)
