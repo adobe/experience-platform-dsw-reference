@@ -41,14 +41,14 @@ OUTPUT_MIXIN_DATA = "output_mixin_data"
 
 
 # Read the configs
-with open("config.yaml", 'r') as ymlfile:
+with open("config_backup.yaml", 'r') as ymlfile:
     cfg = yaml.safe_load(ymlfile)
-
-    api_key = dictor(cfg, ENTERPRISE + ".api_key", checknone=True)
-    org_id = dictor(cfg, ENTERPRISE + ".org_id", checknone=True)
 
 
 def get_token():
+    """
+    :return: ims token for authorization
+    """
     ims_token = dictor(cfg, PLATFORM + ".ims_token", checknone=True)
 
 
@@ -74,6 +74,11 @@ def get_token():
     return ims_token
 
 def get_headers():
+    """
+    :return: headers
+    """
+    api_key = dictor(cfg, ENTERPRISE + ".api_key", checknone=True)
+    org_id = dictor(cfg, ENTERPRISE + ".org_id", checknone=True)
     headers = {}
     ims_token = get_token()
     if ims_token is not None:
@@ -120,35 +125,38 @@ def ingest(headers_for_ingestion):
     data_for_dataset = dictor(cfg, DATASET_DATA, checknone=True)
     data_for_batch = dictor(cfg, BATCH_DATA, checknone=True)
     data_for_output_mixin = dictor(cfg, OUTPUT_MIXIN_DATA, checknone=True)
+    headers_for_ingesting_data = copy.deepcopy(headers_for_ingestion)
 
     try:
 
-        tenant_id = get_tenant_id(tenant_id_url, copy.deepcopy(headers_for_ingestion))
+        tenant_id = get_tenant_id(tenant_id_url, headers_for_ingesting_data)
 
-        class_id = get_class_id(create_class_url, copy.deepcopy(headers_for_ingestion), input_class_title, data_for_class)
+        class_id = get_class_id(create_class_url, headers_for_ingesting_data, input_class_title, data_for_class)
 
-        input_mixin_id = get_mixin_id(create_mixin_url, copy.deepcopy(headers_for_ingestion), input_mixin_title, data_for_mixin, class_id,
-                                      tenant_id, input_mixin_definition_title)
+        input_mixin_id = get_mixin_id(create_mixin_url, headers_for_ingesting_data, input_mixin_title,
+                                      data_for_mixin, class_id, tenant_id, input_mixin_definition_title)
 
-        input_schema_id = get_schema_id(create_schema_url, copy.deepcopy(headers_for_ingestion), input_schema_title,
+        input_schema_id = get_schema_id(create_schema_url, headers_for_ingesting_data, input_schema_title,
                                         class_id, input_mixin_id, data_for_schema)
 
-        input_dataset_id = get_dataset_id(create_dataset_url, copy.deepcopy(headers_for_ingestion), input_dataset_title, input_schema_id, data_for_dataset)
+        input_dataset_id = get_dataset_id(create_dataset_url, headers_for_ingesting_data, input_dataset_title,
+                                          input_schema_id, data_for_dataset)
 
-        batch_id = get_batch_id(create_batch_url, copy.deepcopy(headers_for_ingestion), input_dataset_id, data_for_batch)
+        batch_id = get_batch_id(create_batch_url, headers_for_ingesting_data, input_dataset_id, data_for_batch)
 
         replace_tenant_id(original_file, file_with_tenant_id, tenant_id)
 
-        upload_file(create_batch_url, copy.deepcopy(headers_for_ingestion), file_with_tenant_id, input_dataset_id, batch_id)
+        upload_file(create_batch_url, headers_for_ingesting_data, file_with_tenant_id, input_dataset_id, batch_id)
 
-        close_batch(create_batch_url, copy.deepcopy(headers_for_ingestion), batch_id)
+        close_batch(create_batch_url, headers_for_ingesting_data, batch_id)
 
         if is_output_schema_different == "True":
-            output_mixin_id = get_mixin_id(create_mixin_url, copy.deepcopy(headers_for_ingestion), output_mixin_title, data_for_output_mixin,
-                                           class_id, tenant_id, output_mixin_definition_title)
-            output_schema_id = get_schema_id(create_schema_url, copy.deepcopy(headers_for_ingestion), output_schema_title, class_id, output_mixin_id,
-                                         data_for_schema)
-            get_dataset_id(create_dataset_url, copy.deepcopy(headers_for_ingestion), output_dataset_title, output_schema_id, data_for_dataset)
+            output_mixin_id = get_mixin_id(create_mixin_url, headers_for_ingesting_data, output_mixin_title,
+                                           data_for_output_mixin, class_id, tenant_id, output_mixin_definition_title)
+            output_schema_id = get_schema_id(create_schema_url, headers_for_ingesting_data, output_schema_title,
+                                             class_id, output_mixin_id, data_for_schema)
+            get_dataset_id(create_dataset_url, headers_for_ingesting_data, output_dataset_title, output_schema_id,
+                           data_for_dataset)
 
 
     except requests.exceptions.HTTPError as http_err:
@@ -169,10 +177,9 @@ if __name__ == "__main__":
     build_artifacts = dictor(cfg, PLATFORM + ".build_recipe_artifacts", checknone=True)
 
     if ingest_data == "True":
-        LOGGER.debug("Ingesting data")
-        headers_for_ingesting_data = get_headers()
-        if headers_for_ingesting_data is not None:
-            ingest(headers_for_ingesting_data)
+        LOGGER.info("Ingesting data")
+        if get_headers() is not None:
+            ingest(get_headers())
 
     if build_artifacts == "True":
         kernel_type = dictor(cfg, PLATFORM + ".kernel_type", checknone=True)

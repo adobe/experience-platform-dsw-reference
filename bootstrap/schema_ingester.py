@@ -68,7 +68,7 @@ def get_mixin_id(create_mixin_url, headers, mixin_title, data, class_id, tenant_
     :param data: post request data
     :param class_id: class url
     :param tenant_id: tenant id in the org
-    :param mixin_definition_title: mixin_definition_title to set the url
+    :param mixin_definition_title: mixin definition title to set the url
     :return: mixin url
     """
 
