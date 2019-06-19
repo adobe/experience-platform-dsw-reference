@@ -74,7 +74,9 @@ executed and the recipe artifacts are generated. The output is one of the follow
     1. Spark generates a jar file
     2. PySpark generates an egg file
     3. Python and R would prompt for login and generate a source url
-These artifacts are then utilized to make a recipe.    
+    
+These artifacts are then utilized to make a recipe.  
+  
 2. If ingest_data is set to "False" (the case when the schema and datasets already exist in the org), and 
 build_recipe_artifacts is set to "True", the output is one of the artifacts as mentioned above based on the kernel_type.
 

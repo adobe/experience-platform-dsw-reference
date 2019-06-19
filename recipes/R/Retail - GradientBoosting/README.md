@@ -13,7 +13,7 @@ Sample R recipe using the retail data.
 
 # Prerequisites
 
-To run the recipe in any org, we would need the schema of the dataset,the input dataset, 
+To run the recipe in any org, we would need the schema of the dataset, the input dataset, 
 output schema and empty output dataset uploaded to the platform UI. For setting this up, use the bootstrap script 
 within `/acp-data-services-dsw-reference/bootstrap`
 Get the tenant id from the bootstrap script and replace the value in the `pipelineservice.json` 
