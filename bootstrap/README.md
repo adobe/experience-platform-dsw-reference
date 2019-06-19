@@ -17,7 +17,7 @@ Following are the steps the script runs through to setup the input and output da
 11. Create Output Retail Sales Mixin with the class url from step 3
 12. Create Output Retail Sales Schema with the class url and the mixin url
 13. Create Output Dataset with the schema
-14. Build the engine artifacts based on the configuration.
+14. Build the engine artifacts based on the configuration
 
 # Setup
 We would need an access token to access the APIs. This can be obtained from either an Adobe IO integration or from the 
@@ -59,7 +59,7 @@ Input this value in ims_token in the Platform section of the config.yaml
        input_dataset_title: []
        file_replace_tenant_id: DSWRetailSalesForXDM0.9.9.9.json
        file_with_tenant_id: []
-       is_ouput_schema_different: "True"
+       is_output_schema_different: "True"
        output_mixin_title: []
        output_mixin_definition_title: []
        output_schema_title: []
