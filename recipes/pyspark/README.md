@@ -32,7 +32,7 @@ sh ./build.sh
 ```
 Enter your admin password when prompted for.
 This generates an egg and is saved in the dist directory of the project. 
-Use this egg and go to platform UI `https://platform.adobe.io` and run training and scoring. 
+Use this egg and go to platform UI `https://platform.adobe.com/` and run training and scoring. 
 Please look at the video `Video for Training, Scoring and Saving data`
 
 ### Video for Training, Scoring and Saving data
