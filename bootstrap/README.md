@@ -47,7 +47,7 @@ Input this value in ims_token in the Platform section of the config.yaml
     Platform:   
         ingest_data: "True" # Value must be either "True" or "False"
         build_recipe_artifacts: "False" # Value must be either "True" or "False"
-        kernel_type: <kernel_type> # Value must be one of Spark, Pyspark, Python, R, example Spark
+        kernel_type: <kernel_type> # Value must be one of Spark, PySpark, Python, R
 
 ### Input the values for the Titles:
 

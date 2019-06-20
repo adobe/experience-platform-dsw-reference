@@ -4,12 +4,12 @@ Sample PySpark Recipe using the retail data.
 
 # Workflow
  
-1. The recipe loads the dataset.
-2. Feature engineering is done on the data so that the data can be used for machine learning training. 
-3. The feature pipeline defines the stages with the Gradient Boosting Regressor as the chosen model.
-4. This pipeline is used to fit the training data and the trained model is created. 
-5. The model is transformed with the scoring dataset. 
-5. Interesting columns of the output are then selected and saved back to the platform with the associated data.
+1. The recipe loads the dataset
+2. Feature engineering is done on the data so that the data can be used for machine learning training
+3. The feature pipeline defines the stages with the Gradient Boosting Regressor as the chosen model
+4. This pipeline is used to fit the training data and the trained model is created
+5. The model is transformed with the scoring dataset
+6. Interesting columns of the output are then selected and saved back to the platform with the associated data
 
 # Prerequisites
 
@@ -36,7 +36,7 @@ Use this egg and go to platform UI `https://platform.adobe.io` and run training 
 Please look at the video `Video for Training, Scoring and Saving data`
 
 ### Video for Training, Scoring and Saving data
-[![Watch the video](../../docs/images/HomePage.png)](https://youtu.be/VAi6VMMc3e0)
+[![Watch the video](../../docs/images/HomePage.png)](https://youtu.be/Ob_o0FgRXU4)
 
 # Sample Config json
 ```

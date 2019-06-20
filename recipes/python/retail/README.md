@@ -1,19 +1,19 @@
 # _retail_ Sample App
 
-Sample python recipe using the retail data.
+Sample Python recipe using the retail data.
 
 # Workflow
  
-1. The recipe loads the dataset.
-2. Feature engineering is done on the data so that the data can be used for machine learning training. 
-3. The feature pipeline defines the stages with the Gradient Boosting Regressor as the chosen model.
-4. This pipeline is used to fit the training data and the trained model is created. 
-5. The model is transformed with the scoring dataset. 
-6. Interesting columns of the output are then selected and saved back to the platform with the associated data.
+1. The recipe loads the dataset
+2. Feature engineering is done on the data so that the data can be used for machine learning training
+3. The feature pipeline defines the stages with the Gradient Boosting Regressor as the chosen model
+4. This pipeline is used to fit the training data and the trained model is created 
+5. The model is transformed with the scoring dataset
+6. Interesting columns of the output are then selected and saved back to the platform with the associated data
 
 # Prerequisites
 
-To run the recipe in any org, we would need the schema of the dataset,the input dataset, 
+To run the recipe in any org, we would need the schema of the dataset, the input dataset, 
 output schema and empty output dataset uploaded to the platform UI. For setting this up, use the bootstrap script 
 within `/acp-data-services-dsw-reference/bootstrap`
 Get the tenant id from the bootstrap script and replace the value in the `retail.config.json` 
@@ -69,7 +69,7 @@ Sample configuration json to be used with the recipe.
           },
           {
             "key": "tenantId",
-            "value": "_acpmlexploratoryexternal"
+            "value": "_<tenant_id>
          },
          {
            "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
@@ -90,7 +90,7 @@ Sample configuration json to be used with the recipe.
             "parameters": [
                 {
                     "key": "tenantId",
-                    "value": "_acpmlexploratoryexternal"
+                    "value": "_<tenant_id>"
                 },
                 {
                   "key":"ACP_DSW_SCORING_RESULTS_XDM_SCHEMA",

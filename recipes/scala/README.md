@@ -4,16 +4,16 @@ Sample Scala Recipe using the retail data.
 
 # Workflow
  
-1. The recipe loads the dataset.
-2. Feature engineering is done on the data so that the data can be used for machine learning training. 
-3. The feature pipeline defines the stages with the Gradient Boosting Regressor as the chosen model.
-4. This pipeline is used to fit the training data and the trained model is created. 
-5. The model is transformed with the scoring dataset. 
-6. Interesting columns of the output are then selected and saved back to the platform with the associated data.
+1. The recipe loads the dataset
+2. Feature engineering is done on the data so that the data can be used for machine learning training 
+3. The feature pipeline defines the stages with the Gradient Boosting Regressor as the chosen model
+4. This pipeline is used to fit the training data and the trained model is created
+5. The model is transformed with the scoring dataset
+6. Interesting columns of the output are then selected and saved back to the platform with the associated data
 
 # Prerequisites
 
-To run the recipe in any org, we would need the schema of the dataset,the input dataset, 
+To run the recipe in any org, we would need the schema of the dataset, the input dataset, 
 output schema and empty output dataset uploaded to the platform UI. For setting this up, use the bootstrap script 
 within `/acp-data-services-dsw-reference/bootstrap`
 Get the tenant id from the bootstrap script and replace the value in the `pipelineservice.json` 
@@ -30,12 +30,12 @@ sh ./build.sh
 ```
 
 This generates a fat jar and is saved in the target directory of the project. 
-Use this jar and go to platform UI `https://platform.adobe.io` and run training and scoring. 
+Use this jar and go to platform UI `https://platform.adobe.com/` and run training and scoring. 
 Please look at the video `Video for Training, Scoring and Saving data`
 
 ### Video for Training, Scoring and Saving data
-[![Watch the video](../../docs/images/HomePage.png)](https://youtu.be/VAi6VMMc3e0)
-Make sure to select runtime as Spark.
+[![Watch the video](../../docs/images/HomePage.png)](https://youtu.be/Ob_o0FgRXU4)
+Make sure to select runtime as Spark when running the scenario through the UI.
 
 # Sample Config json
         [

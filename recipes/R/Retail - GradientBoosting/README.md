@@ -4,12 +4,12 @@ Sample R recipe using the retail data.
 
 # Workflow
  
-1. The recipe loads the dataset.
-2. Feature engineering is done on the data so that the data can be used for machine learning training. 
-3. The feature pipeline defines the stages with the Gradient Boosting Regressor as the chosen model.
-4. This pipeline is used to fit the training data and the trained model is created. 
-5. The model is transformed with the scoring dataset. 
-6. Interesting columns of the output are then selected and saved back to the platform with the associated data.
+1. The recipe loads the dataset
+2. Feature engineering is done on the data so that the data can be used for machine learning training
+3. The feature pipeline defines the stages with the Gradient Boosting Regressor as the chosen model
+4. This pipeline is used to fit the training data and the trained model is created 
+5. The model is transformed with the scoring dataset
+6. Interesting columns of the output are then selected and saved back to the platform with the associated data
 
 # Prerequisites
 
@@ -36,7 +36,8 @@ Please note the `login.sh` script should only need to be run once.
 
 ### Video for Training, Scoring and Saving data
 [![Watch the video](../../docs/images/HomePage.png)](https://youtu.be/rur0jkqhvno)
-Make sure to select R as the runtime.
+Make sure to select R as the runtime when running the scenario through the UI.
+
 # Sample Configuration File
 Sample configuration json to be used with the recipe.
 ```
