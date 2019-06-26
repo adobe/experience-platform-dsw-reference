@@ -1,6 +1,6 @@
 # _retail_ Sample App
 
-Sample Python recipe using the retail data.
+Sample TensorFlow recipe using the retail data.
 
 # Steps:
 git clone this repository
