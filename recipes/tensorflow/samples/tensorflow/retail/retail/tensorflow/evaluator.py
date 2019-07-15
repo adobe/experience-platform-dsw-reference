@@ -21,10 +21,10 @@ import pickle
 
 class Evaluator(AbstractEvaluator):
     def __init__(self):
-       print ('Initiate')
+        print('Initiate')
 
     def evaluate(self, data=[], model={}, config={}):
-        print ('Evaluation evaluate triggered')
+        print('Evaluation evaluate triggered')
         metrics_dict = pickle.load(open(os.path.join(config['modelPATH'], 'metrics_dict.pkl'), 'rb'))
 
         metrics = []
@@ -35,5 +35,5 @@ class Evaluator(AbstractEvaluator):
 
     def split(self, config={}):
 
-       print ('Split triggered')
-       return 'train', 'test'
+        print('Split triggered')
+        return 'train', 'test'

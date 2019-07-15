@@ -89,11 +89,11 @@ class Scorer(AbstractScorer):
 
         def gen_input_fn(features, labels, epochs=10, shuffle=True, batch_size=32):
             def input_function():
-                ds = tf.data.Dataset.from_tensor_slices((dict(features), labels))
+                dataset = tf.data.Dataset.from_tensor_slices((dict(features), labels))
                 if shuffle:
-                    ds = ds.shuffle(1000)
-                ds = ds.batch(batch_size).repeat(epochs)
-                return ds
+                    dataset = dataset.shuffle(1000)
+                dataset = dataset.batch(batch_size).repeat(epochs)
+                return dataset
             return input_function
 
         test_input_fn = gen_input_fn(X_test, y_test, shuffle=False, epochs=1)

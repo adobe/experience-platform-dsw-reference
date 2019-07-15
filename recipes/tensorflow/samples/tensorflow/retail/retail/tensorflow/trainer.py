@@ -104,11 +104,11 @@ class Trainer(AbstractTrainer):
 
         def gen_input_fn(features, labels, epochs=10, shuffle=True, batch_size=32):
             def input_function():
-                ds = tf.data.Dataset.from_tensor_slices((dict(features), labels))
+                dataset = tf.data.Dataset.from_tensor_slices((dict(features), labels))
                 if shuffle:
-                    ds = ds.shuffle(1000)
-                ds = ds.batch(batch_size).repeat(epochs)
-                return ds
+                    dataset = dataset.shuffle(1000)
+                dataset = dataset.batch(batch_size).repeat(epochs)
+                return dataset
             return input_function
 
         train_input_fn = gen_input_fn(X_train, y_train)
@@ -153,4 +153,3 @@ class Trainer(AbstractTrainer):
         metrics_dict['RMSE'] = round(rmse, 3)
 
         pickle.dump(metrics_dict, open(os.path.join(config['modelPATH'], 'metrics_dict.pkl'), 'wb'))
-
