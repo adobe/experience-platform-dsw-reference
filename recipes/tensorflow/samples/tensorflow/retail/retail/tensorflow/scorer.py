@@ -38,7 +38,8 @@ class Scorer(AbstractScorer):
         #########################################
         # Load Data
         #########################################
-        prodreader = DataSetReader(client_id=config['ML_FRAMEWORK_IMS_USER_CLIENT_ID'],
+        prodreader = DataSetReader(catalog_url="https://platform.adobe.io/data/foundation/catalog",
+                                   client_id=config['ML_FRAMEWORK_IMS_USER_CLIENT_ID'],
                                    user_token=config['ML_FRAMEWORK_IMS_TOKEN'],
                                    service_token=config['ML_FRAMEWORK_IMS_ML_TOKEN'])
 
@@ -119,7 +120,8 @@ class Scorer(AbstractScorer):
         output = X_test[['store', 'prediction']].reset_index()
         output['date'] = output['date'].astype(str)
 
-        writer = DataSetWriter(client_id=config['ML_FRAMEWORK_IMS_USER_CLIENT_ID'],
+        writer = DataSetWriter(catalog_url="https://platform.adobe.io/data/foundation/catalog",
+                               client_id=config['ML_FRAMEWORK_IMS_USER_CLIENT_ID'],
                                user_token=config['ML_FRAMEWORK_IMS_TOKEN'],
                                service_token=config['ML_FRAMEWORK_IMS_ML_TOKEN'])
 
