@@ -15,7 +15,7 @@
 # from Adobe.
 #####################################################################
 import sys
-sys.path.append("/usr/bin/anaconda/envs/py35/lib/python3.5/site-packages/")
+sys.path.append("/usr/bin/anaconda/envs/dswpy36/lib/python3.6/site-packages/")
 
 from .training_data_loader import TrainingDataLoader
 from .scoring_data_loader import ScoringDataLoader
