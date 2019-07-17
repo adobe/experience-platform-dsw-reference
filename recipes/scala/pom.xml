@@ -32,7 +32,7 @@
 	<repositories>
 		<repository>
 			<id>staged-releases</id>
-			<url>https://oss.sonatype.org/content/repositories/comadobeplatform-1040</url>
+			<url>https://oss.sonatype.org/content/repositories/comadobeplatform-1047</url>
 		</repository>
 	</repositories> -->
 	
@@ -50,7 +50,7 @@
 		<dependency>
 			<groupId>com.adobe.platform.ml</groupId>
 			<artifactId>authoring-sdk_2.11</artifactId>
-			<version>0.21.2</version>
+			<version>0.21.4</version>
 			<classifier>jar-with-dependencies</classifier>
 		</dependency>
 		<dependency>
