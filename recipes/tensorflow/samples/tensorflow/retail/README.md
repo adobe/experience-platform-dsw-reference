@@ -115,26 +115,23 @@ Sample configuration json to be used with the recipe.
 
         ]
     },
-  {
+    {
         "name": "score",
         "parameters": [
-          {
+            {
                 "key": "output_dataset_id",
                 "value": "<output_dataset_id>"
-          },
-
-          {
+            },
+            {
                 "key": "ACP_DSW_SCORING_RESULTS_XDM_SCHEMA",
                 "value": ""
-
-          },
-          {
+            },
+            {
                 "key": "tenant_id",
                 "value": "_<tenant_id>"
-
-          }
+            }
         ]
-  }
+    }
 ]
 
 ```
