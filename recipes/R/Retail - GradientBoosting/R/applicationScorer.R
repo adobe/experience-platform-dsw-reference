@@ -118,14 +118,9 @@ applicationScorer <- setRefClass("applicationScorer",
       #########################################
       reticulate::use_python("/usr/bin/python3.6")
       data_access_sdk_python <- reticulate::import("data_access_sdk_python")
-      
-      catalog_url <- "https://platform.adobe.io/data/foundation/catalog"
-      ingestion_url <- "https://platform.adobe.io/data/foundation/import"
-      
+
       print("Set up writer")
-      writer <- data_access_sdk_python$writer$DataSetWriter(catalog_url = catalog_url,
-                                                            ingestion_url = ingestion_url,
-                                                            client_id = configurationJSON$ML_FRAMEWORK_IMS_USER_CLIENT_ID,
+      writer <- data_access_sdk_python$writer$DataSetWriter(client_id = configurationJSON$ML_FRAMEWORK_IMS_USER_CLIENT_ID,
                                                             user_token = configurationJSON$ML_FRAMEWORK_IMS_TOKEN,
                                                             service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
       print("Writer configured")
