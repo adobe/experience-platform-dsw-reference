@@ -76,62 +76,63 @@ Make sure to select Tensorflow as the runtime when running the scenario through 
 # Sample Configuration File
 Sample configuration json to be used with the recipe.
 ```
-[
-    {
-        "name": "train",
-        "parameters": [
-		    {
-		        "key": "learning_rate",
-		        "value": "0.1"
-		    },
-		    {
-		        "key": "n_estimators",
-		        "value": "150"
-		    },
-		    {
-		        "key": "max_depth",
-		        "value": "6"
-		    },
-            {
-                "key": "ACP_DSW_INPUT_FEATURES",
-                "value": ""
-            },
-            {
-                "key": "ACP_DSW_TARGET_FEATURES",
-                "value": ""
-            },
-            {
-                "key": "ACP_DSW_FEATURE_UPDATE_SUPPORT",
-                "value": "false"
-            },
-            {
-                "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
-                "value": ""
-            },
-            {
-                "key": "tenant_id",
-                "value": "_<tenant_id>"
-            }
-
-        ]
-    },
-    {
-        "name": "score",
-        "parameters": [
-            {
-                "key": "output_dataset_id",
-                "value": "<output_dataset_id>"
-            },
-            {
-                "key": "ACP_DSW_SCORING_RESULTS_XDM_SCHEMA",
-                "value": ""
-            },
-            {
-                "key": "tenant_id",
-                "value": "_<tenant_id>"
-            }
-        ]
-    }
-]
+    [
+        {
+            "name": "train",
+                {
+                    "key": "learning_rate",
+                    "value": "0.1"
+                },
+                {
+                    "key": "n_estimators",
+                    "value": "150"
+                },
+                {
+                    "key": "max_depth",
+                    "value": "6"
+                },
+                {
+                    "key": "ACP_DSW_INPUT_FEATURES",
+                    "value": ""
+                },
+                {
+                    "key": "ACP_DSW_TARGET_FEATURES",
+                    "value": ""
+                },
+                {
+                    "key": "ACP_DSW_FEATURE_UPDATE_SUPPORT",
+                    "value": "false"
+                },
+                {
+                    "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
+                    "value": ""
+                },
+                {
+                    "key": "tenant_id",
+                    "value": "_<tenant_id>"
+                }
+    
+            ]
+        },
+        {
+            "name": "score",
+            "parameters": [
+                {
+                    "key": "output_dataset_id",
+                    "value": "<output_dataset_id>"
+                },
+    
+                {
+                    "key": "ACP_DSW_SCORING_RESULTS_XDM_SCHEMA",
+                    "value": ""
+    
+                },
+                {
+                    "key": "tenant_id",
+                    "value": "_<tenant_id>"
+                }
+            ]
+        }
+    ]
 
 ```
