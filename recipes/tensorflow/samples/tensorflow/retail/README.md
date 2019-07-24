@@ -106,12 +106,7 @@ Sample configuration json to be used with the recipe.
                 {
                     "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
                     "value": ""
-                },
-                {
-                    "key": "tenant_id",
-                    "value": "_<tenant_id>"
                 }
-    
             ]
         },
         {
