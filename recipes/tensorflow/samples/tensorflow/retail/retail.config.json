@@ -37,10 +37,6 @@
         "name": "score",
         "parameters": [
             {
-                "key": "output_dataset_id",
-                "value": "<output_dataset_id>"
-            },
-            {
                 "key": "ACP_DSW_SCORING_RESULTS_XDM_SCHEMA",
                 "value": "<leave as is if going through UI workflow. Replace with Schema ID if creating recipe via API>"
 
