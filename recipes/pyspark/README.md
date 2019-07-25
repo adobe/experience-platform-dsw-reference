@@ -16,13 +16,49 @@ Sample PySpark Recipe using the retail data.
 To run the recipe in any org, we would need the schema of the dataset,the input dataset, 
 output schema and empty output dataset uploaded to the platform UI. For setting this up, use the bootstrap script 
 within `/acp-data-services-dsw-reference/bootstrap`
-Get the tenant id from the bootstrap script and replace the value in the `pipeline.json` 
-If you got the engine artifact from the bootstrap script, jump to the section `Video for Training, Scoring and 
-Saving data` 
+Get the tenant id from running the `Curl command to get the tenant id` and replace the value of the key `tenant_id` in 
+`pipeline.json`. Make sure to prepend the tenant id with `_` i.e. underscore.
+If you got the engine artifact from the bootstrap script, jump to the section [Video for Training, Scoring and Saving
+ data](#video-for-training-scoring-and-saving-data) 
+
+### Curl command to get the tenant id
+
+```
+    curl -X GET \
+      https://platform.adobe.io/data/foundation/schemaregistry/stats \
+      -H 'Authorization: [Bearer token] \
+      -H 'x-api-key: [api key]' \
+      -H 'x-gw-ims-org-id: [imsorg id]'
+``` 
+ 
+ Sample response:
+ 
+ ```
+ {
+     "imsOrg": "20656D0F5B9975B20A495E23@AdobeOrg",
+     "tenantId": "acpmlexploratoryexternal", - This is tenant Id that we are interested in
+     "counts": {
+         "schemas": 69,
+         "mixins": 60,
+         "datatypes": 0,
+         "classes": 76,
+         "unions": 0
+     },
+     "recentlyCreatedResources": [
+         ...
+     ],
+     "recentlyUpdatedResources": [
+         ...
+     ],
+     "classUsage": [
+     	...
+     ]   
+ }
+ ```
 
 # Steps to run training and scoring jobs
 
-git clone this repository from `https://github.com/adobe/experience-platform-dsw-reference`
+git clone this repository from [https://github.com/adobe/experience-platform-dsw-reference](https://github.com/adobe/experience-platform-dsw-reference) 
 
 
 cd to recipes/pyspark and run `build.sh` 

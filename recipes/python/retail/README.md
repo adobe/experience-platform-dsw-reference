@@ -16,15 +16,51 @@ Sample Python recipe using the retail data.
 To run the recipe in any org, we would need the schema of the dataset, the input dataset, 
 output schema and empty output dataset uploaded to the platform UI. For setting this up, use the bootstrap script 
 within `/acp-data-services-dsw-reference/bootstrap`
-Get the tenant id from the bootstrap script and replace the value in the `retail.config.json` 
-If you got the engine artifact from the bootstrap script, jump to the section `Video for Training, Scoring and 
-Saving data` 
+Get the tenant id from running the `Curl command to get the tenant id` and replace the value of the key `tenant_id` in `retail.config.json` 
+Make sure to prepend the tenant id with `_` i.e. underscore.
+If you got the engine artifact from the bootstrap script, jump to the section [Video for Training, Scoring and Saving
+ data](#video-for-training-scoring-and-saving-data) 
 
-# Steps:
+### Curl command to get the tenant id
 
-git clone this repository from `https://github.com/adobe/experience-platform-dsw-reference`
+```
+    curl -X GET \
+      https://platform.adobe.io/data/foundation/schemaregistry/stats \
+      -H 'Authorization: [Bearer token] \
+      -H 'x-api-key: [api key]' \
+      -H 'x-gw-ims-org-id: [imsorg id]'
+``` 
+ 
+ Sample response:
+ 
+ ```
+ {
+     "imsOrg": "20656D0F5B9975B20A495E23@AdobeOrg",
+     "tenantId": "acpmlexploratoryexternal", - This is tenant Id that we are interested in
+     "counts": {
+         "schemas": 69,
+         "mixins": 60,
+         "datatypes": 0,
+         "classes": 76,
+         "unions": 0
+     },
+     "recentlyCreatedResources": [
+         ...
+     ],
+     "recentlyUpdatedResources": [
+         ...
+     ],
+     "classUsage": [
+     	...
+     ]   
+ }
+ ```
 
-cd python/retail/ and run
+# Steps to run training and scoring jobs
+
+git clone this repository from [https://github.com/adobe/experience-platform-dsw-reference](https://github.com/adobe/experience-platform-dsw-reference)
+
+cd recipes/python/retail/ and run
 
 ```
 sh ./login.sh
@@ -34,7 +70,7 @@ sh ./build.sh
 Please note the `login.sh` script should only need to be run once.
 
 ### Video for Training, Scoring and Saving data
-[![Watch the video](../../docs/images/HomePage.png)](https://youtu.be/rur0jkqhvno)
+[![Watch the video](../../../docs/images/HomePage.png)](https://youtu.be/rur0jkqhvno)
 
 # Sample Configuration File
 Sample configuration json to be used with the recipe.
