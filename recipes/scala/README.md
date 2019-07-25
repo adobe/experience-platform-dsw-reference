@@ -57,7 +57,7 @@ If you got the engine artifact from the bootstrap script, jump to the section [V
  ```
 
 # Steps to run training and scoring jobs
-git clone this repository from `https://github.com/adobe/experience-platform-dsw-reference`
+git clone this repository from [https://github.com/adobe/experience-platform-dsw-reference](https://github.com/adobe/experience-platform-dsw-reference)
 
 cd to recipes/scala and run `build.sh` 
 

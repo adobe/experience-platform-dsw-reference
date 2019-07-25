@@ -18,8 +18,8 @@ output schema and empty output dataset uploaded to the platform UI. For setting 
 within `/acp-data-services-dsw-reference/bootstrap`
 Get the tenant id from running the `Curl command to get the tenant id` and replace the value of the key `tenant_id` in `retail.config.json` 
 Make sure to prepend the tenant id with `_` i.e. underscore.
-If you got the engine artifact from the bootstrap script, jump to the section `Video for Training, Scoring and 
-Saving data` 
+If you got the engine artifact from the bootstrap script, jump to the section [Video for Training, Scoring and Saving
+ data](#video-for-training-scoring-and-saving-data) 
 
 ### Curl command to get the tenant id
 
@@ -58,7 +58,7 @@ Saving data`
 
 # Steps to run training and scoring jobs
 
-git clone this repository from `https://github.com/adobe/experience-platform-dsw-reference`
+git clone this repository from [https://github.com/adobe/experience-platform-dsw-reference](https://github.com/adobe/experience-platform-dsw-reference)
 
 cd recipes/python/retail/ and run
 
@@ -70,7 +70,7 @@ sh ./build.sh
 Please note the `login.sh` script should only need to be run once.
 
 ### Video for Training, Scoring and Saving data
-[![Watch the video](../../docs/images/HomePage.png)](https://youtu.be/rur0jkqhvno)
+[![Watch the video](../../../docs/images/HomePage.png)](https://youtu.be/rur0jkqhvno)
 
 # Sample Configuration File
 Sample configuration json to be used with the recipe.
