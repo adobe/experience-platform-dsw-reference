@@ -17,7 +17,7 @@ To run the recipe in any org, we would need the schema of the dataset,the input 
 output schema and empty output dataset uploaded to the platform UI. For setting this up, use the bootstrap script 
 within `/acp-data-services-dsw-reference/bootstrap`
 Get the tenant id from running the `Curl command to get the tenant id` and replace the value of the key `tenant_id` in 
-`pipeline.json` 
+`pipeline.json`. Make sure to prepend the tenant id with `_` i.e. underscore.
 If you got the engine artifact from the bootstrap script, jump to the section `Video for Training, Scoring and 
 Saving data` 
 
