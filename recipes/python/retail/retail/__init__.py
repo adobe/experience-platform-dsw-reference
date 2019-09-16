@@ -15,6 +15,12 @@
 # from Adobe.
 #####################################################################
 
+import os as os
+os.environ["ENV_CATALOG_URL"] = "https://platform.adobe.io/data/foundation/catalog/"
+os.environ["ENV_QUERY_SERVICE_URL"] = "https://platform.adobe.io/data/foundation/query"
+os.environ["ENV_BULK_INGEST_URL"] = "https://platform.adobe.io/data/foundation/import/"
+os.environ["ENV_REGISTRY_URL"] = "https://platform.adobe.io/data/foundation/schemaregistry/tenant/schemas"
+
 from .trainingdataloader import load
 from .pipeline import train
 from .scoringdataloader import load

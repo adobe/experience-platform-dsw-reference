@@ -15,7 +15,7 @@
 # from Adobe.
 #####################################################################
 
-FROM adobe/acp-dsw-ml-runtime-python:0.31.4
+FROM runtime:latest
 
 #INSTALL modules needed by application
 RUN /usr/bin/python3.5 -m pip install -U numpy==1.16.2
@@ -24,12 +24,14 @@ RUN /usr/bin/python3.5 -m pip install -U scikit-learn==0.20.3
 RUN /usr/bin/python3.5 -m pip install -U scipy==1.2.1
 RUN /usr/bin/python3.5 -m pip install -U fastparquet==0.2.1
 
+
 WORKDIR /root/retail
 
 COPY . .
 
 RUN python setup.py clean --all install
 
-RUN cp dist/retail*.egg /application.egg
+
+#RUN cp dist/retail*.egg /application.egg
 
 ENV PYTHONPATH=$PYTHONPATH:/application.egg
