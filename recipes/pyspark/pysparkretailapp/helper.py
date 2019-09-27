@@ -38,10 +38,10 @@ def load_dataset(configProperties, spark, taskId):
             raise ValueError("%s is empty" % arg)
 
     pd = spark.read.format("com.adobe.platform.dataset") \
-        .option('serviceToken', service_token) \
-        .option('userToken', user_token) \
-        .option('orgId', org_id) \
-        .option('serviceApiKey', api_key) \
+        .option('service_token', service_token) \
+        .option('user_token', user_token) \
+        .option('org_id', org_id) \
+        .option('service_api_key', api_key) \
         .load(dataset_id)
     return pd
 
