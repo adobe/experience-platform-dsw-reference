@@ -51,8 +51,8 @@ class MyDatasetSaver(DataSaver):
         scored_df = scored_df.withColumn("eventType", lit("empty"))
 
         scored_df.select(tenant_id, "_id", "eventType", "timestamp").write.format("com.adobe.platform.dataset") \
-            .option('orgId', org_id) \
-            .option('serviceToken', service_token) \
-            .option('userToken', user_token) \
-            .option('serviceApiKey', api_key) \
+            .option('org_id', org_id) \
+            .option('service_token', service_token) \
+            .option('user_token', user_token) \
+            .option('service_api_key', api_key) \
             .save(scored_dataset_id)
