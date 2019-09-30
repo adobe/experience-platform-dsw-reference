@@ -50,9 +50,11 @@ class MyDatasetSaver(DataSaver):
         scored_df = scored_df.withColumn("_id", lit("empty"))
         scored_df = scored_df.withColumn("eventType", lit("empty"))
 
+        dataset_options = sparkContext._jvm.com.adobe.platform.dataset.DataSetOptions
+
         scored_df.select(tenant_id, "_id", "eventType", "timestamp").write.format("com.adobe.platform.dataset") \
-            .option('org_id', org_id) \
-            .option('service_token', service_token) \
-            .option('user_token', user_token) \
-            .option('service_api_key', api_key) \
+            .option(dataset_options.orgId(), org_id) \
+            .option(dataset_options.serviceToken(), service_token) \
+            .option(dataset_options.userToken(), user_token) \
+            .option(dataset_options.serviceApiKey(), api_key) \
             .save(scored_dataset_id)
