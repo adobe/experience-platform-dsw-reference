@@ -46,13 +46,15 @@ applicationScorer <- setRefClass("applicationScorer",
       #########################################
       reticulate::use_python("/usr/bin/python3.6")
 
-      data_access_sdk_python <- reticulate::import("data_access_sdk_python")
+      platform_sdk_python <- reticulate::import("platform_sdk")
 
-      reader <- data_access_sdk_python$reader$DataSetReader(client_id = configurationJSON$ML_FRAMEWORK_IMS_USER_CLIENT_ID, 
-                                                            user_token = configurationJSON$ML_FRAMEWORK_IMS_TOKEN, 
-                                                            service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
-
-      df <- reader$load(configurationJSON$scoringDataSetId, configurationJSON$ML_FRAMEWORK_IMS_ORG_ID)
+      client_context <- platform_sdk_python$client_context$ClientContext(api_key = configurationJSON$ML_FRAMEWORK_IMS_USER_CLIENT_ID,
+                                                                         org_id = configurationJSON$ML_FRAMEWORK_IMS_ORG_ID,
+                                                                         service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN,
+                                                                         user_token = configurationJSON$ML_FRAMEWORK_IMS_TOKEN)
+      
+      dataset_reader <- platform_sdk_python$dataset_reader$DatasetReader(client_context, configurationJSON$scoringDataSetId)
+      df <- dataset_reader$read()
       df <- as_tibble(df)
 
 
@@ -64,7 +66,7 @@ applicationScorer <- setRefClass("applicationScorer",
       if(!is.null(tenantId)){
         if(any(names(df) == '_id')) {
           #Drop id, eventType, timestamp and rename columns
-          df <- df[,-c(1,2,3)]
+          df <- df[,-c(12,13,14)]
           names(df) <- substring(names(df), nchar(tenantId)+2)
         }
       }
@@ -117,18 +119,17 @@ applicationScorer <- setRefClass("applicationScorer",
       # Write Results
       #########################################
       reticulate::use_python("/usr/bin/python3.6")
-      data_access_sdk_python <- reticulate::import("data_access_sdk_python")
 
-      print("Set up writer")
-      writer <- data_access_sdk_python$writer$DataSetWriter(client_id = configurationJSON$ML_FRAMEWORK_IMS_USER_CLIENT_ID,
-                                                            user_token = configurationJSON$ML_FRAMEWORK_IMS_TOKEN,
-                                                            service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
-      print("Writer configured")
+      dataset <- platform_sdk_python$models$Dataset(client_context)$get_by_id(configurationJSON$scoringResultsDataSetId)
       
-      writer$write(data_set_id = configurationJSON$scoringResultsDataSetId,
-                   dataframe = output_df,
-                   ims_org = configurationJSON$ML_FRAMEWORK_IMS_ORG_ID,
-                   file_format='json')
+      print("Set up writer")
+      
+      dataset_writer <- platform_sdk_python$dataset_writer$DatasetWriter(client_context, dataset)
+      
+      print("Writer configured")
+
+      dataset_writer$write(output_df, file_format='json')
+      
       print("Write done")
       
       
