@@ -18,13 +18,14 @@
 from sdk.data_saver import DataSaver
 from pyspark.sql.types import StringType, TimestampType
 from pyspark.sql.functions import col, lit, struct
+from .helper import *
 
 
 class MyDatasetSaver(DataSaver):
 
-    def save(self, configProperties, prediction):
+    def save(self, config_properties, prediction):
         sparkContext = prediction._sc
-        if configProperties is None:
+        if config_properties is None:
             raise ValueError("configProperties parameter is null")
         if prediction is None:
             raise ValueError("prediction parameter is null")
@@ -36,8 +37,8 @@ class MyDatasetSaver(DataSaver):
         org_id = str(sparkContext.getConf().get("ML_FRAMEWORK_IMS_ORG_ID"))
         api_key = str(sparkContext.getConf().get("ML_FRAMEWORK_IMS_CLIENT_ID"))
 
-        scored_dataset_id = str(configProperties.get("scoringResultsDataSetId"))
-        tenant_id = str(configProperties.get("tenant_id"))
+        scored_dataset_id = str(config_properties.get("scoringResultsDataSetId"))
+        tenant_id = str(config_properties.get("tenant_id"))
         timestamp = "2019-01-01 00:00:00"
 
         for arg in ['service_token', 'user_token', 'org_id', 'scored_dataset_id', 'api_key', 'tenant_id']:
@@ -50,7 +51,7 @@ class MyDatasetSaver(DataSaver):
         scored_df = scored_df.withColumn("_id", lit("empty"))
         scored_df = scored_df.withColumn("eventType", lit("empty"))
 
-        dataset_options = sparkContext._jvm.com.adobe.platform.dataset.DataSetOptions
+        dataset_options = get_dataset_options(sparkContext)
 
         scored_df.select(tenant_id, "_id", "eventType", "timestamp").write.format("com.adobe.platform.dataset") \
             .option(dataset_options.orgId(), org_id) \
