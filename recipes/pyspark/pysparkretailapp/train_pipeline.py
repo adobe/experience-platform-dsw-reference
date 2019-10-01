@@ -25,21 +25,21 @@ from sdk.pipeline_factory import PipelineFactory
 
 class TrainPipeline(PipelineFactory):
 
-    def apply(self, configProperties):
-        if configProperties is None:
+    def apply(self, config_properties):
+        if config_properties is None:
             raise ValueError("configProperties parameter is null")
 
-        tenant_id = str(configProperties.get("tenant_id"))
-        input_features = str(configProperties.get("ACP_DSW_INPUT_FEATURES"))
+        tenant_id = str(config_properties.get("tenant_id"))
+        input_features = str(config_properties.get("ACP_DSW_INPUT_FEATURES"))
 
         if input_features is None:
             raise ValueError("input_features parameter is null")
         if input_features.startswith(tenant_id):
             input_features = input_features.replace(tenant_id + ".", "")
 
-        learning_rate = float(configProperties.get("learning_rate"))
-        n_estimators = int(configProperties.get("n_estimators"))
-        max_depth = int(configProperties.get("max_depth"))
+        learning_rate = float(config_properties.get("learning_rate"))
+        n_estimators = int(config_properties.get("n_estimators"))
+        max_depth = int(config_properties.get("max_depth"))
 
         feature_list = list(input_features.split(","))
         feature_list.remove("date")
@@ -59,11 +59,11 @@ class TrainPipeline(PipelineFactory):
 
         return pipeline
 
-    def train(self, configProperties, dataframe):
+    def train(self, config_properties, dataframe):
         pass
 
-    def score(self, configProperties, dataframe, model):
+    def score(self, config_properties, dataframe, model):
         pass
 
-    def getParamMap(self, configProperties, sparkSession):
+    def getParamMap(self, config_properties, sparkSession):
         return None

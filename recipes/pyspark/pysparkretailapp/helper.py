@@ -24,7 +24,7 @@ from pyspark.sql import Window
 import datetime
 
 
-def load_dataset(configProperties, spark, taskId):
+def load_dataset(config_properties, spark, task_id):
 
     service_token = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_ML_TOKEN"))
     user_token = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_TOKEN"))
@@ -33,26 +33,29 @@ def load_dataset(configProperties, spark, taskId):
     sandbox_id = str(spark.sparkContext.getConf().get("SANDBOX_ID_FIELD"))
     sandbox_name = str(spark.sparkContext.getConf().get("SANDBOX_NAME_FIELD"))
 
-    dataset_id = str(configProperties.get(taskId))
+    dataset_id = str(config_properties.get(task_id))
 
     for arg in ['service_token', 'user_token', 'org_id', 'dataset_id', 'api_key']:
         if eval(arg) == 'None':
             raise ValueError("%s is empty" % arg)
 
+
+    dataset_options = get_dataset_options(spark.sparkContext)
+
     pd = spark.read.format("com.adobe.platform.dataset") \
-        .option('serviceToken', service_token) \
-        .option('userToken', user_token) \
-        .option('orgId', org_id) \
-        .option('serviceApiKey', api_key) \
-        .option('sandboxName', sandbox_name) \
-        .option('sandboxId', sandbox_id) \
+        .option(dataset_options.serviceToken(), service_token) \
+        .option(dataset_options.userToken(), user_token) \
+        .option(dataset_options.orgId(), org_id) \
+        .option(dataset_options.serviceApiKey(), api_key) \
+        .option(dataset_options.sandboxName(), sandbox_name) \
+        .option(dataset_options.sandboxId(), sandbox_id) \
         .load(dataset_id)
     return pd
 
 
-def prepare_dataset(configProperties, dataset):
+def prepare_dataset(config_properties, dataset):
 
-    tenant_id = str(configProperties.get("tenant_id"))
+    tenant_id = str(config_properties.get("tenant_id"))
 
     # Flatten the data
     if tenant_id in dataset.columns:
@@ -60,7 +63,7 @@ def prepare_dataset(configProperties, dataset):
         dataset.show()
 
     # Filter the data
-    timeframe = str(configProperties.get("timeframe"))
+    timeframe = str(config_properties.get("timeframe"))
     if timeframe != 'None':
         filterByTime = str(datetime.datetime.now() - datetime.timedelta(minutes=int(timeframe)))
         dataset = dataset.filter(dataset["date"] >= lit(str(filterByTime)))
@@ -89,3 +92,7 @@ def prepare_dataset(configProperties, dataset):
 
     pd = pd.na.drop()
     return pd
+
+def get_dataset_options(spark_context):
+    dataset_options = spark_context._jvm.com.adobe.platform.dataset.DataSetOptions
+    return dataset_options
