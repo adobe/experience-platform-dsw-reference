@@ -35,6 +35,8 @@ class MyDatasetSaver(DataSaver):
         user_token = str(sparkContext.getConf().get("ML_FRAMEWORK_IMS_TOKEN"))
         org_id = str(sparkContext.getConf().get("ML_FRAMEWORK_IMS_ORG_ID"))
         api_key = str(sparkContext.getConf().get("ML_FRAMEWORK_IMS_CLIENT_ID"))
+        sandbox_id = str(sparkContext.getConf().get("SANDBOX_ID_FIELD"))
+        sandbox_name = str(sparkContext.getConf().get("SANDBOX_NAME_FIELD"))
 
         scored_dataset_id = str(configProperties.get("scoringResultsDataSetId"))
         tenant_id = str(configProperties.get("tenant_id"))
@@ -55,4 +57,6 @@ class MyDatasetSaver(DataSaver):
             .option('serviceToken', service_token) \
             .option('userToken', user_token) \
             .option('serviceApiKey', api_key) \
+            .option('sandboxName', sandbox_name) \
+            .option('sandboxId', sandbox_id) \
             .save(scored_dataset_id)

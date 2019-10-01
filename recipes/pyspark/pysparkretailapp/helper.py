@@ -30,6 +30,8 @@ def load_dataset(configProperties, spark, taskId):
     user_token = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_TOKEN"))
     org_id = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_ORG_ID"))
     api_key = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_CLIENT_ID"))
+    sandbox_id = str(spark.sparkContext.getConf().get("SANDBOX_ID_FIELD"))
+    sandbox_name = str(spark.sparkContext.getConf().get("SANDBOX_NAME_FIELD"))
 
     dataset_id = str(configProperties.get(taskId))
 
@@ -42,6 +44,8 @@ def load_dataset(configProperties, spark, taskId):
         .option('userToken', user_token) \
         .option('orgId', org_id) \
         .option('serviceApiKey', api_key) \
+        .option('sandboxName', sandbox_name) \
+        .option('sandboxId', sandbox_id) \
         .load(dataset_id)
     return pd
 
