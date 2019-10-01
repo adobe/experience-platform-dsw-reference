@@ -30,8 +30,8 @@ def load_dataset(config_properties, spark, task_id):
     user_token = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_TOKEN"))
     org_id = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_ORG_ID"))
     api_key = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_CLIENT_ID"))
-    sandbox_id = str(spark.sparkContext.getConf().get("SANDBOX_ID_FIELD"))
-    sandbox_name = str(spark.sparkContext.getConf().get("SANDBOX_NAME_FIELD"))
+    sandbox_id = str(spark.sparkContext.getConf().get("sandboxId"))
+    sandbox_name = str(spark.sparkContext.getConf().get("sandboxName"))
 
     dataset_id = str(config_properties.get(task_id))
 
