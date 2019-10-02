@@ -24,7 +24,9 @@ def save(config_properties, prediction):
    
     writer = DataSetWriter(client_id=config_properties['ML_FRAMEWORK_IMS_USER_CLIENT_ID'],
                            user_token=config_properties['ML_FRAMEWORK_IMS_TOKEN'],
-                           service_token=config_properties['ML_FRAMEWORK_IMS_ML_TOKEN'])
+                           service_token=config_properties['ML_FRAMEWORK_IMS_ML_TOKEN'],
+                           sandbox_id=configProperties['sandboxId'],
+                           sandbox_name=configProperties['sandboxName'])
 
     print("Writer Configured")
 
