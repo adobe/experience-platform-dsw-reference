@@ -14,10 +14,7 @@
 # is strictly forbidden unless prior written permission is obtained
 # from Adobe.
 #####################################################################
-
 from sklearn.ensemble import GradientBoostingRegressor
-import numpy as np
-
 
 def train(configProperties, data):
 

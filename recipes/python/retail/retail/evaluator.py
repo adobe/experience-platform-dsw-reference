@@ -15,9 +15,6 @@
 # from Adobe.
 #####################################################################
 from ml.runtime.python.core.regressionEvaluator import RegressionEvaluator
-from data_access_sdk_python.reader import DataSetReader
-import numpy as np
-import pandas as pd
 
 class Evaluator(RegressionEvaluator):
     def __init__(self):
