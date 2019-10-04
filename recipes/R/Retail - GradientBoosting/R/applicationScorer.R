@@ -48,12 +48,8 @@ applicationScorer <- setRefClass("applicationScorer",
 
       platform_sdk_python <- reticulate::import("platform_sdk")
 
-      client_context <- platform_sdk_python$client_context$ClientContext(api_key = configurationJSON$ML_FRAMEWORK_IMS_USER_CLIENT_ID,
-                                                                         org_id = configurationJSON$ML_FRAMEWORK_IMS_ORG_ID,
-                                                                         service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN,
-                                                                         user_token = configurationJSON$ML_FRAMEWORK_IMS_TOKEN,
-                                                                         sandbox_id = configurationJSON$sandboxId,
-                                                                         sandbox_name = configurationJSON$sandboxName)
+      util <- Util$new()
+      client_context <- util$get_client_context(configurationJSON)
       
       dataset_reader <- platform_sdk_python$dataset_reader$DatasetReader(client_context, configurationJSON$scoringDataSetId)
       df <- dataset_reader$read()
