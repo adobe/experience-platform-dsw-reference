@@ -19,13 +19,12 @@ package com.adobe.platform.ml
 
 import java.time.LocalDateTime
 
-import com.adobe.platform.dataset.DataSetOptions
+import com.adobe.platform.dataset.{DataSetOptions, DataSetResolver, PlatformSDK}
 import com.adobe.platform.ml.config.ConfigProperties
-import com.adobe.platform.ml.sdk.DataLoader
 import org.apache.spark.ml.feature.StringIndexer
 import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.functions._
-import org.apache.spark.sql.types.{TimestampType, StructType}
+import org.apache.spark.sql.types.{StructType, TimestampType}
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.sql.Column
 
@@ -50,16 +49,24 @@ class Helper {
     val userToken: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_TOKEN", "").toString
     val orgId: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_ORG_ID", "").toString
     val apiKey: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_CLIENT_ID", "").toString
-
+    val sandboxId: String = sparkSession.sparkContext.getConf.get("sandboxId", "").toString
+    val sandboxName: String = sparkSession.sparkContext.getConf.get("sandboxName", "").toString
     val dataSetId: String = configProperties.get(taskId).getOrElse("")
 
-    // Load the dataset
-    var df = sparkSession.read.format("com.adobe.platform.dataset")
-      .option(DataSetOptions.orgId, orgId)
-      .option(DataSetOptions.serviceToken, serviceToken)
-      .option(DataSetOptions.userToken, userToken)
-      .option(DataSetOptions.serviceApiKey, apiKey)
-      .load(dataSetId)
+    val creds = Map (
+      DataSetOptions.orgId -> orgId,
+      DataSetOptions.serviceToken ->  serviceToken,
+      DataSetOptions.userToken -> userToken,
+      DataSetOptions.serviceApiKey -> apiKey,
+      DataSetOptions.sandboxId -> sandboxId,
+      DataSetOptions.sandboxName -> sandboxName
+    )
+
+    val resolver: DataSetResolver = PlatformSDK.resolve
+
+    var df = sparkSession.read.format(resolver.credentials(creds).resolveDataSetFormat(dataSetId))
+        .options(creds)
+        .load(dataSetId)
     df.show()
     df
   }

@@ -17,7 +17,7 @@
 
 package com.adobe.platform.ml
 
-import com.adobe.platform.dataset.DataSetOptions
+import com.adobe.platform.dataset.{DataSetOptions, DataSetResolver, PlatformSDK}
 import com.adobe.platform.ml.config.ConfigProperties
 import com.adobe.platform.ml.impl.Constants
 import com.adobe.platform.ml.sdk.DataSaver
@@ -48,7 +48,9 @@ class ScoringDataSaver extends DataSaver {
     val orgId: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_ORG_ID", "").toString
     val apiKey: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_CLIENT_ID", "").toString
     val tenantId:String = configProperties.get("tenantId").getOrElse("")
-    val timestamp:String = "2019-01-01 00:00:00"
+    val sandboxId: String = sparkSession.sparkContext.getConf.get("sandboxId", "").toString
+    val sandboxName: String = sparkSession.sparkContext.getConf.get("sandboxName", "").toString
+    val timestamp: String = "2019-01-01 00:00:00"
 
     val scoringResultsDataSetId: String = configProperties.get("scoringResultsDataSetId").getOrElse("")
     import sparkSession.implicits._
@@ -60,11 +62,19 @@ class ScoringDataSaver extends DataSaver {
     scored_df = scored_df.withColumn("_id", lit("empty"))
     scored_df = scored_df.withColumn("eventType", lit("empty"))
 
-    scored_df.select(tenantId, "_id", "eventType", "timestamp").write.format("com.adobe.platform.dataset")
-      .option(DataSetOptions.orgId, orgId)
-      .option(DataSetOptions.serviceToken, serviceToken)
-      .option(DataSetOptions.userToken, userToken)
-      .option(DataSetOptions.serviceApiKey, apiKey)
+    val creds = Map (
+      DataSetOptions.orgId -> orgId,
+      DataSetOptions.serviceToken ->  serviceToken,
+      DataSetOptions.userToken -> userToken,
+      DataSetOptions.serviceApiKey -> apiKey,
+      DataSetOptions.sandboxId -> sandboxId,
+      DataSetOptions.sandboxName -> sandboxName
+    )
+
+    val resolver: DataSetResolver = PlatformSDK.resolve
+
+    scored_df.select(tenantId, "_id", "eventType", "timestamp").write.format(resolver.credentials(creds).resolveDataSetFormat(scoringResultsDataSetId))
+      .options(creds)
       .save(scoringResultsDataSetId)
 
   }
