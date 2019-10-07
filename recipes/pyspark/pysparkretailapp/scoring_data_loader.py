@@ -21,13 +21,13 @@ from sdk.data_loader import DataLoader
 
 class ScoringDataLoader(DataLoader):
 
-    def load(self, configProperties, spark):
-        if configProperties is None:
+    def load(self, config_properties, spark):
+        if config_properties is None:
             raise ValueError("configProperties parameter is null")
         if spark is None:
             raise ValueError("spark parameter is null")
 
-        pd = load_dataset(configProperties, spark, "scoringDataSetId")
-        pd = prepare_dataset(configProperties, pd)
+        pd = load_dataset(config_properties, spark, "scoringDataSetId")
+        pd = prepare_dataset(config_properties, pd)
 
         return pd
