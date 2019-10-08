@@ -71,7 +71,3 @@ def load(config_properties):
 
     print("Training Data Load Finish")
     return dataframe
-
-
-
-

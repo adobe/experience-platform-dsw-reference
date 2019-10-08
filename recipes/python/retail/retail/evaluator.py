@@ -16,7 +16,6 @@
 #####################################################################
 from ml.runtime.python.core.regressionEvaluator import RegressionEvaluator
 
-
 class Evaluator(RegressionEvaluator):
     def __init__(self):
        print ("Initiate")
