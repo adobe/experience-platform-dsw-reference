@@ -55,11 +55,18 @@ class MyDatasetSaver(DataSaver):
 
         dataset_options = get_dataset_options(sparkContext)
 
-        scored_df.select(tenant_id, "_id", "eventType", "timestamp").write.format("com.adobe.platform.dataset") \
-            .option(dataset_options.orgId(), org_id) \
-            .option(dataset_options.serviceToken(), service_token) \
-            .option(dataset_options.userToken(), user_token) \
-            .option(dataset_options.serviceApiKey(), api_key) \
-            .option(dataset_options.sandboxName(), sandbox_name) \
-            .option(dataset_options.sandboxId(), sandbox_id) \
+        #create map object
+        creds = {}
+        creds[dataset_options.serviceApiKey()] = api_key
+        creds[dataset_options.serviceToken()] = service_token
+        creds[dataset_options.userToken()] = user_token
+        creds[dataset_options.orgId()] = org_id
+        creds[dataset_options.sandboxName()] = sandbox_name
+        creds[dataset_options.sandboxId()] = sandbox_id
+
+        platform_sdk = get_platform_sdk(spark.sparkContext)
+        resolver = platform_sdk.resolve()
+
+        scored_df.select(tenant_id, "_id", "eventType", "timestamp").write.format(resolver.credentials(creds).resolveDataSetFormat(dataset_id)) \
+            .options(creds) \
             .save(scored_dataset_id)
