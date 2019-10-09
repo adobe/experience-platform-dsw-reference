@@ -22,7 +22,6 @@ from platform_sdk.dataset_writer import DatasetWriter
 
 def save(config_properties, prediction):
     print("Datasaver Start")
-    print("Setting up Writer")
 
     client_context = get_client_context(config_properties)
 
@@ -40,6 +39,4 @@ def save(config_properties, prediction):
     dataset = Dataset(client_context).get_by_id(config_properties['scoringResultsDataSetId'])
     dataset_writer = DatasetWriter(client_context, dataset)
     dataset_writer.write(prediction, file_format='json')
-    print("Writer Configured")
-    print("Write Done")
     print("Datasaver Finish")
