@@ -18,8 +18,6 @@
 from platform_sdk.client_context import ClientContext
 
 def get_client_context(config_properties):
-    for k, v in config_properties.items():
-        print(k, v)
     return ClientContext(api_key=config_properties['ML_FRAMEWORK_IMS_USER_CLIENT_ID'],
                          org_id=config_properties['ML_FRAMEWORK_IMS_ORG_ID'],
                          user_token=config_properties['ML_FRAMEWORK_IMS_TOKEN'],
