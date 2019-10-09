@@ -15,33 +15,32 @@
 # from Adobe.
 #####################################################################
 
-import numpy as np
 import pandas as pd
-from data_access_sdk_python.reader import DataSetReader
 from datetime import datetime, timedelta
-from retail.evaluator import Evaluator
+from platform_sdk.dataset_reader import DatasetReader
+from platform_sdk.settings import QUERY_SERVICE_URL
+from .utils import get_client_context
 
-
-def load(configProperties):
+def load(config_properties):
     print("Training Data Load Start")
 
     #########################################
     # Load Data
     #########################################
-    prodreader = DataSetReader(client_id=configProperties['ML_FRAMEWORK_IMS_USER_CLIENT_ID'],
-                               user_token=configProperties['ML_FRAMEWORK_IMS_TOKEN'],
-                               service_token=configProperties['ML_FRAMEWORK_IMS_ML_TOKEN'])
 
-    timeframe = configProperties.get("timeframe")
+    client_context = get_client_context(config_properties)
+
+    dataset_reader = DatasetReader(client_context, config_properties['trainingDataSetId'])
+
+    timeframe = config_properties.get("timeframe")
+    tenant_id = config_properties.get("tenant_id")
 
     if (timeframe is not None):
         date_before = datetime.utcnow().date()
         date_after = date_before - timedelta(minutes=int(timeframe))
-        dataframe = prodreader.load(data_set_id=configProperties['trainingDataSetId'], ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'],
-                             date_after=date_after, date_before=date_before)
+        dataframe = dataset_reader.where(dataset_reader[tenant_id + '.date'].gt(str(date_after)).And(dataset_reader[tenant_id + '.date'].lt(str(date_before)))).read()
     else:
-        dataframe = prodreader.load(data_set_id=configProperties['trainingDataSetId'],
-                             ims_org=configProperties['ML_FRAMEWORK_IMS_TENANT_ID'])
+        dataframe = dataset_reader.read()
 
 
     if '_id' in dataframe.columns:
@@ -50,6 +49,8 @@ def load(configProperties):
         #Drop id, eventType and timestamp
         dataframe.drop(['_id', 'eventType', 'timestamp'], axis=1, inplace=True)
 
+    dataframe.head()
+    print(dataframe)
     dataframe.date = pd.to_datetime(dataframe.date)
     dataframe['week'] = dataframe.date.dt.week
     dataframe['year'] = dataframe.date.dt.year

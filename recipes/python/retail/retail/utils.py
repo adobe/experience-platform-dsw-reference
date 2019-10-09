@@ -2,7 +2,7 @@
 # ADOBE CONFIDENTIAL
 # ___________________
 #
-#  Copyright 2017 Adobe
+#  Copyright 2019 Adobe
 #  All Rights Reserved.
 #
 # NOTICE:  All information contained herein is, and remains
@@ -15,21 +15,10 @@
 # from Adobe.
 #####################################################################
 
-FROM adobe/acp-dsw-ml-runtime-python:0.31.6
+from platform_sdk.client_context import ClientContext
 
-#INSTALL modules needed by application
-RUN /usr/bin/python3.5 -m pip install -U numpy==1.16.2
-RUN /usr/bin/python3.5 -m pip install -U pandas==0.24.2
-RUN /usr/bin/python3.5 -m pip install -U scikit-learn==0.20.3
-RUN /usr/bin/python3.5 -m pip install -U scipy==1.2.1
-RUN /usr/bin/python3.5 -m pip install -U fastparquet==0.2.1
-
-WORKDIR /root/retail
-
-COPY . .
-
-RUN python setup.py clean --all install
-
-RUN cp dist/retail*.egg /application.egg
-
-ENV PYTHONPATH=$PYTHONPATH:/application.egg
+def get_client_context(config_properties):
+    return ClientContext(api_key=config_properties['ML_FRAMEWORK_IMS_USER_CLIENT_ID'],
+                         org_id=config_properties['ML_FRAMEWORK_IMS_TENANT_ID'],
+                         user_token=config_properties['ML_FRAMEWORK_IMS_TOKEN'],
+                         service_token=config_properties['ML_FRAMEWORK_IMS_ML_TOKEN'])

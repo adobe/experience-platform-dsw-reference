@@ -16,19 +16,17 @@
 #####################################################################
 
 from sklearn.ensemble import GradientBoostingRegressor
-import numpy as np
 
-
-def train(configProperties, data):
+def train(config_properties, data):
 
     print("Train Start")
 
     #########################################
     # Extract fields from configProperties
     #########################################
-    learning_rate = float(configProperties['learning_rate'])
-    n_estimators = int(configProperties['n_estimators'])
-    max_depth = int(configProperties['max_depth'])
+    learning_rate = float(config_properties['learning_rate'])
+    n_estimators = int(config_properties['n_estimators'])
+    max_depth = int(config_properties['max_depth'])
 
 
     #########################################
@@ -51,7 +49,7 @@ def train(configProperties, data):
 
 
 
-def score(configProperties, data, model):
+def score(config_properties, data, model):
 
     print("Score Start")
 
