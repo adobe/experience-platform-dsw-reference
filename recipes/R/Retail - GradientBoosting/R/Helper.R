@@ -12,8 +12,8 @@
 # is strictly forbidden unless prior written permission is obtained
 # from Adobe Systems Incorporated.
 
-Util <- setRefClass(
-  Class = "Util",
+Helper <- setRefClass(
+  Class = "Helper",
   methods = list(
     get_client_context = function(configurationJSON) {
       print("Getting Client Context.")

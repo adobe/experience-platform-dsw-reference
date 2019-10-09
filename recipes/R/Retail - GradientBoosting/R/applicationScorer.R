@@ -48,8 +48,8 @@ applicationScorer <- setRefClass("applicationScorer",
 
       platform_sdk_python <- reticulate::import("platform_sdk")
 
-      util <- Util$new()
-      client_context <- util$get_client_context(configurationJSON)
+      helper <- Helper$new()
+      client_context <- helper$get_client_context(configurationJSON)
       
       dataset_reader <- platform_sdk_python$dataset_reader$DatasetReader(client_context, configurationJSON$scoringDataSetId)
       df <- dataset_reader$read()
