@@ -15,7 +15,7 @@
 # from Adobe.
 #####################################################################
 
-FROM runtime-r-platform-sdk:1.0.0
+FROM adobe/acp-dsw-ml-runtime-r:0.32.0
 
 RUN install2.r gbm
 RUN install2.r lubridate
