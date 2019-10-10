@@ -130,10 +130,9 @@ class Scorer(AbstractScorer):
             }, index=output.index))
 
 
+
         dataset = Dataset(client_context).get_by_id(config['scoringResultsDataSetId'])
         dataset_writer = DatasetWriter(client_context, dataset)
         dataset_writer.write(output, file_format='json')
-
-
 
         print('Write Done')

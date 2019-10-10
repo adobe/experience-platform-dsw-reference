@@ -48,6 +48,7 @@ class Trainer(AbstractTrainer):
         #########################################
         print("QUERY_SERVICE_URL from platform sdk is ", QUERY_SERVICE_URL)
 
+
         client_context = get_client_context(config)
 
         dataset_reader = DatasetReader(client_context, config['trainingDataSetId'])
