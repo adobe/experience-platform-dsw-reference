@@ -66,6 +66,5 @@ def load(config_properties):
     dataframe = dataframe.set_index(dataframe.date)
     dataframe.drop('date', axis=1, inplace=True)
 
-
     print("Scoring Data Load Finish")
     return dataframe

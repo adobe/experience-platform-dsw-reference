@@ -21,12 +21,12 @@ from platform_sdk.dataset_writer import DatasetWriter
 
 def save(config_properties, prediction):
     print("Datasaver Start")
-    print("Setting up Writer")
 
     client_context = get_client_context(config_properties)
 
     tenant_id = config_properties.get("tenantId")
     prediction = prediction.add_prefix(tenant_id+".")
+
     prediction = prediction.join(pd.DataFrame(
         {
             '_id': "",
@@ -34,11 +34,10 @@ def save(config_properties, prediction):
             'eventType': ""
         }, index=prediction.index))
 
+    print("Setting up Writer")
     dataset = Dataset(client_context).get_by_id(config_properties['scoringResultsDataSetId'])
     dataset_writer = DatasetWriter(client_context, dataset)
-    dataset_writer.write(prediction, file_format='json')
     print("Writer Configured")
 
-
-    print("Write Done")
+    dataset_writer.write(prediction, file_format='json')
     print("Datasaver Finish")
