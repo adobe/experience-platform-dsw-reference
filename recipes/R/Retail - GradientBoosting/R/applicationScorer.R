@@ -121,9 +121,9 @@ applicationScorer <- setRefClass("applicationScorer",
       dataset <- platform_sdk_python$models$Dataset(client_context)$get_by_id(configurationJSON$scoringResultsDataSetId)
       
       print("Set up writer")
-      
+
       dataset_writer <- platform_sdk_python$dataset_writer$DatasetWriter(client_context, dataset)
-      
+
       print("Writer configured")
 
       dataset_writer$write(output_df, file_format='json')
