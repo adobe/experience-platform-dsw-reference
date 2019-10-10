@@ -120,7 +120,7 @@ class Scorer(AbstractScorer):
         client_context = get_client_context(config)
 
 
-        tenant_id = config['tenant_id']
+        tenant_id = config['tenantId']
         output = output.add_prefix(tenant_id + '.')
         output = output.join(pd.DataFrame(
             {
