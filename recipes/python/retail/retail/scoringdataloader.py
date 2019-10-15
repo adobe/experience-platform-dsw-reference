@@ -14,21 +14,17 @@
 # is strictly forbidden unless prior written permission is obtained
 # from Adobe.
 #####################################################################
-
 import pandas as pd
-from datetime import datetime, timedelta
 from .utils import get_client_context
+from datetime import datetime, timedelta
 from platform_sdk.dataset_reader import DatasetReader
 
-
 def load(config_properties):
-
     print("Scoring Data Load Start")
 
     #########################################
     # Load Data
     #########################################
-
     client_context = get_client_context(config_properties)
 
     dataset_reader = DatasetReader(client_context, config_properties['scoringDataSetId'])
@@ -41,19 +37,18 @@ def load(config_properties):
         dataframe = dataset_reader.where(dataset_reader[tenant_id + '.date'].gt(str(date_after)).And(dataset_reader[tenant_id + '.date'].lt(str(date_before)))).read()
     else:
         dataframe = dataset_reader.read()
-        print(dataframe)
-
 
     #########################################
     # Data Preparation/Feature Engineering
     #########################################
-
     if '_id' in dataframe.columns:
         #Rename columns to strip tenantId
         dataframe = dataframe.rename(columns = lambda x : str(x)[str(x).find('.')+1:])
         #Drop id, eventType and timestamp
         dataframe.drop(['_id', 'eventType', 'timestamp'], axis=1, inplace=True)
 
+    dataframe.head()
+    print(dataframe)
 
     dataframe.date = pd.to_datetime(dataframe.date)
     dataframe['week'] = dataframe.date.dt.week
@@ -72,5 +67,4 @@ def load(config_properties):
     dataframe.drop('date', axis=1, inplace=True)
 
     print("Scoring Data Load Finish")
-
     return dataframe

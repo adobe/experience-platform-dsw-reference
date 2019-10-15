@@ -14,12 +14,11 @@
 # is strictly forbidden unless prior written permission is obtained
 # from Adobe.
 #####################################################################
-
 import pandas as pd
-from datetime import datetime, timedelta
-from platform_sdk.dataset_reader import DatasetReader
-from platform_sdk.settings import QUERY_SERVICE_URL
 from .utils import get_client_context
+from datetime import datetime, timedelta
+from platform_sdk.settings import QUERY_SERVICE_URL
+from platform_sdk.dataset_reader import DatasetReader
 
 def load(config_properties):
     print("Training Data Load Start")
@@ -27,7 +26,7 @@ def load(config_properties):
     #########################################
     # Load Data
     #########################################
-
+    print("QUERY_SERVICE_URL from platform sdk is ", QUERY_SERVICE_URL)
     client_context = get_client_context(config_properties)
 
     dataset_reader = DatasetReader(client_context, config_properties['trainingDataSetId'])
@@ -42,7 +41,9 @@ def load(config_properties):
     else:
         dataframe = dataset_reader.read()
 
-
+    #########################################
+    # Data Preparation/Feature Engineering
+    #########################################
     if '_id' in dataframe.columns:
         #Rename columns to strip tenantId
         dataframe = dataframe.rename(columns = lambda x : str(x)[str(x).find('.')+1:])
@@ -51,6 +52,7 @@ def load(config_properties):
 
     dataframe.head()
     print(dataframe)
+
     dataframe.date = pd.to_datetime(dataframe.date)
     dataframe['week'] = dataframe.date.dt.week
     dataframe['year'] = dataframe.date.dt.year
@@ -66,7 +68,6 @@ def load(config_properties):
 
     dataframe = dataframe.set_index(dataframe.date)
     dataframe.drop('date', axis=1, inplace=True)
-
 
     print("Training Data Load Finish")
     return dataframe

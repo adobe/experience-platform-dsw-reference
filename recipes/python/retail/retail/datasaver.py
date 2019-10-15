@@ -14,7 +14,6 @@
 # is strictly forbidden unless prior written permission is obtained
 # from Adobe.
 #####################################################################
-
 import pandas as pd
 from .utils import get_client_context
 from platform_sdk.models import Dataset
@@ -35,8 +34,10 @@ def save(config_properties, prediction):
             'eventType': ""
         }, index=prediction.index))
 
-
+    print("Setting up Writer")
     dataset = Dataset(client_context).get_by_id(config_properties['scoringResultsDataSetId'])
     dataset_writer = DatasetWriter(client_context, dataset)
+    print("Writer Configured")
+
     dataset_writer.write(prediction, file_format='json')
     print("Datasaver Finish")
