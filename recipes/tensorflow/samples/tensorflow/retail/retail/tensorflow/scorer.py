@@ -120,7 +120,7 @@ class Scorer(AbstractScorer):
         client_context = get_client_context(config)
 
 
-        tenant_id = config['tenant_id']
+        tenant_id = config['tenantId']
         output = output.add_prefix(tenant_id + '.')
         output = output.join(pd.DataFrame(
             {
@@ -130,10 +130,9 @@ class Scorer(AbstractScorer):
             }, index=output.index))
 
 
+
         dataset = Dataset(client_context).get_by_id(config['scoringResultsDataSetId'])
         dataset_writer = DatasetWriter(client_context, dataset)
         dataset_writer.write(output, file_format='json')
-
-
 
         print('Write Done')
