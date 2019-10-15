@@ -38,13 +38,13 @@ applicationEvaluator <- setRefClass("applicationEvaluator",
       # Load Data
       #########################################
       reticulate::use_python("/usr/bin/python3.6")
-      data_access_sdk_python <- reticulate::import("data_access_sdk_python")
+      platform_sdk_python <- reticulate::import("platform_sdk")
 
-      reader <- data_access_sdk_python$reader$DataSetReader(client_id = configurationJSON$ML_FRAMEWORK_IMS_USER_CLIENT_ID,
-                                                            user_token = configurationJSON$ML_FRAMEWORK_IMS_TOKEN,
-                                                            service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
-
-      df <- reader$load(configurationJSON$trainingDataSetId, configurationJSON$ML_FRAMEWORK_IMS_ORG_ID)
+      helper <- Helper$new()
+      client_context <- helper$get_client_context(configurationJSON)
+      
+      dataset_reader <- platform_sdk_python$dataset_reader$DatasetReader(client_context, configurationJSON$trainingDataSetId)
+      df <- dataset_reader$read()
       df <- as_tibble(df)
 
       #######################################
@@ -55,7 +55,7 @@ applicationEvaluator <- setRefClass("applicationEvaluator",
       if(!is.null(tenantId)){
         if(any(names(df) == '_id')) {
           #Drop id, eventType, timestamp and rename columns
-          df <- df[,-c(1,2,3)]
+          df <- df[,-c(12,13,14)]
           names(df) <- substring(names(df), nchar(tenantId)+2)
         }
       }
