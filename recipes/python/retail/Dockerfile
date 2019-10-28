@@ -15,7 +15,7 @@
 # from Adobe.
 #####################################################################
 
-FROM adobe/acp-dsw-ml-runtime-python:0.32.0
+FROM adobe/acp-dsw-ml-runtime-python:0.32.2
 
 #INSTALL modules needed by application
 RUN /usr/bin/python3.5 -m pip install -U numpy==1.16.2
