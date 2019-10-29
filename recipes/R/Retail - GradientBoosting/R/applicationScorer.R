@@ -64,7 +64,7 @@ applicationScorer <- setRefClass("applicationScorer",
       if(!is.null(tenantId)){
         if(any(names(df) == '_id')) {
           #Drop id, eventType, timestamp and rename columns
-          df <- df[,-c(12,13,14)]
+          df <- within(df, rm('_id','eventType','timestamp'))
           names(df) <- substring(names(df), nchar(tenantId)+2)
         }
       }
@@ -72,7 +72,11 @@ applicationScorer <- setRefClass("applicationScorer",
         mutate(store = as.numeric(store)) %>%
         mutate(date = mdy(date), week = week(date), year = year(date)) %>%
         mutate(new = 1) %>%
+        group_by_at(vars(-storeType)) %>%
+        mutate(row_id=1:n()) %>%
+        ungroup() %>%
         spread(storeType, new, fill = 0) %>%
+        select(-row_id) %>%
         mutate(isHoliday = as.integer(isHoliday)) %>%
         mutate(weeklySalesAhead = lead(weeklySales, 45),
                weeklySalesLag = lag(weeklySales, 45),
