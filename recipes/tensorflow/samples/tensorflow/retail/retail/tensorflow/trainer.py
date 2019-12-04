@@ -16,7 +16,10 @@
 #####################################################################
 
 from ml.runtime.python.Interfaces.AbstractTrainer import AbstractTrainer
-from data_access_sdk_python.reader import DataSetReader
+from platform_sdk.dataset_reader import DatasetReader
+from platform_sdk.settings import QUERY_SERVICE_URL
+from .utils import get_client_context
+
 import numpy as np
 import pandas as pd
 
@@ -43,14 +46,13 @@ class Trainer(AbstractTrainer):
         #########################################
         # Load Data
         #########################################
-        prodreader = DataSetReader(client_id=config['ML_FRAMEWORK_IMS_USER_CLIENT_ID'],
-                                   user_token=config['ML_FRAMEWORK_IMS_TOKEN'],
-                                   service_token=config['ML_FRAMEWORK_IMS_ML_TOKEN'])
-
-        dataframe = prodreader.load(data_set_id=config['trainingDataSetId'],
-                                    ims_org=config['ML_FRAMEWORK_IMS_ORG_ID'])
+        print("QUERY_SERVICE_URL from platform sdk is ", QUERY_SERVICE_URL)
 
 
+        client_context = get_client_context(config)
+
+        dataset_reader = DatasetReader(client_context, config['trainingDataSetId'])
+        dataframe = dataset_reader.read()
 
         #########################################
         # Data Preparation/Feature Engineering

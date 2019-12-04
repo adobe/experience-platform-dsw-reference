@@ -14,22 +14,19 @@
 # is strictly forbidden unless prior written permission is obtained
 # from Adobe.
 #####################################################################
-from data_access_sdk_python.writer import DataSetWriter
 import pandas as pd
+from .utils import get_client_context
+from platform_sdk.models import Dataset
+from platform_sdk.dataset_writer import DatasetWriter
 
 def save(config_properties, prediction):
     print("Datasaver Start")
-    print("Setting up Writer")
 
-   
-    writer = DataSetWriter(client_id=config_properties['ML_FRAMEWORK_IMS_USER_CLIENT_ID'],
-                           user_token=config_properties['ML_FRAMEWORK_IMS_TOKEN'],
-                           service_token=config_properties['ML_FRAMEWORK_IMS_ML_TOKEN'])
-
-    print("Writer Configured")
+    client_context = get_client_context(config_properties)
 
     tenant_id = config_properties.get("tenantId")
     prediction = prediction.add_prefix(tenant_id+".")
+
     prediction = prediction.join(pd.DataFrame(
         {
             '_id': "",
@@ -37,10 +34,10 @@ def save(config_properties, prediction):
             'eventType': ""
         }, index=prediction.index))
 
-    writer.write(data_set_id=config_properties['scoringResultsDataSetId'],
-                 dataframe=prediction,
-                 ims_org=config_properties['ML_FRAMEWORK_IMS_TENANT_ID'],
-                 file_format='json')
+    print("Setting up Writer")
+    dataset = Dataset(client_context).get_by_id(config_properties['scoringResultsDataSetId'])
+    dataset_writer = DatasetWriter(client_context, dataset)
+    print("Writer Configured")
 
-    print("Write Done")
+    dataset_writer.write(prediction, file_format='json')
     print("Datasaver Finish")

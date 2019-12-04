@@ -16,8 +16,10 @@
 #####################################################################
 
 from ml.runtime.python.Interfaces.AbstractScorer import AbstractScorer
-from data_access_sdk_python.reader import DataSetReader
-from data_access_sdk_python.writer import DataSetWriter
+from platform_sdk.dataset_reader import DatasetReader
+from .utils import get_client_context
+from platform_sdk.models import Dataset
+from platform_sdk.dataset_writer import DatasetWriter
 import tensorflow as tf
 
 import pandas as pd
@@ -38,14 +40,10 @@ class Scorer(AbstractScorer):
         #########################################
         # Load Data
         #########################################
-        prodreader = DataSetReader(client_id=config['ML_FRAMEWORK_IMS_USER_CLIENT_ID'],
-                                   user_token=config['ML_FRAMEWORK_IMS_TOKEN'],
-                                   service_token=config['ML_FRAMEWORK_IMS_ML_TOKEN'])
+        client_context = get_client_context(config)
 
-        dataframe = prodreader.load(data_set_id=config['scoringDataSetId'],
-                                    ims_org=config['ML_FRAMEWORK_IMS_ORG_ID'])
-
-
+        dataset_reader = DatasetReader(client_context, config['scoringDataSetId'])
+        dataframe = dataset_reader.read()
 
         #########################################
         # Data Preparation/Feature Engineering
@@ -119,13 +117,10 @@ class Scorer(AbstractScorer):
         output = X_test[['store', 'prediction']].reset_index()
         output['date'] = output['date'].astype(str)
 
-        writer = DataSetWriter(client_id=config['ML_FRAMEWORK_IMS_USER_CLIENT_ID'],
-                               user_token=config['ML_FRAMEWORK_IMS_TOKEN'],
-                               service_token=config['ML_FRAMEWORK_IMS_ML_TOKEN'])
+        client_context = get_client_context(config)
 
-        print('Writer Configured')
 
-        tenant_id = config['tenant_id']
+        tenant_id = config['tenantId']
         output = output.add_prefix(tenant_id + '.')
         output = output.join(pd.DataFrame(
             {
@@ -134,9 +129,10 @@ class Scorer(AbstractScorer):
                 'eventType': ''
             }, index=output.index))
 
-        writer.write(data_set_id=config['scoringResultsDataSetId'],
-                     dataframe=output,
-                     ims_org=config['ML_FRAMEWORK_IMS_ORG_ID'],
-                     file_format='json')
+
+
+        dataset = Dataset(client_context).get_by_id(config['scoringResultsDataSetId'])
+        dataset_writer = DatasetWriter(client_context, dataset)
+        dataset_writer.write(output, file_format='json')
 
         print('Write Done')

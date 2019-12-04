@@ -15,10 +15,15 @@
 # from Adobe.
 #####################################################################
 
-FROM adobe/acp-dsw-ml-runtime-python:0.32.2
+from platform_sdk.client_context import ClientContext
 
-WORKDIR /root/samples
-COPY . .
-RUN python setup.py install
-RUN pip install --upgrade pip
-RUN pip install tensorflow==1.13.1
+def get_client_context(config_properties):
+    for k, v in config_properties.items():
+        print(k, v)
+    return ClientContext(api_key=config_properties['ML_FRAMEWORK_IMS_USER_CLIENT_ID'],
+                         org_id=config_properties['ML_FRAMEWORK_IMS_ORG_ID'],
+                         user_token=config_properties['ML_FRAMEWORK_IMS_TOKEN'],
+                         service_token=config_properties['ML_FRAMEWORK_IMS_ML_TOKEN'],
+                         sandbox_id=config_properties['sandboxId'],
+                         sandbox_name=config_properties['sandboxName'])
+

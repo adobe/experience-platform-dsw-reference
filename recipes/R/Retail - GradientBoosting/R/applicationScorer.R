@@ -46,13 +46,13 @@ applicationScorer <- setRefClass("applicationScorer",
       #########################################
       reticulate::use_python("/usr/bin/python3.6")
 
-      data_access_sdk_python <- reticulate::import("data_access_sdk_python")
+      platform_sdk_python <- reticulate::import("platform_sdk")
 
-      reader <- data_access_sdk_python$reader$DataSetReader(client_id = configurationJSON$ML_FRAMEWORK_IMS_USER_CLIENT_ID, 
-                                                            user_token = configurationJSON$ML_FRAMEWORK_IMS_TOKEN, 
-                                                            service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
-
-      df <- reader$load(configurationJSON$scoringDataSetId, configurationJSON$ML_FRAMEWORK_IMS_ORG_ID)
+      helper <- Helper$new()
+      client_context <- helper$get_client_context(configurationJSON)
+      
+      dataset_reader <- platform_sdk_python$dataset_reader$DatasetReader(client_context, configurationJSON$scoringDataSetId)
+      df <- dataset_reader$read()
       df <- as_tibble(df)
 
 
@@ -64,7 +64,7 @@ applicationScorer <- setRefClass("applicationScorer",
       if(!is.null(tenantId)){
         if(any(names(df) == '_id')) {
           #Drop id, eventType, timestamp and rename columns
-          df <- df[,-c(1,2,3)]
+          df <- within(df, rm('_id','eventType','timestamp'))
           names(df) <- substring(names(df), nchar(tenantId)+2)
         }
       }
@@ -72,7 +72,11 @@ applicationScorer <- setRefClass("applicationScorer",
         mutate(store = as.numeric(store)) %>%
         mutate(date = mdy(date), week = week(date), year = year(date)) %>%
         mutate(new = 1) %>%
+        group_by_at(vars(-storeType)) %>%
+        mutate(row_id=1:n()) %>%
+        ungroup() %>%
         spread(storeType, new, fill = 0) %>%
+        select(-row_id) %>%
         mutate(isHoliday = as.integer(isHoliday)) %>%
         mutate(weeklySalesAhead = lead(weeklySales, 45),
                weeklySalesLag = lag(weeklySales, 45),
@@ -117,18 +121,17 @@ applicationScorer <- setRefClass("applicationScorer",
       # Write Results
       #########################################
       reticulate::use_python("/usr/bin/python3.6")
-      data_access_sdk_python <- reticulate::import("data_access_sdk_python")
 
-      print("Set up writer")
-      writer <- data_access_sdk_python$writer$DataSetWriter(client_id = configurationJSON$ML_FRAMEWORK_IMS_USER_CLIENT_ID,
-                                                            user_token = configurationJSON$ML_FRAMEWORK_IMS_TOKEN,
-                                                            service_token = configurationJSON$ML_FRAMEWORK_IMS_ML_TOKEN)
-      print("Writer configured")
+      dataset <- platform_sdk_python$models$Dataset(client_context)$get_by_id(configurationJSON$scoringResultsDataSetId)
       
-      writer$write(data_set_id = configurationJSON$scoringResultsDataSetId,
-                   dataframe = output_df,
-                   ims_org = configurationJSON$ML_FRAMEWORK_IMS_ORG_ID,
-                   file_format='json')
+      print("Set up writer")
+
+      dataset_writer <- platform_sdk_python$dataset_writer$DatasetWriter(client_context, dataset)
+
+      print("Writer configured")
+
+      dataset_writer$write(output_df, file_format='json')
+      
       print("Write done")
       
       
