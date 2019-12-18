@@ -1,0 +1,107 @@
+ {
+    "name": "train",
+    "type": "PySpark",
+    "algorithm":"fp",
+    "artifacts": {
+      "default":    {
+        "defaultMLInstanceConfigs": [
+          {
+            "name": "featurePipeline",
+            "parameters": [
+              {
+                "key": "tenantId",
+                "value": "_acpmlexploratoryexternal"
+              },
+              {
+                "key": "inputDataSetId",
+                "value": "5d9242750970e916356f006c"
+              },
+              {
+                "key": "outputDataSetId",
+                "value": "5df952ce4592e318a8d76894"
+              }
+            ]
+          },
+          {
+            "name": "train",
+            "parameters": [
+              {
+                "key": "learning_rate",
+                "value": "0.1"
+              },
+              {
+                "key": "n_estimators",
+                "value": "100"
+              },
+              {
+                "key": "max_depth",
+                "value": "3"
+              },
+              {
+                "key": "ACP_DSW_INPUT_FEATURES",
+                "value": "date,store,storeType,storeSize,temperature,regionalFuelPrice,markdown,cpi,unemployment,isHoliday"
+              },
+              {
+                "key": "ACP_DSW_TARGET_FEATURES",
+                "value": "weeklySales"
+              },
+              {
+                "key": "ACP_DSW_FEATURE_UPDATE_SUPPORT",
+                "value": false
+              },
+              {
+                "key": "tenantId",
+                "value": "_acpmlexploratoryexternal"
+              },
+              {
+                "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
+                "value": "https://ns.adobe.com/acpmlexploratoryexternal/schemas/f860f67ab0a93aafefd18d61f882edd1"
+              },
+              {
+                "key": "evaluation.labelColumn",
+                "value": "weeklySalesAhead"
+              },
+              {
+                "key": "evaluation.scalingColumn",
+                "value": "weeklySalesScaled"
+              },
+              {
+                "key": "evaluation.predictionColumn",
+                "value": "prediction"
+              },
+              {
+                "key": "evaluation.metrics",
+                "value": "MAPE,MAE,RMSE,MASE"
+              },
+              {
+                "key": "trainingDataSetId",
+                "value": "5df952ce4592e318a8d76894"
+              }
+            ]
+          },
+
+          {
+            "name": "score",
+            "parameters": [
+              {
+                "key": "tenantId",
+                "value": "_acpmlexploratoryexternal"
+              },
+              {
+                "key":"ACP_DSW_SCORING_RESULTS_XDM_SCHEMA",
+                "value":"https://ns.adobe.com/acpmlexploratoryexternal/schemas/5e4e7ea39a876441866d9d8945ccb7e3"
+              },
+              {
+                "key": "scoringResultsDataSetId",
+                "value": "5df42441de86fe18a8f89aba"
+              },
+              {
+                "key": "scoringDataSetId",
+                "value": "5df952ce4592e318a8d76894"
+              }
+            ]
+          }
+        ]
+      }
+    }
+ }
