@@ -52,7 +52,8 @@ def get_token():
     :return: ims token for authorization
     """
     ims_token = dictor(cfg, PLATFORM + ".ims_token", checknone=True)
-
+    api_key = dictor(cfg, ENTERPRISE + ".api_key", checknone=True)
+    org_id = dictor(cfg, ENTERPRISE + ".org_id", checknone=True)
 
     if ims_token == "<ims_token>":
         # Server parameters
