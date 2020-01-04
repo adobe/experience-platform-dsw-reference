@@ -18,9 +18,13 @@
 
 import json
 from utils import setup_logger, http_request
+import copy
+import json
 
 LOGGER = setup_logger(__name__)
 CONTENT_TYPE = "application/json"
+ACCEPT_HEADER = "application/vnd.adobe.xed-id+json"
+
 
 
 def get_tenant_id(tenant_id_url, headers):
@@ -51,10 +55,12 @@ def get_class_id(create_class_url, headers, class_title, data):
     # Set the class title and description
     data['title'] = class_title   
     data['description'] = class_title
-    headers["Content-type"] = CONTENT_TYPE
-    res_text = http_request("POST", create_class_url, headers, json.dumps(data))
-    class_id = json.loads(res_text)["$id"]
-    LOGGER.debug("class_id = %s", class_id)
+    class_id = get_id_if_entity_exists(create_class_url, headers, class_title)
+    if class_id is None:
+        headers["Content-type"] = CONTENT_TYPE
+        res_text = http_request("POST", create_class_url, headers, json.dumps(data))
+        class_id = json.loads(res_text)["$id"]
+        LOGGER.debug("Created class_id = %s", class_id)
     return class_id
 
 
@@ -75,22 +81,25 @@ def get_mixin_id(create_mixin_url, headers, mixin_title, data, class_id, tenant_
     # Set the title and description
     data['title'] = mixin_title
     data['description'] = mixin_title
-    # Set the class id
-    data['meta:intendedToExtend'][0] = class_id
 
-    # Set the tenant id
-    for key in list(data["definitions"]):
-        data["definitions"][mixin_definition_title] = data["definitions"][key]
-        for nested_key in list(data["definitions"][key]["properties"]):
-            data["definitions"][key]["properties"][tenant_id] = data["definitions"][key]["properties"][nested_key]
-            del data["definitions"][key]["properties"][nested_key]
-        del data["definitions"][key]
-    # Set the reference url
-    data["allOf"][0]["$ref"] = "#/definitions/" + mixin_definition_title
-    headers["Content-type"] = CONTENT_TYPE
-    res_text = http_request("post", create_mixin_url, headers, json.dumps(data))
-    mixin_id = json.loads(res_text)["$id"]
-    LOGGER.debug("mixin_id = %s", mixin_id)
+    mixin_id = get_id_if_entity_exists(create_mixin_url, headers, mixin_title)
+    if mixin_id is None:
+    # Set the class id
+        data['meta:intendedToExtend'][0] = class_id
+
+        # Set the tenant id
+        for key in list(data["definitions"]):
+            data["definitions"][mixin_definition_title] = data["definitions"][key]
+            for nested_key in list(data["definitions"][key]["properties"]):
+                data["definitions"][key]["properties"][tenant_id] = data["definitions"][key]["properties"][nested_key]
+                del data["definitions"][key]["properties"][nested_key]
+            del data["definitions"][key]
+        # Set the reference url
+        data["allOf"][0]["$ref"] = "#/definitions/" + mixin_definition_title
+        headers["Content-type"] = CONTENT_TYPE
+        res_text = http_request("post", create_mixin_url, headers, json.dumps(data))
+        mixin_id = json.loads(res_text)["$id"]
+        LOGGER.debug("Created mixin_id = %s", mixin_id)
     return mixin_id
 
 
@@ -110,16 +119,30 @@ def get_schema_id(create_schema_url, headers, schema_title, class_id, mixin_id, 
     # Set the title and description
     data['title'] = schema_title
     data['description'] = schema_title
-    # Set the mixin id
-    data['meta:extends'][0] = mixin_id
-    data["allOf"][0]["$ref"] = mixin_id
-    # Set the class id
-    data['meta:extends'][1] = class_id
-    data["allOf"][1]["$ref"] = class_id
+    schema_id = get_id_if_entity_exists(create_schema_url, headers, schema_title)
+    if schema_id is None:
+        # Set the mixin id
+        data['meta:extends'][0] = mixin_id
+        data["allOf"][0]["$ref"] = mixin_id
+        # Set the class id
+        data['meta:extends'][1] = class_id
+        data["allOf"][1]["$ref"] = class_id
 
-    headers["Content-type"] = CONTENT_TYPE
-    res_text = http_request("post", create_schema_url, headers, json.dumps(data))
-    schema_id = json.loads(res_text)["$id"]
-    LOGGER.debug("schema_id = %s", schema_id)
+        headers["Content-type"] = CONTENT_TYPE
+        res_text = http_request("post", create_schema_url, headers, json.dumps(data))
+        schema_id = json.loads(res_text)["$id"]
+        LOGGER.debug("Created schema_id = %s", schema_id)
     return schema_id
+
+
+def get_id_if_entity_exists(url, headers, title):
+    headers = copy.deepcopy(headers)
+    headers['Accept'] = ACCEPT_HEADER
+    response = http_request('get', url, headers)
+    results = json.loads(response)['results']
+    for entity in results:
+        if entity['title'] == title:
+            LOGGER.debug('Existing %s ID = %s', title ,entity['$id'])
+            return entity['$id']
+
 

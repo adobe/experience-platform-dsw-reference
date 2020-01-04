@@ -21,7 +21,8 @@ import yaml
 from utils import setup_logger
 from dictor import dictor
 import copy
-from data_ingester import get_dataset_id, get_batch_id, upload_file, replace_tenant_id, close_batch
+from data_ingester import get_dataset_id, has_successful_batch, get_batch_id, upload_file, replace_tenant_id, \
+    close_batch
 from schema_ingester import get_tenant_id, get_class_id, get_mixin_id, get_schema_id
 from get_token import get_access_token
 from build_recipe_artifacts import build_recipe_artifacts
@@ -38,6 +39,7 @@ SCHEMA_DATA = "schema_data"
 DATASET_DATA = "dataset_data"
 BATCH_DATA = "batch_data"
 OUTPUT_MIXIN_DATA = "output_mixin_data"
+TRANSFORMED_MIXIN_DATA = "transformed_mixin_data"
 
 
 # Read the configs
@@ -79,13 +81,15 @@ def get_headers():
     """
     api_key = dictor(cfg, ENTERPRISE + ".api_key", checknone=True)
     org_id = dictor(cfg, ENTERPRISE + ".org_id", checknone=True)
+    sandbox_name = dictor(cfg, TITLES + '.sandbox_name', default="prod")
     headers = {}
     ims_token = get_token()
     if ims_token is not None:
         headers = {
             "Authorization": ims_token,
             "x-api-key": api_key,
-            "x-gw-ims-org-id": org_id
+            "x-gw-ims-org-id": org_id,
+            'x-sandbox-name': sandbox_name
         }
     return headers
 
@@ -106,6 +110,15 @@ def ingest(headers_for_ingestion):
     output_mixin_definition_title = dictor(cfg, TITLES + ".output_mixin_definition_title", checknone=True)
     output_schema_title = dictor(cfg, TITLES + ".output_schema_title", checknone=True)
     output_dataset_title = dictor(cfg, TITLES + ".output_dataset_title", checknone=True)
+    is_data_transformation_required = dictor(cfg, TITLES + ".is_data_transformation_required",
+                                                          checknone=True)
+    mixin_title_for_transformed_data = dictor(cfg, TITLES + ".mixin_title_for_transformed_data",
+                                                     checknone=True)
+    mixin_definition_title_for_transformed_data = dictor(cfg, TITLES +
+                                                         ".mixin_definition_title_for_transformed_data",
+                                                         checknone=True)
+    schema_title_for_transformed_data = dictor(cfg, TITLES + ".schema_title_for_transformed_data", checknone=True)
+    transformed_dataset_title = dictor(cfg, TITLES + ".transformed_dataset_title", checknone=True)
 
     # Construct the urls
     platform_gateway_url = dictor(cfg, PLATFORM + ".platform_gateway", checknone=True)
@@ -116,7 +129,7 @@ def ingest(headers_for_ingestion):
     create_class_url = platform_gateway_url + schema_registry_uri + "tenant/classes"
     create_mixin_url = platform_gateway_url + schema_registry_uri + "tenant/mixins"
     create_schema_url = platform_gateway_url + schema_registry_uri + "tenant/schemas"
-    create_dataset_url = platform_gateway_url + "/data/foundation/catalog/datasets?requestDataSource=true"
+    create_dataset_url = platform_gateway_url + "/data/foundation/catalog/datasets"
     create_batch_url = platform_gateway_url + "/data/foundation/import/batches"
 
     data_for_class = dictor(cfg, CLASS_DATA, checknone=True)
@@ -125,6 +138,7 @@ def ingest(headers_for_ingestion):
     data_for_dataset = dictor(cfg, DATASET_DATA, checknone=True)
     data_for_batch = dictor(cfg, BATCH_DATA, checknone=True)
     data_for_output_mixin = dictor(cfg, OUTPUT_MIXIN_DATA, checknone=True)
+    data_for_transformed_mixin = dictor(cfg, TRANSFORMED_MIXIN_DATA, checknone=True)
 
     try:
 
@@ -140,22 +154,34 @@ def ingest(headers_for_ingestion):
 
         input_dataset_id = get_dataset_id(create_dataset_url, copy.deepcopy(headers_for_ingestion), input_dataset_title,
                                           input_schema_id, data_for_dataset)
+        if has_successful_batch(create_dataset_url, copy.deepcopy(headers_for_ingestion), input_dataset_id ) is False:
 
-        batch_id = get_batch_id(create_batch_url, copy.deepcopy(headers_for_ingestion), input_dataset_id, data_for_batch)
+            batch_id = get_batch_id(create_batch_url, copy.deepcopy(headers_for_ingestion), input_dataset_id, data_for_batch)
 
-        replace_tenant_id(original_file, file_with_tenant_id, tenant_id)
+            replace_tenant_id(original_file, file_with_tenant_id, tenant_id)
 
-        upload_file(create_batch_url, copy.deepcopy(headers_for_ingestion), file_with_tenant_id, input_dataset_id, batch_id)
+            upload_file(create_batch_url, copy.deepcopy(headers_for_ingestion), file_with_tenant_id, input_dataset_id, batch_id)
 
-        close_batch(create_batch_url, copy.deepcopy(headers_for_ingestion), batch_id)
+            close_batch(create_batch_url, copy.deepcopy(headers_for_ingestion), batch_id)
+
+        if is_data_transformation_required == "True":
+            mixin_id_for_transformed_data = get_mixin_id(create_mixin_url, copy.deepcopy(
+                headers_for_ingestion), mixin_title_for_transformed_data, data_for_transformed_mixin, class_id,
+                                                    tenant_id, mixin_definition_title_for_transformed_data)
+
+            schema_id_for_transformed_data = get_schema_id(create_schema_url, copy.deepcopy(
+                headers_for_ingestion), schema_title_for_transformed_data, class_id, mixin_id_for_transformed_data,
+                            data_for_schema)
+            get_dataset_id(create_dataset_url, copy.deepcopy(headers_for_ingestion),
+                           transformed_dataset_title, schema_id_for_transformed_data, data_for_dataset)
 
         if is_output_schema_different == "True":
             output_mixin_id = get_mixin_id(create_mixin_url, copy.deepcopy(headers_for_ingestion), output_mixin_title,
                                            data_for_output_mixin, class_id, tenant_id, output_mixin_definition_title)
-            output_schema_id = get_schema_id(create_schema_url, copy.deepcopy(headers_for_ingestion), output_schema_title,
-                                             class_id, output_mixin_id, data_for_schema)
-            get_dataset_id(create_dataset_url, copy.deepcopy(headers_for_ingestion), output_dataset_title, output_schema_id,
-                           data_for_dataset)
+            output_schema_id = get_schema_id(create_schema_url, copy.deepcopy(headers_for_ingestion),
+                                    output_schema_title, class_id, output_mixin_id, data_for_schema)
+            get_dataset_id(create_dataset_url, copy.deepcopy(headers_for_ingestion), output_dataset_title,
+                           output_schema_id, data_for_dataset)
 
 
     except requests.exceptions.HTTPError as http_err:

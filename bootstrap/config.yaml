@@ -31,6 +31,12 @@ Titles:
   output_mixin_definition_title: <output_mixin_definition_title>
   output_schema_title: <output_schema_title>
   output_dataset_title: <output_dataset_title>
+  is_data_transformation_required: "True" # Value must be either "True" or "False"
+  mixin_title_for_transformed_data: <mixin_title_for_transformed_data>
+  mixin_definition_title_for_transformed_data: <mixin_definition_title_for_transformed_data>
+  schema_title_for_transformed_data: <schema_for_transformed_data_title>
+  transformed_dataset_title: <transformed_dataset_title>
+  sandbox_name: prod
 
 class_data:
   "type": "object"
@@ -117,3 +123,41 @@ dataset_data:
 batch_data:
   "datasetId": "dataset_id"
   "inputFormat": {"format": "json"}
+
+
+transformed_mixin_data:
+  "type": "object"
+  "title": "mixin_title"
+  "description": "mixin_title"
+  "meta:intendedToExtend": [{"class_id"}]
+  "definitions": {
+    "retail": {
+      "properties": {
+        "tenant_id": {
+            "type":"object",
+            "properties": {
+              "date": {"title": "date", "type": "string","description": "date"},
+              "store": {"title": "store","type": "integer","description": "store"},
+              "storeType": {"title": "storeType","type": "string","description": "storeType"},
+              "weeklySales": {"title": "weeklySales","type": "number","description": "weeklySales"},
+              "storeSize": {"title": "storeSize","type": "integer","description": "storeSize"},
+              "temperature": {"title": "temperature","type": "number","description": "temperature"},
+              "regionalFuelPrice": {"title": "regionalFuelPrice","type": "number","description": "regionalFuelPrice"},
+              "markdown": {"title": "markdown","type": "number","description": "markdown"},
+              "cpi": {"title": "cpi","type": "number","description": "cpi"},
+              "unemployment": {"title": "unemployment","type": "number","description": "unemployment"},
+              "isHoliday": {"title": "isHoliday","type": "integer","description": "isHoliday"},
+              "week": {"title": "week", "type": "integer", "description": "week"},
+              "year": {"title": "year", "type": "integer", "description": "year"},
+              "storeTypeIndex": {"title": "storeTypeIndex", "type": "number", "description": "storeTypeIndex"},
+              "weeklySalesLag": {"title": "weeklySalesLag","type": "number","description": "weeklySalesLag"},
+              "weeklySalesAhead": {"title": "weeklySalesAhead", "type": "number", "description": "weeklySalesAhead"},
+              "weeklySalesScaled": {"title": "weeklySalesScaled","type": "number","description": "weeklySalesScaled"},
+              "weeklySalesDiff": {"title": "weeklySalesDiff", "type": "number","description": "weeklySalesDiff"}
+            }
+          }
+        }
+      }
+    }
+  "allOf": [{"$ref": "#/definitions/retail"}]
+

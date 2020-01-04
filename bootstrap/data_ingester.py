@@ -38,10 +38,15 @@ def get_dataset_id(create_dataset_url, headers, dataset_title, schema_id, data):
     # Set the title and description
     data['name'] = dataset_title
     data['description'] = dataset_title
+    query_url = '{}?name={}'.format(create_dataset_url, dataset_title)
+    response = http_request('get', query_url , headers)
+    results = json.loads(response)
+    for dataset_id in results.keys():
+        LOGGER.debug('Existing %s ID = %s', dataset_title, dataset_id)
+        return dataset_id
 
     # Set the schema id
     data["schemaRef"]["id"] = schema_id
-
     headers["Content-type"] = CONTENT_TYPE
     headers["Accept"] = CONTENT_TYPE
     res_text = http_request("post", create_dataset_url, headers, json.dumps(data))
@@ -51,6 +56,21 @@ def get_dataset_id(create_dataset_url, headers, dataset_title, schema_id, data):
     LOGGER.debug("dataset_id = %s", dataset_id)
     return dataset_id
 
+
+def has_successful_batch(dataset_url, headers, input_dataset_id):
+    """
+    :param dataset_url: dataset url
+    :param headers: headers
+    :param input_dataset_id: dataset id
+    :return: True or False
+    """
+    check_url = '{}/{}'.format(dataset_url, input_dataset_id)
+    response = http_request('get', check_url, headers)
+    dataset = json.loads(response)[input_dataset_id]
+    if 'lastSuccessfulBatch' in dataset:
+        LOGGER.debug('Input dataset has previous successful batch')
+        return True
+    return False
 
 def get_batch_id(create_batch_url, headers, dataset_id, data):
 
