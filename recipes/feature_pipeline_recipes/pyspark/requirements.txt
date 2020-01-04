@@ -1,3 +1,0 @@
-setuptools
-numpy
-model-authoring-sdk-pyspark
