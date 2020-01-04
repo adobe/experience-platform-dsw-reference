@@ -156,11 +156,13 @@ def ingest(headers_for_ingestion):
                                           input_schema_id, data_for_dataset)
         if has_successful_batch(create_dataset_url, copy.deepcopy(headers_for_ingestion), input_dataset_id ) is False:
 
-            batch_id = get_batch_id(create_batch_url, copy.deepcopy(headers_for_ingestion), input_dataset_id, data_for_batch)
+            batch_id = get_batch_id(create_batch_url, copy.deepcopy(headers_for_ingestion), input_dataset_id,
+                                    data_for_batch)
 
             replace_tenant_id(original_file, file_with_tenant_id, tenant_id)
 
-            upload_file(create_batch_url, copy.deepcopy(headers_for_ingestion), file_with_tenant_id, input_dataset_id, batch_id)
+            upload_file(create_batch_url, copy.deepcopy(headers_for_ingestion), file_with_tenant_id, input_dataset_id,
+                        batch_id)
 
             close_batch(create_batch_url, copy.deepcopy(headers_for_ingestion), batch_id)
 
