@@ -26,7 +26,7 @@ class MyDatasetSaver(DataSaver):
     def save(self, config_properties, prediction):
         spark_context = prediction._sc
         if config_properties is None:
-            raise ValueError("configProperties parameter is null")
+            raise ValueError("config_properties parameter is null")
         if prediction is None:
             raise ValueError("prediction parameter is null")
         if spark_context is None:

@@ -25,7 +25,7 @@ class ScoringDataLoader(DataLoader):
 
     def load(self, config_properties, spark):
         if config_properties is None :
-            raise ValueError("configProperties parameter is null")
+            raise ValueError("config_properties parameter is null")
         if spark is None:
             raise ValueError("spark parameter is null")
 

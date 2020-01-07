@@ -36,7 +36,7 @@ class DatasetSaverForTransformedData(DataSaver):
         spark_context = dataframe._sc
 
         if config_properties is None:
-            raise ValueError("configProperties parameter is null")
+            raise ValueError("config_properties parameter is null")
         if dataframe is None:
             raise ValueError("prediction parameter is null")
         if spark_context is None:

@@ -27,7 +27,7 @@ class TrainPipeline(PipelineFactory):
 
     def apply(self, config_properties):
         if config_properties is None:
-            raise ValueError("configProperties parameter is null")
+            raise ValueError("config_properties parameter is null")
 
         tenant_id = str(config_properties.get("tenant_id"))
         input_features = str(config_properties.get("ACP_DSW_INPUT_FEATURES"))
