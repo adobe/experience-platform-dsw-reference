@@ -4,22 +4,22 @@ required for the recipe workflow.
 
 # Workflow
 Following are the steps the script runs through to setup the input and output datasets in the org:
-1. Get the access token to access the APIs
-2. Get the tenantID of the org
-3. Create Retail Sales Class
-4. Create Input Retail Sales Mixin with the class url
-5. Create Input Retail Sales Schema with the class url and the mixin url
-6. Create Input Dataset with the schema url
-7. Create Batch with the dataset id
-8. Replace the tenant id in the json 
-9. Upload the datafile (with the tenantID from above)
+1.  Get the access token to access the APIs
+2.  Get the tenantID of the org
+3.  Create retail sales class
+4.  Create input retail sales mixin with the class url
+5.  Create input retail sales schema with the class url and the mixin url
+6.  Create input dataset with the schema url
+7.  Create batch with the dataset id
+8.  Replace the tenant id in the json 
+9.  Upload the datafile (with the tenantID from above)
 10. Close the batch
 11. Create mixin for transformed data with the class url 
-12. Create Schema for transformed data with the class url and the mixin url
-13. Create dataset with the schema url
-14. Create Output Retail Sales Mixin with the class url from step 3
-15. Create Output Retail Sales Schema with the class url and the mixin url
-16. Create Output Dataset with the schema
+12. Create schema for transformed data with the class url and the mixin url
+13. Create transformed dataset with the schema url
+14. Create output retail sales mixin with the class url from step 3
+15. Create output retail sales schema with the class url and the mixin url
+16. Create output dataset with the schema
 17. Build the engine artifacts based on the configuration
 
 # Setup
