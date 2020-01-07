@@ -1,0 +1,26 @@
+#Name of the class which contains implementation to get the input data.
+feature.dataLoader: InputDataLoaderForFeaturePipeline
+
+#Name of the class which contains implementation to get the transformed data.
+feature.dataset.transformer: MyDatasetTransformer
+
+#Name of the class which contains implementation to save the transformed data.
+feature.dataSaver: DatasetSaverForTransformedData
+
+#Name of the class which contains implementation to get the training data
+training.dataLoader: TrainingDataLoader
+
+#Name of the class which contains pipeline. It should implement PipelineFactory.scala
+pipeline.class: TrainPipeline
+
+#Name of the class which contains implementation for evaluation metrics.
+evaluator: Evaluator
+evaluateModel: True
+
+#Name of the class which contains implementation to get the scoring data.
+scoring.dataLoader: ScoringDataLoader
+
+#Name of the class which contains implementation to save the scoring data.
+scoring.dataSaver: MyDatasetSaver
+
+
