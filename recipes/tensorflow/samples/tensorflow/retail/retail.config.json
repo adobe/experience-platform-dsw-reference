@@ -42,8 +42,8 @@
 
             },
             {
-                "key": "tenant_id",
-                "value": "_<tenant_id>"
+                "key": "tenantId",
+                "value": "_<tenantId>"
             }
         ]
     }
