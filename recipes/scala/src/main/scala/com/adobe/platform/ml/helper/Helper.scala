@@ -19,9 +19,7 @@ package com.adobe.platform.ml
 
 import java.time.LocalDateTime
 
-import com.adobe.platform.dataset.DataSetOptions
 import com.adobe.platform.ml.config.ConfigProperties
-import com.adobe.platform.ml.sdk.DataLoader
 import org.apache.spark.ml.feature.StringIndexer
 import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.functions._
@@ -31,6 +29,9 @@ import org.apache.spark.sql.Column
 
 
 class Helper {
+  final val PLATFORM_SDK_PQS_PACKAGE: String = "com.adobe.platform.query"
+  final val PLATFORM_SDK_PQS_INTERACTIVE: String = "interactive"
+  final val PLATFORM_SDK_PQS_BATCH: String = "batch"
 
   /**
     *
@@ -54,11 +55,13 @@ class Helper {
     val dataSetId: String = configProperties.get(taskId).getOrElse("")
 
     // Load the dataset
-    var df = sparkSession.read.format("com.adobe.platform.dataset")
-      .option(DataSetOptions.orgId, orgId)
-      .option(DataSetOptions.serviceToken, serviceToken)
-      .option(DataSetOptions.userToken, userToken)
-      .option(DataSetOptions.serviceApiKey, apiKey)
+    var df = sparkSession.read.format(PLATFORM_SDK_PQS_PACKAGE)
+      .option("user-token", userToken)
+      .option("service-token", serviceToken)
+      .option("ims-org", orgId)
+      .option("api-key", apiKey)
+      .option("mode", PLATFORM_SDK_PQS_BATCH)
+      .option("dataset-id", dataSetId)
       .load(dataSetId)
     df.show()
     df

@@ -50,6 +50,7 @@
 		<dependency>
 			<groupId>com.adobe.platform.ml</groupId>
 			<artifactId>authoring-sdk_2.11</artifactId>
+			<!-- TODO: Add the version once it is available in maven central -->
 			<version>0.21.5</version>
 			<classifier>jar-with-dependencies</classifier>
 		</dependency>
