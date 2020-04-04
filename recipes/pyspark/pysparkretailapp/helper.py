@@ -40,12 +40,15 @@ def load_dataset(config_properties, spark, task_id):
 
     dataset_options = get_dataset_options(spark.sparkContext)
 
-    pd = spark.read.format("com.adobe.platform.dataset") \
-        .option(dataset_options.serviceToken(), service_token) \
+    pd = spark.read.format("com.adobe.platform.query") \
         .option(dataset_options.userToken(), user_token) \
-        .option(dataset_options.orgId(), org_id) \
-        .option(dataset_options.serviceApiKey(), api_key) \
+        .option(dataset_options.serviceToken(), service_token) \
+        .option(dataset_options.imsOrg(), org_id) \
+        .option(dataset_options.apiKey(), api_key) \
+        .option(dataset_options.mode(), "interactive") \
+        .option(dataset_options.datasetId(), dataset_id) \
         .load(dataset_id)
+    pd.show()
     return pd
 
 
@@ -90,5 +93,5 @@ def prepare_dataset(config_properties, dataset):
     return pd
 
 def get_dataset_options(spark_context):
-    dataset_options = spark_context._jvm.com.adobe.platform.dataset.DataSetOptions
+    dataset_options = spark_context._jvm.com.adobe.platform.query.QSOption
     return dataset_options

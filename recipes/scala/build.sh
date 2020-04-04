@@ -22,7 +22,7 @@ read version
 echo "Enter Docker Host"
 read host
 
-docker build --pull -t $host/ml-retailsales-pyspark:$version .
-docker push $host/ml-retailsales-pyspark:$version
+docker build --pull -t $host/ml-retailsales-spark:$version .
+docker push $host/ml-retailsales-spark:$version
 
-echo "$host/ml-retailsales-pyspark:$version"
+echo "$host/ml-retailsales-spark:$version"

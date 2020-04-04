@@ -53,9 +53,11 @@ class MyDatasetSaver(DataSaver):
 
         dataset_options = get_dataset_options(sparkContext)
 
-        scored_df.select(tenant_id, "_id", "eventType", "timestamp").write.format("com.adobe.platform.dataset") \
-            .option(dataset_options.orgId(), org_id) \
-            .option(dataset_options.serviceToken(), service_token) \
-            .option(dataset_options.userToken(), user_token) \
-            .option(dataset_options.serviceApiKey(), api_key) \
-            .save(scored_dataset_id)
+        scored_df.select(tenant_id, "_id", "eventType", "timestamp").write.format("com.adobe.platform.query") \
+        .option(dataset_options.userToken(), user_token) \
+        .option(dataset_options.serviceToken(), service_token) \
+        .option(dataset_options.imsOrg(), org_id) \
+        .option(dataset_options.apiKey(), api_key) \
+        .option(dataset_options.mode(), "interactive") \
+        .option(dataset_options.datasetId(), scored_dataset_id) \
+        .save(scored_dataset_id)
