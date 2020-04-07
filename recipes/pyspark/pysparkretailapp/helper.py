@@ -36,8 +36,7 @@ def load_dataset(config_properties, spark, task_id):
 
     for arg in ['service_token', 'user_token', 'org_id', 'dataset_id', 'api_key']:
         if eval(arg) == 'None':
-                raise ValueError("%s is empty" % arg)
-    QSOptimizations.apply(spark)
+            raise ValueError("%s is empty" % arg)
 
 
     dataset_options = get_dataset_options(spark.sparkContext)
