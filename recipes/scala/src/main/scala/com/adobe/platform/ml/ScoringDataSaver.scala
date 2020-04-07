@@ -20,6 +20,7 @@ package com.adobe.platform.ml
 import com.adobe.platform.ml.config.ConfigProperties
 import com.adobe.platform.ml.impl.Constants
 import com.adobe.platform.ml.sdk.DataSaver
+import com.adobe.platform.query.QSOption
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.TimestampType
@@ -63,13 +64,12 @@ class ScoringDataSaver extends DataSaver {
     scored_df = scored_df.withColumn("eventType", lit("empty"))
 
     scored_df.select(tenantId, "_id", "eventType", "timestamp").write.format(PLATFORM_SDK_PQS_PACKAGE)
-      .option("user-token", userToken)
-      .option("service-token", serviceToken)
-      .option("ims-org", orgId)
-      .option("api-key", apiKey)
-      .option("mode", "batch")
-      .option("dataset-id", scoringResultsDataSetId)
-      .save(scoringResultsDataSetId)
+      .option(QSOption.userToken, userToken)
+      .option(QSOption.serviceToken, serviceToken)
+      .option(QSOption.imsOrg, orgId)
+      .option(QSOption.apiKey, apiKey)
+      .option(QSOption.datasetId, scoringResultsDataSetId)
+      .save()
 
   }
 }

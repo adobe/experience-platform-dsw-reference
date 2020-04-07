@@ -22,6 +22,7 @@ from pyspark.sql.types import IntegerType
 from pyspark.sql.functions import unix_timestamp, from_unixtime, to_date, lit, lag, udf, date_format
 from pyspark.sql import Window
 import datetime
+import com.adobe.platform.query.QSOptimizations
 
 
 def load_dataset(config_properties, spark, task_id):
@@ -35,7 +36,8 @@ def load_dataset(config_properties, spark, task_id):
 
     for arg in ['service_token', 'user_token', 'org_id', 'dataset_id', 'api_key']:
         if eval(arg) == 'None':
-            raise ValueError("%s is empty" % arg)
+                raise ValueError("%s is empty" % arg)
+    QSOptimizations.apply(spark)
 
 
     dataset_options = get_dataset_options(spark.sparkContext)
@@ -47,7 +49,7 @@ def load_dataset(config_properties, spark, task_id):
         .option(dataset_options.apiKey(), api_key) \
         .option(dataset_options.mode(), "interactive") \
         .option(dataset_options.datasetId(), dataset_id) \
-        .load(dataset_id)
+        .load()
     pd.show()
     return pd
 

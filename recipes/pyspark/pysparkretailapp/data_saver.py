@@ -58,6 +58,5 @@ class MyDatasetSaver(DataSaver):
         .option(dataset_options.serviceToken(), service_token) \
         .option(dataset_options.imsOrg(), org_id) \
         .option(dataset_options.apiKey(), api_key) \
-        .option(dataset_options.mode(), "interactive") \
         .option(dataset_options.datasetId(), scored_dataset_id) \
-        .save(scored_dataset_id)
+        .save()

@@ -20,10 +20,11 @@ package com.adobe.platform.ml
 import java.time.LocalDateTime
 
 import com.adobe.platform.ml.config.ConfigProperties
+import com.adobe.platform.query.QSOption
 import org.apache.spark.ml.feature.StringIndexer
 import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.functions._
-import org.apache.spark.sql.types.{TimestampType, StructType}
+import org.apache.spark.sql.types.{StructType, TimestampType}
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.sql.Column
 
@@ -56,13 +57,13 @@ class Helper {
 
     // Load the dataset
     var df = sparkSession.read.format(PLATFORM_SDK_PQS_PACKAGE)
-      .option("user-token", userToken)
-      .option("service-token", serviceToken)
-      .option("ims-org", orgId)
-      .option("api-key", apiKey)
-      .option("mode", PLATFORM_SDK_PQS_BATCH)
-      .option("dataset-id", dataSetId)
-      .load(dataSetId)
+      .option(QSOption.userToken, userToken)
+      .option(QSOption.serviceToken, serviceToken)
+      .option(QSOption.imsOrg, orgId)
+      .option(QSOption.apiKey, apiKey)
+      .option(QSOption.mode, PLATFORM_SDK_PQS_INTERACTIVE)
+      .option(QSOption.datasetId, dataSetId)
+      .load()
     df.show()
     df
   }
