@@ -38,15 +38,15 @@ def load_dataset(config_properties, spark, task_id):
             raise ValueError("%s is empty" % arg)
 
 
-    dataset_options = get_dataset_options(spark.sparkContext)
+    query_options = get_query_options(spark.sparkContext)
 
     pd = spark.read.format("com.adobe.platform.query") \
-        .option(dataset_options.userToken(), user_token) \
-        .option(dataset_options.serviceToken(), service_token) \
-        .option(dataset_options.imsOrg(), org_id) \
-        .option(dataset_options.apiKey(), api_key) \
-        .option(dataset_options.mode(), "interactive") \
-        .option(dataset_options.datasetId(), dataset_id) \
+        .option(query_options.userToken(), user_token) \
+        .option(query_options.serviceToken(), service_token) \
+        .option(query_options.imsOrg(), org_id) \
+        .option(query_options.apiKey(), api_key) \
+        .option(query_options.mode(), "interactive") \
+        .option(query_options.datasetId(), dataset_id) \
         .load()
     pd.show()
     return pd
@@ -92,6 +92,6 @@ def prepare_dataset(config_properties, dataset):
     pd = pd.na.drop()
     return pd
 
-def get_dataset_options(spark_context):
-    dataset_options = spark_context._jvm.com.adobe.platform.query.QSOption
-    return dataset_options
+def get_query_options(spark_context):
+    query_options = spark_context._jvm.com.adobe.platform.query.QSOption
+    return query_options
