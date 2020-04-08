@@ -22,7 +22,6 @@ from pyspark.sql.types import IntegerType
 from pyspark.sql.functions import unix_timestamp, from_unixtime, to_date, lit, lag, udf, date_format
 from pyspark.sql import Window
 import datetime
-import com.adobe.platform.query.QSOptimizations
 
 
 def load_dataset(config_properties, spark, task_id):
