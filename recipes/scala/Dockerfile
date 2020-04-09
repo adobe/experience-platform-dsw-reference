@@ -14,6 +14,6 @@
 # is strictly forbidden unless prior written permission is obtained
 # from Adobe.
 #####################################################################
-FROM docker-experienceplatform-release.dr.corp.adobe.com/ml-runtime-scala-databricks:1.0.3
+FROM adobe/acp-dsw-ml-runtime-spark:0.0.1
 
 COPY target/ml-retail-sample-spark-*-jar-with-dependencies.jar /application.jar
