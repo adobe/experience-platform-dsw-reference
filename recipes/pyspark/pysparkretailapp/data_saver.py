@@ -32,6 +32,8 @@ class MyDatasetSaver(DataSaver):
         if sparkContext is None:
             raise ValueError("sparkContext parameter is null")
 
+        PLATFORM_SDK_PQS_PACKAGE = "com.adobe.platform.query"
+
         service_token = str(sparkContext.getConf().get("ML_FRAMEWORK_IMS_ML_TOKEN"))
         user_token = str(sparkContext.getConf().get("ML_FRAMEWORK_IMS_TOKEN"))
         org_id = str(sparkContext.getConf().get("ML_FRAMEWORK_IMS_ORG_ID"))
@@ -53,7 +55,7 @@ class MyDatasetSaver(DataSaver):
 
         query_options = get_query_options(sparkContext)
 
-        scored_df.select(tenant_id, "_id", "eventType", "timestamp").write.format("com.adobe.platform.query") \
+        scored_df.select(tenant_id, "_id", "eventType", "timestamp").write.format(PLATFORM_SDK_PQS_PACKAGE) \
         .option(query_options.userToken(), user_token) \
         .option(query_options.serviceToken(), service_token) \
         .option(query_options.imsOrg(), org_id) \

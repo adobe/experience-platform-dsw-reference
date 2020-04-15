@@ -26,6 +26,10 @@ import datetime
 
 def load_dataset(config_properties, spark, task_id):
 
+    PLATFORM_SDK_PQS_PACKAGE = "com.adobe.platform.query"
+    PLATFORM_SDK_PQS_INTERACTIVE = "interactive"
+
+
     service_token = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_ML_TOKEN"))
     user_token = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_TOKEN"))
     org_id = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_ORG_ID"))
@@ -40,12 +44,12 @@ def load_dataset(config_properties, spark, task_id):
 
     query_options = get_query_options(spark.sparkContext)
 
-    pd = spark.read.format("com.adobe.platform.query") \
+    pd = spark.read.format(PLATFORM_SDK_PQS_PACKAGE) \
         .option(query_options.userToken(), user_token) \
         .option(query_options.serviceToken(), service_token) \
         .option(query_options.imsOrg(), org_id) \
         .option(query_options.apiKey(), api_key) \
-        .option(query_options.mode(), "interactive") \
+        .option(query_options.mode(), PLATFORM_SDK_PQS_INTERACTIVE) \
         .option(query_options.datasetId(), dataset_id) \
         .load()
     pd.show()
