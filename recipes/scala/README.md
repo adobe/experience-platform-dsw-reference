@@ -59,14 +59,14 @@ If you got the engine artifact from the bootstrap script, jump to the section [V
 # Steps to run training and scoring jobs
 git clone this repository from [https://github.com/adobe/experience-platform-dsw-reference](https://github.com/adobe/experience-platform-dsw-reference)
 
-cd to recipes/scala and run `build.sh` 
+cd to recipes/scala and run 
 
 ```
+sh ./login.sh
 sh ./build.sh
 ```
 
-This generates a fat jar and is saved in the target directory of the project. 
-Use this jar and go to platform UI `https://platform.adobe.com/` and run training and scoring. 
+This generates a docker file which can be used in platform UI `https://platform.adobe.com/` to run training and scoring. 
 Please look at the video `Video for Training, Scoring and Saving data`
 
 ### Video for Training, Scoring and Saving data

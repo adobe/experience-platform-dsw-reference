@@ -61,14 +61,14 @@ If you got the engine artifact from the bootstrap script, jump to the section [V
 git clone this repository from [https://github.com/adobe/experience-platform-dsw-reference](https://github.com/adobe/experience-platform-dsw-reference) 
 
 
-cd to recipes/pyspark and run `build.sh` 
-
+cd to recipes/pyspark and run 
 ```
+sh ./login.sh
 sh ./build.sh
 ```
-Enter your admin password when prompted for.
-This generates an egg and is saved in the dist directory of the project. 
-Use this egg and go to platform UI `https://platform.adobe.com/` and run training and scoring. 
+Please note the login.sh script should only need to be run once.
+
+This generates a docker file which can be used in the platform UI `https://platform.adobe.com/` to run training and scoring. 
 Please look at the video `Video for Training, Scoring and Saving data`
 
 ### Video for Training, Scoring and Saving data
