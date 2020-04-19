@@ -1,5 +1,4 @@
-#From should change to the dockerhub link once the pyspark ml runtime is pushed
-FROM adobe/acp-dsw-ml-runtime-pyspark:0.0.1
+FROM adobe/acp-dsw-ml-runtime-pyspark:3.0.2
 RUN mkdir /recipe
 
 COPY . /recipe
