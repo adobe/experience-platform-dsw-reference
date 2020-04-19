@@ -68,7 +68,7 @@ sh ./build.sh
 ```
 Please note the login.sh script should only need to be run once.
 
-This generates a docker file which can be used in the platform UI `https://platform.adobe.com/` to run training and scoring. 
+This generates a docker image which can be used in the platform UI `https://platform.adobe.com/` to run training and scoring. 
 Please look at the video `Video for Training, Scoring and Saving data`
 
 ### Video for Training, Scoring and Saving data

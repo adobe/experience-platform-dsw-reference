@@ -66,7 +66,7 @@ sh ./login.sh
 sh ./build.sh
 ```
 
-This generates a docker file which can be used in platform UI `https://platform.adobe.com/` to run training and scoring. 
+This generates a docker image which can be used in platform UI `https://platform.adobe.com/` to run training and scoring. 
 Please look at the video `Video for Training, Scoring and Saving data`
 
 ### Video for Training, Scoring and Saving data
