@@ -14,6 +14,6 @@
 # is strictly forbidden unless prior written permission is obtained
 # from Adobe.
 #####################################################################
-FROM adobe/acp-dsw-ml-runtime-spark:0.0.1
+FROM adobe/acp-dsw-ml-runtime:2.0.0
 
 COPY target/ml-retail-sample-spark-*-jar-with-dependencies.jar /application.jar

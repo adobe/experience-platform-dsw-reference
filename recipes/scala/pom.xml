@@ -18,7 +18,7 @@
 	<repositories>
 		<repository>
 			<id>central</id>
-			<url>http://repo1.maven.org/maven2</url>
+			<url>https://repo1.maven.org/maven2</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
@@ -29,12 +29,12 @@
 	</repositories>
 
 	<!-- Enable this for staged release of the artifact -->
-	<!--<repositories>
+	<!--repositories>
 		<repository>
 			<id>staged-releases</id>
-			<url>https://oss.sonatype.org/content/repositories/comadobeplatform-1048</url>
+			<url>https://oss.sonatype.org/content/repositories/comadobeplatform-1057</url>
 		</repository>
-	</repositories> -->
+	</repositories-->
 	
 	<dependencies>
 		<dependency>
@@ -50,8 +50,7 @@
 		<dependency>
 			<groupId>com.adobe.platform.ml</groupId>
 			<artifactId>authoring-sdk_2.11</artifactId>
-			<!-- TODO: Add the version once it is available in maven central -->
-			<version>0.21.5</version>
+			<version>2.0.0</version>
 			<classifier>jar-with-dependencies</classifier>
 		</dependency>
 		<dependency>
