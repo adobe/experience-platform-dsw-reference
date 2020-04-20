@@ -16,13 +16,20 @@
 # from Adobe.
 #####################################################################
 
-echo "Please enter the version number for your recipe's docker image"
-read version
+#
+# login to your docker account
+#
 
 echo "Enter Docker Host"
+
 read host
 
-docker build --pull -t $host/ml-retailsales-pyspark:$version .
-docker push $host/ml-retailsales-pyspark:$version
+echo "Enter Docker Username"
 
-echo "$host/ml-retailsales-pyspark:$version"
+read username
+
+echo "Enter Docker Password"
+
+read password
+
+docker login --username $username --password $password $host

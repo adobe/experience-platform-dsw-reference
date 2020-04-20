@@ -19,18 +19,20 @@ package com.adobe.platform.ml
 
 import java.time.LocalDateTime
 
-import com.adobe.platform.dataset.DataSetOptions
 import com.adobe.platform.ml.config.ConfigProperties
-import com.adobe.platform.ml.sdk.DataLoader
+import com.adobe.platform.query.QSOption
 import org.apache.spark.ml.feature.StringIndexer
 import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.functions._
-import org.apache.spark.sql.types.{TimestampType, StructType}
+import org.apache.spark.sql.types.{StructType, TimestampType}
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.sql.Column
 
 
 class Helper {
+  final val PLATFORM_SDK_PQS_PACKAGE: String = "com.adobe.platform.query"
+  final val PLATFORM_SDK_PQS_INTERACTIVE: String = "interactive"
+  final val PLATFORM_SDK_PQS_BATCH: String = "batch"
 
   /**
     *
@@ -54,12 +56,14 @@ class Helper {
     val dataSetId: String = configProperties.get(taskId).getOrElse("")
 
     // Load the dataset
-    var df = sparkSession.read.format("com.adobe.platform.dataset")
-      .option(DataSetOptions.orgId, orgId)
-      .option(DataSetOptions.serviceToken, serviceToken)
-      .option(DataSetOptions.userToken, userToken)
-      .option(DataSetOptions.serviceApiKey, apiKey)
-      .load(dataSetId)
+    var df = sparkSession.read.format(PLATFORM_SDK_PQS_PACKAGE)
+      .option(QSOption.userToken, userToken)
+      .option(QSOption.serviceToken, serviceToken)
+      .option(QSOption.imsOrg, orgId)
+      .option(QSOption.apiKey, apiKey)
+      .option(QSOption.mode, PLATFORM_SDK_PQS_INTERACTIVE)
+      .option(QSOption.datasetId, dataSetId)
+      .load()
     df.show()
     df
   }

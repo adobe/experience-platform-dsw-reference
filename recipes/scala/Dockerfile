@@ -1,9 +1,8 @@
-#!/usr/bin/env bash
 #####################################################################
 # ADOBE CONFIDENTIAL
 # ___________________
 #
-#  Copyright 2020 Adobe
+#  Copyright 2019 Adobe
 #  All Rights Reserved.
 #
 # NOTICE:  All information contained herein is, and remains
@@ -15,14 +14,6 @@
 # is strictly forbidden unless prior written permission is obtained
 # from Adobe.
 #####################################################################
+FROM adobe/acp-dsw-ml-runtime:2.0.0
 
-echo "Please enter the version number for your recipe's docker image"
-read version
-
-echo "Enter Docker Host"
-read host
-
-docker build --pull -t $host/ml-retailsales-pyspark:$version .
-docker push $host/ml-retailsales-pyspark:$version
-
-echo "$host/ml-retailsales-pyspark:$version"
+COPY target/ml-retail-sample-spark-*-jar-with-dependencies.jar /application.jar
