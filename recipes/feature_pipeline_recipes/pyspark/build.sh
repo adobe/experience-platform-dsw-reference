@@ -16,6 +16,13 @@
 # from Adobe.
 #####################################################################
 
-#Build sample app
-echo "Building .egg binary"
-sudo -S python3 setup.py clean --all install
+echo "Please enter the version number for your recipe's docker image"
+read version
+
+echo "Enter Docker Host"
+read host
+
+docker build --pull -t $host/ml-featurepipeline-pyspark:$version .
+docker push $host/ml-featurepipeline-pyspark:$version
+
+echo "$host/ml-featurepipeline-pyspark:$version"

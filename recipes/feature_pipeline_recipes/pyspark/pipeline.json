@@ -39,7 +39,7 @@
               },
               {
                 "key": "ACP_DSW_INPUT_FEATURES",
-                "value": "date,store,storeType,storeSize,temperature,regionalFuelPrice,markdown,cpi,unemployment,isHoliday"
+                "value": "date,store,storeType,storeSize,temperature,regionalFuelPrice,markdown,cpi,unemployment,holiday"
               },
               {
                 "key": "ACP_DSW_TARGET_FEATURES",

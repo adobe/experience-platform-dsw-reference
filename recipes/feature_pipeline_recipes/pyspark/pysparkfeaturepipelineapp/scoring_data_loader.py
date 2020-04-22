@@ -17,7 +17,6 @@
 
 from .helper import *
 from sdk.data_loader import DataLoader
-from pyspark.sql.functions import col
 
 
 class ScoringDataLoader(DataLoader):
