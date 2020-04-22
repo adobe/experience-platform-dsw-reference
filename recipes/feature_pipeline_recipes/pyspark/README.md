@@ -41,9 +41,8 @@ After login is successful, run `build.sh`
 ```
 sh build.sh
 ```
-This pushes the docker image to the ACR for eg: in the case where the Docker host is `v1d2cs4mimnlttw.azurecr.io` 
-and the version is `0.0.1`, the docker image that is pushed will look like 
-`v1d2cs4mimnlttw.azurecr.io/ml-featurepipeline-pyspark:0.0.1`
+This pushes the docker image to the ACR for eg: the docker image that is pushed will look like 
+`$host/ml-featurepipeline-pyspark:$version`
 
 Use this docker image location and exercise the calls in the postman collection below:
 https://www.getpostman.com/collections/c5fc0d1d5805a5ddd41a
