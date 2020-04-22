@@ -41,8 +41,9 @@ After login is successful, run `build.sh`
 ```
 sh build.sh
 ```
-This pushes the docker image to the ACR for eg: the docker image that is pushed will look like 
-`$host/ml-featurepipeline-pyspark:$version`
+This pushes the docker image to the ACR. The docker image that is pushed will look like 
+`$host/ml-featurepipeline-pyspark:$version` where $host is the value of the Docker host and $version is the version 
+number that you specified for the recipe.
 
 Use this docker image location and exercise the calls in the postman collection below:
 https://www.getpostman.com/collections/c5fc0d1d5805a5ddd41a
