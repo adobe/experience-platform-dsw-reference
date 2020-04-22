@@ -24,23 +24,33 @@ script within `/acp-data-services-dsw-reference/bootstrap`.
 git clone this repository from [https://github.com/adobe/experience-platform-dsw-reference](https://github.com/adobe/experience-platform-dsw-reference)
 
 
-cd to recipes/feature_pipeline_recipes/pyspark and run `build.sh`
+cd to recipes/feature_pipeline_recipes/pyspark and run `login.sh`
 
 ```
-sh ./build.sh
+sh login.sh
 ```
-Enter your admin password when prompted for
-This generates an egg and is saved in the dist directory of the project
-Use this egg and exercise the calls in the postman collection below:
-https://www.getpostman.com/collections/86934cae537aae60d052
+The credentials for the login can be obtained from platform UI: https://platform.adobe.com
+
+Login and click on  Models > Recipes > Import recipe > Next
+
+From the Select Source, in the Runtime drop down select PySpark and make sure the Artifact type drop down has docker 
+selected. 
+Copy paste the appropriate values when running the login.sh script.
+After login is successful, run `build.sh`
+
+```
+sh build.sh
+```
+This pushes the docker image to the ACR for eg: in the case where the Docker host is `v1d2cs4mimnlttw.azurecr.io` 
+and the version is `0.0.1`, the docker image that is pushed will look like 
+`v1d2cs4mimnlttw.azurecr.io/ml-featurepipeline-pyspark:0.0.1`
+
+Use this docker image location and exercise the calls in the postman collection below:
+https://www.getpostman.com/collections/c5fc0d1d5805a5ddd41a
 
 
 For the details on executing the postman calls:
-1. Create an engine with a call to POST Feature Pipeline Engine EGG:
-    i) Supply the pipeline.json as form-data to the engine key
-
-   ii) The egg file generated above is the value for the keys 'featurePipelineOverrideArtifact' and 'defaultArtifact'
-
+1. Create an engine with a call to POST Feature Pipeline Engine
 2. Post Instance
 3. Post Experiment
 4. Post Feature Pipeline Experiment Run
