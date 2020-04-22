@@ -21,6 +21,8 @@ import logging
 
 
 def load_dataset(config_properties, spark, tenant_id, dataset_id):
+    PLATFORM_SDK_PQS_PACKAGE = "com.adobe.platform.query"
+    PLATFORM_SDK_PQS_INTERACTIVE = "interactive"
 
     service_token = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_ML_TOKEN"))
     user_token = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_TOKEN"))
@@ -33,14 +35,17 @@ def load_dataset(config_properties, spark, tenant_id, dataset_id):
         if eval(arg) == 'None':
             raise ValueError("%s is empty" % arg)
 
-    dataset_options = get_dataset_options(spark.sparkContext)
+    query_options = get_query_options(spark.sparkContext)
 
-    pd = spark.read.format("com.adobe.platform.dataset") \
-        .option(dataset_options.serviceToken(), service_token) \
-        .option(dataset_options.userToken(), user_token) \
-        .option(dataset_options.orgId(), org_id) \
-        .option(dataset_options.serviceApiKey(), api_key) \
-        .load(dataset_id)
+    pd = spark.read.format(PLATFORM_SDK_PQS_PACKAGE) \
+        .option(query_options.userToken(), user_token) \
+        .option(query_options.serviceToken(), service_token) \
+        .option(query_options.imsOrg(), org_id) \
+        .option(query_options.apiKey(), api_key) \
+        .option(query_options.mode(), PLATFORM_SDK_PQS_INTERACTIVE) \
+        .option(query_options.datasetId(), dataset_id) \
+        .load()
+    pd.show()
 
     # Get the distinct values of the dataframe
     pd = pd.distinct()
@@ -52,14 +57,15 @@ def load_dataset(config_properties, spark, tenant_id, dataset_id):
     return pd
 
 
-def get_dataset_options(spark_context):
-    dataset_options = spark_context._jvm.com.adobe.platform.dataset.DataSetOptions
-    return dataset_options
+def get_query_options(spark_context):
+    query_options = spark_context._jvm.com.adobe.platform.query.QSOption
+    return query_options
 
 
 def write_dataset(config_properties, sparkContext, dataframe, dataset_id):
+    PLATFORM_SDK_PQS_PACKAGE = "com.adobe.platform.query"
 
-    dataset_options = get_dataset_options(sparkContext)
+    query_options = get_query_options(sparkContext)
 
     service_token = str(sparkContext.getConf().get("ML_FRAMEWORK_IMS_ML_TOKEN"))
     user_token = str(sparkContext.getConf().get("ML_FRAMEWORK_IMS_TOKEN"))
@@ -77,12 +83,13 @@ def write_dataset(config_properties, sparkContext, dataframe, dataset_id):
     dataframe = dataframe.withColumn("_id", lit("empty"))
     dataframe = dataframe.withColumn("eventType", lit("empty"))
 
-    dataframe.write.format("com.adobe.platform.dataset") \
-        .option(dataset_options.orgId(), org_id) \
-        .option(dataset_options.serviceToken(), service_token) \
-        .option(dataset_options.userToken(), user_token) \
-        .option(dataset_options.serviceApiKey(), api_key) \
-        .save(output_dataset_id)
+    dataframe.write.format(PLATFORM_SDK_PQS_PACKAGE) \
+        .option(query_options.imsOrg(), org_id) \
+        .option(query_options.serviceToken(), service_token) \
+        .option(query_options.userToken(), user_token) \
+        .option(query_options.apiKey(), api_key) \
+        .option(query_options.datasetId(), output_dataset_id) \
+        .save()
 
 
 def setupLogger(name):

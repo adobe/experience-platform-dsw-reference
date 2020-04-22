@@ -36,7 +36,9 @@ class MyDatasetTransformer(DatasetTransformer):
             dataset.show()
 
         # Convert isHoliday boolean value to Int
-        pd = dataset.withColumn("isHoliday", col("isHoliday").cast(IntegerType()))
+        # Rename the column to holiday and drop isHoliday
+        pd = dataset.withColumn("holiday", col("isHoliday").cast(IntegerType())).drop("isHoliday")
+        pd.show()
 
         # Get the week and year from date
         pd = pd.withColumn("week", date_format(to_date("date", "MM/dd/yy"), "w").cast(IntegerType()))
