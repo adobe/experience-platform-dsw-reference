@@ -17,10 +17,10 @@
 
 package com.adobe.platform.ml
 
-import com.adobe.platform.dataset.DataSetOptions
 import com.adobe.platform.ml.config.ConfigProperties
 import com.adobe.platform.ml.impl.Constants
 import com.adobe.platform.ml.sdk.DataSaver
+import com.adobe.platform.query.QSOption
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.TimestampType
@@ -29,6 +29,9 @@ import org.apache.spark.sql.types.TimestampType
   * Implementation of data saver which saves the output dataframe
   */
 class ScoringDataSaver extends DataSaver {
+
+  final val PLATFORM_SDK_PQS_PACKAGE: String = "com.adobe.platform.query"
+  final val PLATFORM_SDK_PQS_BATCH: String = "batch"
 
   /**
     * Method that saves the scoring data into a dataframe
@@ -60,12 +63,13 @@ class ScoringDataSaver extends DataSaver {
     scored_df = scored_df.withColumn("_id", lit("empty"))
     scored_df = scored_df.withColumn("eventType", lit("empty"))
 
-    scored_df.select(tenantId, "_id", "eventType", "timestamp").write.format("com.adobe.platform.dataset")
-      .option(DataSetOptions.orgId, orgId)
-      .option(DataSetOptions.serviceToken, serviceToken)
-      .option(DataSetOptions.userToken, userToken)
-      .option(DataSetOptions.serviceApiKey, apiKey)
-      .save(scoringResultsDataSetId)
+    scored_df.select(tenantId, "_id", "eventType", "timestamp").write.format(PLATFORM_SDK_PQS_PACKAGE)
+      .option(QSOption.userToken, userToken)
+      .option(QSOption.serviceToken, serviceToken)
+      .option(QSOption.imsOrg, orgId)
+      .option(QSOption.apiKey, apiKey)
+      .option(QSOption.datasetId, scoringResultsDataSetId)
+      .save()
 
   }
 }

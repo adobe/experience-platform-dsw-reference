@@ -3,7 +3,7 @@
 # ADOBE CONFIDENTIAL
 # ___________________
 #
-#  Copyright 2019 Adobe
+#  Copyright 2020 Adobe
 #  All Rights Reserved.
 #
 # NOTICE:  All information contained herein is, and remains
@@ -16,6 +16,13 @@
 # from Adobe.
 #####################################################################
 
-#Build sample app
-echo "Building .egg binary"
-sudo -S python3 setup.py clean --all install
+echo "Please enter the version number for your recipe's docker image"
+read version
+
+echo "Enter Docker Host"
+read host
+
+docker build --pull -t $host/ml-retailsales-pyspark:$version .
+docker push $host/ml-retailsales-pyspark:$version
+
+echo "$host/ml-retailsales-pyspark:$version"

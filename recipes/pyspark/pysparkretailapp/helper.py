@@ -26,6 +26,10 @@ import datetime
 
 def load_dataset(config_properties, spark, task_id):
 
+    PLATFORM_SDK_PQS_PACKAGE = "com.adobe.platform.query"
+    PLATFORM_SDK_PQS_INTERACTIVE = "interactive"
+
+
     service_token = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_ML_TOKEN"))
     user_token = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_TOKEN"))
     org_id = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_ORG_ID"))
@@ -38,14 +42,17 @@ def load_dataset(config_properties, spark, task_id):
             raise ValueError("%s is empty" % arg)
 
 
-    dataset_options = get_dataset_options(spark.sparkContext)
+    query_options = get_query_options(spark.sparkContext)
 
-    pd = spark.read.format("com.adobe.platform.dataset") \
-        .option(dataset_options.serviceToken(), service_token) \
-        .option(dataset_options.userToken(), user_token) \
-        .option(dataset_options.orgId(), org_id) \
-        .option(dataset_options.serviceApiKey(), api_key) \
-        .load(dataset_id)
+    pd = spark.read.format(PLATFORM_SDK_PQS_PACKAGE) \
+        .option(query_options.userToken(), user_token) \
+        .option(query_options.serviceToken(), service_token) \
+        .option(query_options.imsOrg(), org_id) \
+        .option(query_options.apiKey(), api_key) \
+        .option(query_options.mode(), PLATFORM_SDK_PQS_INTERACTIVE) \
+        .option(query_options.datasetId(), dataset_id) \
+        .load()
+    pd.show()
     return pd
 
 
@@ -89,6 +96,6 @@ def prepare_dataset(config_properties, dataset):
     pd = pd.na.drop()
     return pd
 
-def get_dataset_options(spark_context):
-    dataset_options = spark_context._jvm.com.adobe.platform.dataset.DataSetOptions
-    return dataset_options
+def get_query_options(spark_context):
+    query_options = spark_context._jvm.com.adobe.platform.query.QSOption
+    return query_options

@@ -1,0 +1,107 @@
+ {
+    "name": "train",
+    "type": "PySpark",
+    "algorithm":"fp",
+    "artifacts": {
+      "default":    {
+        "defaultMLInstanceConfigs": [
+          {
+            "name": "featurePipeline",
+            "parameters": [
+              {
+                "key": "tenantId",
+                "value": "_<tenant_id>"
+              },
+              {
+                "key": "inputDataSetId",
+                "value": "<input_dataset_id>"
+              },
+              {
+                "key": "transformedDataSetId",
+                "value": "<transformed_dataset_id>"
+              }
+            ]
+          },
+          {
+            "name": "train",
+            "parameters": [
+              {
+                "key": "learning_rate",
+                "value": "0.1"
+              },
+              {
+                "key": "n_estimators",
+                "value": "100"
+              },
+              {
+                "key": "max_depth",
+                "value": "3"
+              },
+              {
+                "key": "ACP_DSW_INPUT_FEATURES",
+                "value": "date,store,storeType,storeSize,temperature,regionalFuelPrice,markdown,cpi,unemployment,holiday"
+              },
+              {
+                "key": "ACP_DSW_TARGET_FEATURES",
+                "value": "weeklySales"
+              },
+              {
+                "key": "ACP_DSW_FEATURE_UPDATE_SUPPORT",
+                "value": false
+              },
+              {
+                "key": "tenantId",
+                "value": "_<tenant_id>"
+              },
+              {
+                "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
+                "value": "<Replace with training schema url>"
+              },
+              {
+                "key": "evaluation.labelColumn",
+                "value": "weeklySalesAhead"
+              },
+              {
+                "key": "evaluation.scalingColumn",
+                "value": "weeklySalesScaled"
+              },
+              {
+                "key": "evaluation.predictionColumn",
+                "value": "prediction"
+              },
+              {
+                "key": "evaluation.metrics",
+                "value": "MAPE,MAE,RMSE,MASE"
+              },
+              {
+                "key": "trainingDataSetId",
+                "value": "<transformed_dataset_id>"
+              }
+            ]
+          },
+
+          {
+            "name": "score",
+            "parameters": [
+              {
+                "key": "tenantId",
+                "value": "_<tenant_id>"
+              },
+              {
+                "key":"ACP_DSW_SCORING_RESULTS_XDM_SCHEMA",
+                "value":"<Replace with output schema url> "
+              },
+              {
+                "key": "scoringResultsDataSetId",
+                "value": "<output_dataset_id>"
+              },
+              {
+                "key": "scoringDataSetId",
+                "value": "<transformed_dataset_id>"
+              }
+            ]
+          }
+        ]
+      }
+    }
+ }
