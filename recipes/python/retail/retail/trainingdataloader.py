@@ -17,8 +17,8 @@
 import pandas as pd
 from .utils import get_client_context
 from datetime import datetime, timedelta
-from platform_sdk.settings import QUERY_SERVICE_URL
 from platform_sdk.dataset_reader import DatasetReader
+
 
 def load(config_properties):
     print("Training Data Load Start")
@@ -26,7 +26,7 @@ def load(config_properties):
     #########################################
     # Load Data
     #########################################
-    print("QUERY_SERVICE_URL from platform sdk is ", QUERY_SERVICE_URL)
+
     client_context = get_client_context(config_properties)
 
     dataset_reader = DatasetReader(client_context, config_properties['trainingDataSetId'])
