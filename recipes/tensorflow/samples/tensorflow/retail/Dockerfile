@@ -15,7 +15,7 @@
 # from Adobe.
 #####################################################################
 
-FROM adobe/acp-dsw-ml-runtime-python:0.33.0
+FROM adobe/acp-dsw-ml-runtime-python:0.33.7
 
 WORKDIR /root/samples
 COPY . .

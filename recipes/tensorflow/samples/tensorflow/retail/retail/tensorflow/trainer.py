@@ -17,7 +17,6 @@
 
 from ml.runtime.python.Interfaces.AbstractTrainer import AbstractTrainer
 from platform_sdk.dataset_reader import DatasetReader
-from platform_sdk.settings import QUERY_SERVICE_URL
 from .utils import get_client_context
 
 import numpy as np
@@ -46,7 +45,6 @@ class Trainer(AbstractTrainer):
         #########################################
         # Load Data
         #########################################
-        print("QUERY_SERVICE_URL from platform sdk is ", QUERY_SERVICE_URL)
 
 
         client_context = get_client_context(config)
