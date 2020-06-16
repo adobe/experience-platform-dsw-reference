@@ -138,11 +138,13 @@ def get_schema_id(create_schema_url, headers, schema_title, class_id, mixin_id, 
 def get_id_if_entity_exists(url, headers, title):
     headers = copy.deepcopy(headers)
     headers['Accept'] = ACCEPT_HEADER
+    url = url + "?property=title==" + title
     response = http_request('get', url, headers)
     results = json.loads(response)['results']
+
     for entity in results:
         if entity['title'] == title:
-            LOGGER.debug('Existing %s ID = %s', title ,entity['$id'])
+            LOGGER.debug('Existing %s ID = %s', title, entity['$id'])
             return entity['$id']
 
 
