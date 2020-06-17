@@ -186,7 +186,6 @@ def ingest(headers_for_ingestion):
             get_dataset_id(create_dataset_url, copy.deepcopy(headers_for_ingestion), output_dataset_title,
                            output_schema_id, data_for_dataset)
 
-
     except requests.exceptions.HTTPError as http_err:
         LOGGER.error('HTTPError Error: %s', http_err)
 
