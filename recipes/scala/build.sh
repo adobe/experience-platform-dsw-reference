@@ -15,6 +15,7 @@
 # is strictly forbidden unless prior written permission is obtained
 # from Adobe.
 #####################################################################
+mvn clean install
 
 echo "Please enter the version number for your recipe's docker image"
 read version
