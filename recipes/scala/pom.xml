@@ -7,7 +7,7 @@
 	<name>${project.artifactId}</name>
 
 	<properties>
-		<scala.version>2.11.8</scala.version>
+		<scala.version>2.11.12</scala.version>
 		<scala.binary.version>2.11</scala.binary.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
