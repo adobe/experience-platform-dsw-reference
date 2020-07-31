@@ -52,6 +52,7 @@ class Helper {
     val userToken: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_TOKEN", "").toString
     val orgId: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_ORG_ID", "").toString
     val apiKey: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_CLIENT_ID", "").toString
+    val sandboxName: String = sparkSession.sparkContext.getConf.get("sandboxName", "").toString
 
     val dataSetId: String = configProperties.get(taskId).getOrElse("")
 
@@ -63,6 +64,7 @@ class Helper {
       .option(QSOption.apiKey, apiKey)
       .option(QSOption.mode, PLATFORM_SDK_PQS_INTERACTIVE)
       .option(QSOption.datasetId, dataSetId)
+      .option(QSOption.sandboxName, sandboxName)
       .load()
     df.show()
     df

@@ -50,6 +50,7 @@ class ScoringDataSaver extends DataSaver {
     val userToken: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_TOKEN", "").toString
     val orgId: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_ORG_ID", "").toString
     val apiKey: String = sparkSession.sparkContext.getConf.get("ML_FRAMEWORK_IMS_CLIENT_ID", "").toString
+    val sandboxName: String = sparkSession.sparkContext.getConf.get("sandboxName", "").toString 
     val tenantId:String = configProperties.get("tenantId").getOrElse("")
     val timestamp:String = "2019-01-01 00:00:00"
 
@@ -69,6 +70,7 @@ class ScoringDataSaver extends DataSaver {
       .option(QSOption.imsOrg, orgId)
       .option(QSOption.apiKey, apiKey)
       .option(QSOption.datasetId, scoringResultsDataSetId)
+      .option(QSOption.sandboxName, sandboxName)
       .save()
 
   }
