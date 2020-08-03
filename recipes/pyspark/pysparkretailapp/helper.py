@@ -52,7 +52,7 @@ def load_dataset(config_properties, spark, task_id):
         .option(query_options.apiKey(), api_key) \
         .option(query_options.mode(), PLATFORM_SDK_PQS_INTERACTIVE) \
         .option(query_options.datasetId(), dataset_id) \
-        .option[query_options.sandboxName(), sandbox_name) \
+        .option(query_options.sandboxName(), sandbox_name) \
         .load()
     pd.show()
     return pd
