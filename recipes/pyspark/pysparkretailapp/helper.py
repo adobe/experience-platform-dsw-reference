@@ -34,6 +34,7 @@ def load_dataset(config_properties, spark, task_id):
     user_token = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_TOKEN"))
     org_id = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_ORG_ID"))
     api_key = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_CLIENT_ID"))
+    sandbox_name = str(spark.sparkContext.getConf().get("sandboxName"))
 
     dataset_id = str(config_properties.get(task_id))
 
@@ -51,6 +52,7 @@ def load_dataset(config_properties, spark, task_id):
         .option(query_options.apiKey(), api_key) \
         .option(query_options.mode(), PLATFORM_SDK_PQS_INTERACTIVE) \
         .option(query_options.datasetId(), dataset_id) \
+        .option(query_options.sandboxName(), sandbox_name) \
         .load()
     pd.show()
     return pd
