@@ -4,20 +4,23 @@ required for the recipe workflow.
 
 # Workflow
 Following are the steps the script runs through to setup the input and output datasets in the org:
-1. Get the access token to access the APIs
-2. Get the tenantID of the org
-3. Create Retail Sales Class
-4. Create Input Retail Sales Mixin with the class url
-5. Create Input Retail Sales Schema with the class url and the mixin url
-6. Create Input Dataset with the schema url
-7. Create Batch with the dataset id
-8. Replace the tenant id in the json 
-9. Upload the datafile (with the tenantID from above)
+1.  Get the access token to access the APIs
+2.  Get the tenantID of the org
+3.  Create retail sales class
+4.  Create input retail sales mixin with the class url
+5.  Create input retail sales schema with the class url and the mixin url
+6.  Create input dataset with the schema url
+7.  Create batch with the dataset id
+8.  Replace the tenant id in the json 
+9.  Upload the datafile (with the tenantID from above)
 10. Close the batch
-11. Create Output Retail Sales Mixin with the class url from step 3
-12. Create Output Retail Sales Schema with the class url and the mixin url
-13. Create Output Dataset with the schema
-14. Build the engine artifacts based on the configuration
+11. Create mixin for transformed data with the class url 
+12. Create schema for transformed data with the class url and the mixin url
+13. Create transformed dataset with the schema url
+14. Create output retail sales mixin with the class url from step 3
+15. Create output retail sales schema with the class url and the mixin url
+16. Create output dataset with the schema
+17. Build the engine artifacts based on the configuration
 
 # Setup
 We would need an access token to access the APIs. This can be obtained from either an Adobe IO integration or from the 
@@ -64,6 +67,12 @@ Input this value in ims_token in the Platform section of the config.yaml
        output_mixin_definition_title: []
        output_schema_title: []
        output_dataset_title: []
+       is_data_transformation_required: "True" # Value must be either "True" or "False"
+       mixin_title_for_transformed_data: []
+       mixin_definition_title_for_transformed_data: []
+       schema_title_for_transformed_data: []
+       transformed_dataset_title: []
+       sandbox_name: []
         
 # How to run
 Navigate to the `bootstrap` directory and run `python bootstrap.py`
@@ -79,5 +88,5 @@ These artifacts are then utilized to make a recipe.
   
 2. If ingest_data is set to "False" (the case when the schema and datasets already exist in the org), and 
 build_recipe_artifacts is set to "True", the output is one of the artifacts as mentioned above based on the kernel_type.
-
+ 
  
