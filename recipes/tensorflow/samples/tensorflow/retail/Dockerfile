@@ -2,7 +2,7 @@
 # ADOBE CONFIDENTIAL
 # ___________________
 #
-#  Copyright 2019 Adobe
+#  Copyright 2020 Adobe
 #  All Rights Reserved.
 #
 # NOTICE:  All information contained herein is, and remains
@@ -15,10 +15,24 @@
 # from Adobe.
 #####################################################################
 
-FROM adobe/acp-dsw-ml-runtime-python:0.33.7
+FROM adobe/acp-dsw-ml-runtime-python-gpu:1.0.0
 
-WORKDIR /root/samples
-COPY . .
+# Install modules needed by application that aren't already part
+# of the base image
+RUN conda install --yes \
+        scipy==1.5.2
+
+# Copy the necessary recipe files to build
+COPY setup.py /root/retail/
+COPY retail /root/retail/retail/
+
+# Build, install and clean up the recipe
+WORKDIR /root/retail
 RUN python setup.py install
-RUN pip install --upgrade pip
-RUN pip install tensorflow==1.13.1
+RUN cp dist/samples_tensorflow*.egg /application.egg && \
+    rm -rf /root/retail
+
+ENV PYTHONPATH=$PYTHONPATH:/application.egg
+
+# Show the python environment
+RUN conda list

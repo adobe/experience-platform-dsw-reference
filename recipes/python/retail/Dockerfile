@@ -15,22 +15,24 @@
 # from Adobe.
 #####################################################################
 
-FROM adobe/acp-dsw-ml-runtime-python:0.33.10
+FROM adobe/acp-dsw-ml-runtime-python:1.0.0
 
+# Install modules needed by application that aren't already part
+# of the base image
+RUN conda install --yes \
+        scipy==1.5.2
 
-#INSTALL modules needed by application
-RUN /usr/bin/python3.5 -m pip install --upgrade pip
-RUN /usr/bin/python3.5 -m pip install -U numpy==1.16.2
-RUN /usr/bin/python3.5 -m pip install -U pandas==0.24.2
-RUN /usr/bin/python3.5 -m pip install -U scikit-learn==0.20.3
-RUN /usr/bin/python3.5 -m pip install -U scipy==1.2.1
-RUN /usr/bin/python3.5 -m pip install -U fastparquet==0.2.1
+# Copy the necessary recipe files to build
+COPY setup.py /root/retail/
+COPY retail /root/retail/retail/
+
+# Build, install and clean up the recipe
 WORKDIR /root/retail
-
-COPY . .
-
-RUN python setup.py clean --all install
-
-RUN cp dist/retail*.egg /application.egg
+RUN python setup.py install
+RUN cp dist/retail*.egg /application.egg && \
+    rm -rf /root/retail
 
 ENV PYTHONPATH=$PYTHONPATH:/application.egg
+
+# Show the python environment
+RUN conda list
