@@ -14,8 +14,15 @@
 # limitations under the License.
 #
 
-FROM [[Docker Image URL]]/ml-runtime-tensorflow:0.2.0
-RUN pip install torch torchvision
+FROM adobe/acp-dsw-ml-runtime-python-gpu:1.0.0
+
+# Install modules needed by application that aren't already part
+# of the base image
+RUN conda install --yes -c pytorch \
+        pytorch=1.6.0 \
+        torchvision=0.7.0
+
 WORKDIR /root/samples
 COPY . .
+
 RUN python setup.py install
