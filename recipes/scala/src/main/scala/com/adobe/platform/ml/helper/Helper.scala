@@ -58,34 +58,24 @@ class Helper {
 
     val dataSetId: String = configProperties.get(taskId).getOrElse("")
 
-    // Load the dataset with or without sandbox
-    var df = if(sandboxName.isEmpty()) {
-      println("Reading dataset using default sandbox")
-      sparkSession.read.format(PLATFORM_SDK_PQS_PACKAGE)
-        .option(QSOption.userToken, userToken)
-        .option(QSOption.serviceToken, serviceToken)
-        .option(QSOption.imsOrg, orgId)
-        .option(QSOption.apiKey, apiKey)
-        // Batch mode can handle much larger datasets but but has a few minute
-        // additional startup time required.  Interactive can be faster to read
-        // smaller amounts of data but can be subject to timeouts if the amount
-        // of data is too large.
-        // See https://docs.adobe.com/content/help/en/experience-platform/data-science-workspace/authoring/spark.html#reading-a-dataset
-        .option(QSOption.mode, PLATFORM_SDK_PQS_BATCH)
-        .option(QSOption.datasetId, dataSetId)
-        .load()
-    } else {
-      println("Reading dataset from sandbox")
-      sparkSession.read.format(PLATFORM_SDK_PQS_PACKAGE)
-        .option(QSOption.userToken, userToken)
-        .option(QSOption.serviceToken, serviceToken)
-        .option(QSOption.imsOrg, orgId)
-        .option(QSOption.apiKey, apiKey)
-        .option(QSOption.mode, PLATFORM_SDK_PQS_BATCH)
-        .option(QSOption.datasetId, dataSetId)
-        .option(QSOption.sandboxName, sandboxName)
-        .load()
+    var dataFrameReader = sparkSession.read.format(PLATFORM_SDK_PQS_PACKAGE)
+      .option(QSOption.userToken, userToken)
+      .option(QSOption.serviceToken, serviceToken)
+      .option(QSOption.imsOrg, orgId)
+      .option(QSOption.apiKey, apiKey)
+      // Batch mode can handle much larger datasets but but has a few minute
+      // additional startup time required.  Interactive can be faster to read
+      // smaller amounts of data but can be subject to timeouts if the amount
+      // of data is too large.
+      // See https://docs.adobe.com/content/help/en/experience-platform/data-science-workspace/authoring/spark.html#reading-a-dataset
+      .option(QSOption.mode, PLATFORM_SDK_PQS_BATCH)
+      .option(QSOption.datasetId, dataSetId)
+
+    if(!sandboxName.isEmpty()) {
+      dataFrameReader.option(QSOption.sandboxName, sandboxName)
     }
+
+    var df = dataFrameReader.load()
 
     df.show()
     df
