@@ -64,14 +64,21 @@ class ScoringDataSaver extends DataSaver {
     scored_df = scored_df.withColumn("_id", lit("empty"))
     scored_df = scored_df.withColumn("eventType", lit("empty"))
 
-    scored_df.select(tenantId, "_id", "eventType", "timestamp").write.format(PLATFORM_SDK_PQS_PACKAGE)
+    println("sandboxName=" + sandboxName)
+
+    var dataFrameWriter = scored_df.select(tenantId, "_id", "eventType", "timestamp")
+      .write.format(PLATFORM_SDK_PQS_PACKAGE)
       .option(QSOption.userToken, userToken)
       .option(QSOption.serviceToken, serviceToken)
       .option(QSOption.imsOrg, orgId)
       .option(QSOption.apiKey, apiKey)
       .option(QSOption.datasetId, scoringResultsDataSetId)
-      .option(QSOption.sandboxName, sandboxName)
-      .save()
+
+    if(!sandboxName.isEmpty()) {
+      dataFrameWriter.option(QSOption.sandboxName, sandboxName)
+    }
+
+    dataFrameWriter.save()
 
   }
 }
