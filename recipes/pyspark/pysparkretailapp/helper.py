@@ -34,7 +34,9 @@ def load_dataset(config_properties, spark, task_id):
     user_token = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_TOKEN"))
     org_id = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_ORG_ID"))
     api_key = str(spark.sparkContext.getConf().get("ML_FRAMEWORK_IMS_CLIENT_ID"))
-    sandbox_name = str(spark.sparkContext.getConf().get("sandboxName"))
+    sandbox_name = str(spark.sparkContext.getConf().get("sandboxName") or "")
+
+    print("Sandbox name='{}'".format(sandbox_name))
 
     dataset_id = str(config_properties.get(task_id))
 
@@ -42,18 +44,28 @@ def load_dataset(config_properties, spark, task_id):
         if eval(arg) == 'None':
             raise ValueError("%s is empty" % arg)
 
-
     query_options = get_query_options(spark.sparkContext)
 
-    pd = spark.read.format(PLATFORM_SDK_PQS_PACKAGE) \
-        .option(query_options.userToken(), user_token) \
-        .option(query_options.serviceToken(), service_token) \
-        .option(query_options.imsOrg(), org_id) \
-        .option(query_options.apiKey(), api_key) \
-        .option(query_options.mode(), PLATFORM_SDK_PQS_INTERACTIVE) \
-        .option(query_options.datasetId(), dataset_id) \
-        .option(query_options.sandboxName(), sandbox_name) \
-        .load()
+    if sandbox_name:
+        pd = spark.read.format(PLATFORM_SDK_PQS_PACKAGE) \
+            .option(query_options.userToken(), user_token) \
+            .option(query_options.serviceToken(), service_token) \
+            .option(query_options.imsOrg(), org_id) \
+            .option(query_options.apiKey(), api_key) \
+            .option(query_options.mode(), PLATFORM_SDK_PQS_INTERACTIVE) \
+            .option(query_options.datasetId(), dataset_id) \
+            .option(query_options.sandboxName(), sandbox_name) \
+            .load()
+    else:
+        pd = spark.read.format(PLATFORM_SDK_PQS_PACKAGE) \
+            .option(query_options.userToken(), user_token) \
+            .option(query_options.serviceToken(), service_token) \
+            .option(query_options.imsOrg(), org_id) \
+            .option(query_options.apiKey(), api_key) \
+            .option(query_options.mode(), PLATFORM_SDK_PQS_INTERACTIVE) \
+            .option(query_options.datasetId(), dataset_id) \
+            .load()
+
     pd.show()
     return pd
 
