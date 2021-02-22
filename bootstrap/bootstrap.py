@@ -33,7 +33,6 @@ TITLES = "Titles"
 SERVER = "Server"
 ENTERPRISE = "Enterprise"
 PLATFORM = "Platform"
-CLASS_DATA = "class_data"
 INPUT_MIXIN_DATA = "input_mixin_data"
 SCHEMA_DATA = "schema_data"
 DATASET_DATA = "dataset_data"
@@ -98,8 +97,7 @@ def ingest(headers_for_ingestion):
     """
     :return: None
     """
-    # Get the titles for the class, mixin, schema and dataset
-    input_class_title = dictor(cfg, TITLES + ".input_class_title", checknone=True)
+    # Get the titles for the mixin, schema and dataset
     input_mixin_title = dictor(cfg, TITLES + ".input_mixin_title", checknone=True)
     input_mixin_definition_title = dictor(cfg, TITLES + ".input_mixin_definition_title", checknone=True)
     input_schema_title = dictor(cfg, TITLES + ".input_schema_title", checknone=True)
@@ -127,13 +125,11 @@ def ingest(headers_for_ingestion):
     tenant_id_url = platform_gateway_url + schema_registry_uri + "stats"
     schema_registry_uri = "/data/foundation/schemaregistry/"
 
-    create_class_url = platform_gateway_url + schema_registry_uri + "tenant/classes"
     create_mixin_url = platform_gateway_url + schema_registry_uri + "tenant/mixins"
     create_schema_url = platform_gateway_url + schema_registry_uri + "tenant/schemas"
     create_dataset_url = platform_gateway_url + "/data/foundation/catalog/datasets"
     create_batch_url = platform_gateway_url + "/data/foundation/import/batches"
 
-    data_for_class = dictor(cfg, CLASS_DATA, checknone=True)
     data_for_mixin = dictor(cfg, INPUT_MIXIN_DATA, checknone=True)
     data_for_schema = dictor(cfg, SCHEMA_DATA, checknone=True)
     data_for_dataset = dictor(cfg, DATASET_DATA, checknone=True)
@@ -145,7 +141,7 @@ def ingest(headers_for_ingestion):
 
         tenant_id = get_tenant_id(tenant_id_url, copy.deepcopy(headers_for_ingestion))
 
-        class_id = get_class_id(create_class_url, copy.deepcopy(headers_for_ingestion), input_class_title, data_for_class)
+        class_id = 'https://ns.adobe.com/xdm/context/experienceevent'
 
         input_mixin_id = get_mixin_id(create_mixin_url, copy.deepcopy(headers_for_ingestion), input_mixin_title,
                                       data_for_mixin, class_id, tenant_id, input_mixin_definition_title)
