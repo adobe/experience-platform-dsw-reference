@@ -19,7 +19,6 @@ Platform:
 
 
 Titles:
-  input_class_title: <input_class_title>
   input_mixin_title: <input_mixin_title>
   input_mixin_definition_title: <input_mixin_definition_title>
   input_schema_title: <input_schema_title>
@@ -37,14 +36,6 @@ Titles:
   schema_title_for_transformed_data: <schema_for_transformed_data_title>
   transformed_dataset_title: <transformed_dataset_title>
   sandbox_name: prod
-
-class_data:
-  "type": "object"
-  "title": "class_title"
-  "auditable": True
-  "meta:extends": ["https://ns.adobe.com/xdm/data/time-series"]
-  "description": "class_title"
-  "allOf": [{"$ref": "https://ns.adobe.com/xdm/data/time-series"}]
 
 input_mixin_data:
   "type": "object"

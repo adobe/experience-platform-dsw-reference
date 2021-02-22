@@ -6,7 +6,6 @@ required for the recipe workflow.
 Following are the steps the script runs through to setup the input and output datasets in the org:
 1.  Get the access token to access the APIs
 2.  Get the tenantID of the org
-3.  Create retail sales class
 4.  Create input retail sales mixin with the class url
 5.  Create input retail sales schema with the class url and the mixin url
 6.  Create input dataset with the schema url
@@ -55,7 +54,6 @@ Input this value in ims_token in the Platform section of the config.yaml
 ### Input the values for the Titles:
 
     Titles:
-       input_class_title: []
        input_mixin_title: []
        input_mixin_definition_title: []
        input_schema_title: []
