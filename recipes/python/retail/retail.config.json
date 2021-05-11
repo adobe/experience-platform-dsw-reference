@@ -28,7 +28,7 @@
       },
       {
         "key": "tenantId",
-        "value": "_<tenant_id>"
+        "value": "_delv3spare06"
      },
      {
        "key": "ACP_DSW_TRAINING_XDM_SCHEMA",
@@ -49,7 +49,7 @@
         "parameters": [
             {
                 "key": "tenantId",
-                "value": "_<tenant_id>"
+                "value": "_delv3spare06"
             },
             {
               "key":"ACP_DSW_SCORING_RESULTS_XDM_SCHEMA",

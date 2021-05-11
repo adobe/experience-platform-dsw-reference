@@ -35,7 +35,7 @@ def get_tenant_id(tenant_id_url, headers):
     :return - tenant id
 
     """
-
+    LOGGER.info("Here tenant_id_url = %s", tenant_id_url)
     res_text = http_request("get", tenant_id_url, headers)
     tenant_id = "_" + json.loads(res_text)["tenantId"]
     LOGGER.debug("tenant_id = %s", tenant_id)

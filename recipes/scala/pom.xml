@@ -7,13 +7,13 @@
 	<name>${project.artifactId}</name>
 
 	<properties>
-		<scala.version>2.11.12</scala.version>
-		<scala.binary.version>2.11</scala.binary.version>
+		<scala.version>2.12</scala.version>
+		<scala.binary.version>2.12</scala.binary.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<encoding>UTF-8</encoding>
-		<scala.compat.version>2.11</scala.compat.version>
-		<spark.version>2.1.0</spark.version>
+		<scala.compat.version>2.12</scala.compat.version>
+		<spark.version>3.0.0</spark.version>
 	</properties>
 	<repositories>
 		<repository>

@@ -4,38 +4,38 @@ Server:
 
 # All the Enterprise values can be obtained from the Adobe IO Integration
 Enterprise:
-  api_key: <api_key>
-  org_id: <org_id> # Sample value for reference - 20656D0F5B9975B20A495E23@AdobeOrg
-  tech_acct: <technical_account_id> # Sample value for reference - F98D7E725CCA6F770A495FD9@techacct.adobe.com
-  client_secret: <client_secret>
-  priv_key_filename: <private_key_filename>
+  api_key: acp_ui_platform
+  org_id: 3D35576B5F9F91120A494208@AdobeOrg # Sample value for reference - 20656D0F5B9975B20A495E23@AdobeOrg
+  tech_acct: 9947273B5FCDCD350A494029@techacct.adobe.com # Sample value for reference - F98D7E725CCA6F770A495FD9@techacct.adobe.com
+  client_secret: ab8d7948-e46f-43b0-9320-a4a280dde4af
+  priv_key_filename: "~/Downloads/config/private.key"
 
 Platform:
-  platform_gateway: https://platform.adobe.io
-  ims_token: <ims_token>
+  platform_gateway: https://platform-stage.adobe.io
+  ims_token: "eyJ4NXUiOiJpbXNfbmExLXN0ZzEta2V5LTEuY2VyIiwiYWxnIjoiUlMyNTYifQ.eyJpZCI6IjE2MDczMTg3ODI1MThfODM5M2U2NjktN2VlMS00YzgxLThiYjYtOWE3Yzk0NWE5YjdjX3VlMSIsImNsaWVudF9pZCI6ImV4Y19hcHAiLCJ1c2VyX2lkIjoiNTc2NzU2MUM1RkEwOEZDNTBBNDk0MjJCQDQ5MmM1NzdmNWY5ZjllZmQwYTQ5NDEyNyIsInN0YXRlIjoie1wic2Vzc2lvblwiOlwiaHR0cHM6Ly9pbXMtbmExLXN0ZzEuYWRvYmVsb2dpbi5jb20vaW1zL3Nlc3Npb24vdjEvWldGak9UVTVZMkV0TW1JNU5pMDBOak5tTFRrd01XRXRZVGsxWldWaE56Sm1NelV4TFMwMU56WTNOVFl4UXpWR1FUQTRSa00xTUVFME9UUXlNa0pBTkRreVl6VTNOMlkxWmpsbU9XVm1aREJoTkRrME1USTNcIn0iLCJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwiYXMiOiJpbXMtbmExLXN0ZzEiLCJmZyI6IlZBQkFOVFdGNFFOWklXTDNaR1NNSzZJQTJBPT09PT09Iiwic2lkIjoiMTYwNzExODUzMzU0NV82YTc5MGQ4MS1iNTVjLTRjNzEtYTQwMC1hZDgwYmIxODNlMDlfdWUxIiwibW9pIjoiMjYxMjI1ZDQiLCJleHBpcmVzX2luIjoiODY0MDAwMDAiLCJzY29wZSI6ImFiLm1hbmFnZSxhY2NvdW50X2NsdXN0ZXIucmVhZCxhZGRpdGlvbmFsX2luZm8uam9iX2Z1bmN0aW9uLGFkZGl0aW9uYWxfaW5mby5wcm9qZWN0ZWRQcm9kdWN0Q29udGV4dCxhZGRpdGlvbmFsX2luZm8ucm9sZXMsYWRkaXRpb25hbF9pbmZvLEFkb2JlSUQsYWRvYmVpb19hcGksYWRvYmVpby5hcHByZWdpc3RyeS5yZWFkLGF1ZGllbmNlbWFuYWdlcl9hcGksY3JlYXRpdmVfY2xvdWQsb3BlbmlkLHJlYWRfb3JnYW5pemF0aW9ucyxyZWFkX3BjLmFjcCxyZWFkX3BjLmRtYV90YXJ0YW4scmVhZF9wYyxzZXNzaW9uIiwiY3JlYXRlZF9hdCI6IjE2MDczMTg3ODI1MTgifQ.GPfaE6GeWK7iOzUR0xMziVvZnMOiBOL8VMqrvgsGB_qXMa05eI984zKIJgzzdGXd4gyVHDlj8X_hsgraEVejqf7BQfvhIcEYilKtu6hIT3BC8SeF0hHo6pj7NxH2hLClWUj7JIgrEC0bJLabfWdWweIKUeuLCrOosam6KZlYtkT1blGWOCTsht7z664JPMmM6y5REOEn0hFrUcoyqdLC7QBr3uG38jWfiu7OwGxcsuNaakgyVDecG8n2k1F4PmUQ5mAauBM-LJtwNHYh878LN4jjVzXUHQEl-BKm8gazL5TwtSNuUwRD81lfDtZ5l-DmhJb5cTybGthGv4g6GQ6I7g"
   ingest_data: "True" # Value must be either "True" or "False"
   build_recipe_artifacts: "False" # Value must be either "True" or "False"
-  kernel_type: <kernel_type> # Value must be one of Spark, Pyspark, Python, R, example Spark
+  kernel_type: Python # Value must be one of Spark, Pyspark, Python, R, example Spark
 
 
 Titles:
-  input_class_title: <input_class_title>
-  input_mixin_title: <input_mixin_title>
-  input_mixin_definition_title: <input_mixin_definition_title>
-  input_schema_title: <input_schema_title>
-  input_dataset_title: <input_dataset_title>
+  input_class_title: retail_sales_input_class
+  input_mixin_title: retail_sales_input_mixin
+  input_mixin_definition_title: retail_sales_input_mixin_definition
+  input_schema_title: retail_sales_input_schema
+  input_dataset_title: retail_sales_input_dataset
   file_replace_tenant_id: DSWRetailSalesForXDM0.9.9.9.json
-  file_with_tenant_id: <output_filename_with_tenantid>
+  file_with_tenant_id: DSWRetailSales_with_tenant_id.json
   is_output_schema_different: "True" # Value must be either "True" or "False"
-  output_mixin_title: <output_mixin_title>
-  output_mixin_definition_title: <output_mixin_definition_title>
-  output_schema_title: <output_schema_title>
-  output_dataset_title: <output_dataset_title>
-  is_data_transformation_required: "True" # Value must be either "True" or "False"
-  mixin_title_for_transformed_data: <mixin_title_for_transformed_data>
-  mixin_definition_title_for_transformed_data: <mixin_definition_title_for_transformed_data>
-  schema_title_for_transformed_data: <schema_for_transformed_data_title>
-  transformed_dataset_title: <transformed_dataset_title>
+  output_mixin_title: retail_sales_output_mixin
+  output_mixin_definition_title: retail_sales_output_mixin_definition
+  output_schema_title: retail_sales_output_title
+  output_dataset_title: retail_sales_output_dataset
+  is_data_transformation_required: "False" # Value must be either "True" or "False"
+  mixin_title_for_transformed_data: retail_sales_transformed_mixin
+  mixin_definition_title_for_transformed_data: retail_sales_transformed_mixin_definition
+  schema_title_for_transformed_data: retail_sales_transformed_schema
+  transformed_dataset_title: retail_sales_transformed_dataset
   sandbox_name: prod
 
 class_data:
