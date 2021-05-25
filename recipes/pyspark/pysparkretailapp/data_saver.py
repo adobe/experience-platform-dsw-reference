@@ -56,6 +56,9 @@ class MyDatasetSaver(DataSaver):
         scored_df = scored_df.withColumn("_id", lit("empty"))
         scored_df = scored_df.withColumn("eventType", lit("empty"))
 
+        # Caching before writing data to aep is a best practice, especially after performing a lot of transformations
+        scored_df.cache()
+
         query_options = get_query_options(sparkContext)
 
         if sandbox_name:
