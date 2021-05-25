@@ -64,6 +64,9 @@ class ScoringDataSaver extends DataSaver {
     scored_df = scored_df.withColumn("_id", lit("empty"))
     scored_df = scored_df.withColumn("eventType", lit("empty"))
 
+    // Caching before writing data to aep is a best practice, especially after performing a lot of transformations
+    scored_df.cache()
+
     println("sandboxName=" + sandboxName)
 
     var dataFrameWriter = scored_df.select(tenantId, "_id", "eventType", "timestamp")
