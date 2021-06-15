@@ -15,7 +15,7 @@
 # from Adobe.
 #####################################################################
 
-FROM adobe/acp-dsw-ml-runtime-python:1.0.0
+FROM adobe/acp-dsw-ml-runtime-python:1.1.3
 
 RUN conda install --yes \
         scipy
