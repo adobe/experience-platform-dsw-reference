@@ -15,7 +15,7 @@
 # from Adobe.
 #####################################################################
 
-FROM adobe/acp-dsw-ml-runtime-python:1.1.1
+FROM adobe/acp-dsw-ml-runtime-python:1.1.3
 
 # Install modules needed by application that aren't already part
 # of the base image
