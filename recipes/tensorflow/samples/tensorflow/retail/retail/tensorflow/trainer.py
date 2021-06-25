@@ -24,7 +24,7 @@ import pandas as pd
 
 import tensorflow as tf
 fc = tf.feature_column
-tf.set_random_seed(123)
+tf.random.set_seed(123)
 
 import os
 import json
@@ -35,7 +35,6 @@ class Trainer(AbstractTrainer):
         #########################################
         # Set Up
         #########################################
-        tf.logging.set_verbosity(tf.logging.ERROR)
         tf_config = json.loads(os.environ['TF_CONFIG'])
         tf_config = json.loads('{}')
         os.environ['TF_CONFIG'] = json.dumps(tf_config)

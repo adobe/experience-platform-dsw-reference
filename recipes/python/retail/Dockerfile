@@ -15,12 +15,7 @@
 # from Adobe.
 #####################################################################
 
-FROM adobe/acp-dsw-ml-runtime-python:1.1.3
-
-# Install modules needed by application that aren't already part
-# of the base image
-RUN conda install --yes \
-        scipy==1.5.2
+FROM adobe/acp-dsw-ml-runtime-python:2.0.0
 
 # Copy the necessary recipe files to build
 COPY setup.py /root/retail/
