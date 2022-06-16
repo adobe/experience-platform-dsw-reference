@@ -1,4 +1,4 @@
-FROM adobe/acp-dsw-ml-runtime-pyspark:3.2.0
+FROM adobe/acp-dsw-ml-runtime-pyspark:3.3.0
 RUN mkdir /recipe
 
 COPY . /recipe
