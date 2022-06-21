@@ -7,13 +7,12 @@
 	<name>${project.artifactId}</name>
 
 	<properties>
-		<scala.version>2.11.12</scala.version>
-		<scala.binary.version>2.11</scala.binary.version>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<scala.version>2.12.14</scala.version>
+		<scala.binary.version>2.12</scala.binary.version>
 		<encoding>UTF-8</encoding>
-		<scala.compat.version>2.11</scala.compat.version>
-		<spark.version>2.4.3</spark.version>
+		<scala.compat.version>2.12</scala.compat.version>
+		<spark.version>3.2.1</spark.version>
+    <authoring.sdk.version>2.4.1</authoring.sdk.version>
 	</properties>
 	<repositories>
 		<repository>
@@ -38,21 +37,16 @@
 	
 	<dependencies>
 		<dependency>
-			<groupId>com.databricks</groupId>
-			<artifactId>spark-avro_${scala.compat.version}</artifactId>
-			<version>4.0.0</version>
-		</dependency>
-		<dependency>
 			<groupId>org.scala-tools</groupId>
 			<artifactId>maven-scala-plugin</artifactId>
-			<version>2.11</version>
+			<version>2.15.0</version>
 		</dependency>
-		<dependency>
-			<groupId>com.adobe.platform.ml</groupId>
-			<artifactId>authoring-sdk_2.11</artifactId>
-			<version>2.3.0</version>
-			<classifier>jar-with-dependencies</classifier>
-		</dependency>
+    <dependency>
+      <groupId>com.adobe.platform.ml</groupId>
+      <artifactId>authoring-sdk_2.12</artifactId>
+      <version>2.4.1</version>
+      <classifier>jar-with-dependencies</classifier>
+    </dependency>
 		<dependency>
 			<groupId>org.apache.spark</groupId>
 			<artifactId>spark-core_${scala.compat.version}</artifactId>
@@ -80,31 +74,39 @@
 		<testOutputDirectory>target/scala-${scala.binary.version}/test-classes</testOutputDirectory>
 		<plugins>
 			<plugin>
-				<groupId>org.scala-tools</groupId>
-				<artifactId>maven-scala-plugin</artifactId>
-				<version>2.15.0</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>compile</goal>
-							<goal>testCompile</goal>
-						</goals>
-						<configuration>
-							<jvmArgs>
-								<jvmArg>-Xms128m</jvmArg>
-								<jvmArg>-Xmx1024m</jvmArg>
-							</jvmArgs>
-							<args>
-								<arg>-dependencyfile</arg>
-								<arg>${project.build.directory}/.scala_dependencies</arg>
-							</args>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+        <groupId>net.alchim31.maven</groupId>
+        <artifactId>scala-maven-plugin</artifactId>
+        <version>4.6.0</version>
+        <executions>
+          <execution>
+            <id>scala-compile-first</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>scala-test-compile-first</id>
+            <phase>process-test-resources</phase>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <jvmArgs>
+            <jvmArg>-Xms64m</jvmArg>
+            <jvmArg>-Xmx1024m</jvmArg>
+          </jvmArgs>
+          <args>
+            <arg>-dependencyfile</arg>
+            <arg>${project.build.directory}/.scala_dependencies</arg>
+          </args>
+        </configuration>
+      </plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.2.1</version>
+				<version>3.1.1</version>
 				<configuration>
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
