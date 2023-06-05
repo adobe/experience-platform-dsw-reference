@@ -15,7 +15,7 @@
 # from Adobe.
 #####################################################################
 
-FROM adobe/acp-dsw-ml-runtime-python:2.0.2
+FROM adobe/acp-dsw-ml-runtime-python:2.2.1
 
 # Copy the necessary recipe files to build
 COPY setup.py /root/retail/

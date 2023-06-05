@@ -21,6 +21,6 @@ def get_client_context(config_properties):
     return ClientContext(api_key=config_properties['ML_FRAMEWORK_IMS_USER_CLIENT_ID'],
                          org_id=config_properties['ML_FRAMEWORK_IMS_TENANT_ID'],
                          user_token=config_properties['ML_FRAMEWORK_IMS_TOKEN'],
-                         service_token=config_properties['ML_FRAMEWORK_IMS_ML_TOKEN'],
                          sandbox_id=config_properties['sandboxId'],
-                         sandbox_name=config_properties['sandboxName'])
+                         sandbox_name=config_properties['sandboxName'],
+                         user_scratch_space_params=config_properties['USER_SCRATCH_SPACE_PARAMS'])
